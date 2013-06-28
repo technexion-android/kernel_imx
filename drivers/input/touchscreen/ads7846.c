@@ -1264,7 +1264,7 @@ static const struct ads7846_platform_data *ads7846_probe_dt(struct device *dev)
 
 static int ads7846_probe(struct spi_device *spi)
 {
-	const struct ads7846_platform_data *pdata = dev_get_platdata(&spi->dev);
+	const struct ads7846_platform_data *pdata;
 	struct ads7846 *ts;
 	struct ads7846_packet *packet;
 	struct input_dev *input_dev;
