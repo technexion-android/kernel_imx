@@ -101,6 +101,7 @@ struct ads7846 {
 	struct regulator	*reg;
 
 #if IS_ENABLED(CONFIG_HWMON)
+	struct attribute_group	*attr_group;
 	struct device		*hwmon;
 #endif
 
