@@ -564,8 +564,8 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
 	clks[IMX7D_CSI_MCLK_ROOT_SRC] = imx_clk_mux2("csi_mclk_src", base + 0xbc00, 24, 3, csi_mclk_sel, ARRAY_SIZE(csi_mclk_sel));
 	clks[IMX7D_AUDIO_MCLK_ROOT_SRC] = imx_clk_mux2("audio_mclk_src", base + 0xbc80, 24, 3, audio_mclk_sel, ARRAY_SIZE(audio_mclk_sel));
 	clks[IMX7D_WRCLK_ROOT_SRC] = imx_clk_mux2("wrclk_src", base + 0xbd00, 24, 3, wrclk_sel, ARRAY_SIZE(wrclk_sel));
-	clks[IMX7D_CLKO1_ROOT_SRC] = imx_clk_mux2("clko1_src", base + 0xbd80, 24, 3, clko1_sel, ARRAY_SIZE(clko1_sel));
-	clks[IMX7D_CLKO2_ROOT_SRC] = imx_clk_mux2("clko2_src", base + 0xbe00, 24, 3, clko2_sel, ARRAY_SIZE(clko2_sel));
+	//clks[IMX7D_CLKO1_ROOT_SRC] = imx_clk_mux2("clko1_src", base + 0xbd80, 24, 3, clko1_sel, ARRAY_SIZE(clko1_sel));
+	//clks[IMX7D_CLKO2_ROOT_SRC] = imx_clk_mux2("clko2_src", base + 0xbe00, 24, 3, clko2_sel, ARRAY_SIZE(clko2_sel));
 
 	clks[IMX7D_ARM_A7_ROOT_CG] = imx_clk_gate3("arm_a7_cg", "arm_a7_src", base + 0x8000, 28);
 	clks[IMX7D_ARM_M4_ROOT_CG] = imx_clk_gate3("arm_m4_cg", "arm_m4_src", base + 0x8080, 28);
@@ -636,8 +636,8 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
 	clks[IMX7D_CSI_MCLK_ROOT_CG] = imx_clk_gate3("csi_mclk_cg", "csi_mclk_src", base + 0xbc00, 28);
 	clks[IMX7D_AUDIO_MCLK_ROOT_CG] = imx_clk_gate3("audio_mclk_cg", "audio_mclk_src", base + 0xbc80, 28);
 	clks[IMX7D_WRCLK_ROOT_CG] = imx_clk_gate3("wrclk_cg", "wrclk_src", base + 0xbd00, 28);
-	clks[IMX7D_CLKO1_ROOT_CG] = imx_clk_gate3("clko1_cg", "clko1_src", base + 0xbd80, 28);
-	clks[IMX7D_CLKO2_ROOT_CG] = imx_clk_gate3("clko2_cg", "clko2_src", base + 0xbe00, 28);
+	//clks[IMX7D_CLKO1_ROOT_CG] = imx_clk_gate3("clko1_cg", "clko1_src", base + 0xbd80, 28);
+	//clks[IMX7D_CLKO2_ROOT_CG] = imx_clk_gate3("clko2_cg", "clko2_src", base + 0xbe00, 28);
 
 	clks[IMX7D_MAIN_AXI_ROOT_PRE_DIV] = imx_clk_divider2("axi_pre_div", "axi_cg", base + 0x8800, 16, 3);
 	clks[IMX7D_DISP_AXI_ROOT_PRE_DIV] = imx_clk_divider2("disp_axi_pre_div", "disp_axi_cg", base + 0x8880, 16, 3);
@@ -703,8 +703,8 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
 	clks[IMX7D_CSI_MCLK_ROOT_PRE_DIV] = imx_clk_divider2("csi_mclk_pre_div", "csi_mclk_cg", base + 0xbc00, 16, 3);
 	clks[IMX7D_AUDIO_MCLK_ROOT_PRE_DIV] = imx_clk_divider2("audio_mclk_pre_div", "audio_mclk_cg", base + 0xbc80, 16, 3);
 	clks[IMX7D_WRCLK_ROOT_PRE_DIV] = imx_clk_divider2("wrclk_pre_div", "wrclk_cg", base + 0xbd00, 16, 3);
-	clks[IMX7D_CLKO1_ROOT_PRE_DIV] = imx_clk_divider2("clko1_pre_div", "clko1_cg", base + 0xbd80, 16, 3);
-	clks[IMX7D_CLKO2_ROOT_PRE_DIV] = imx_clk_divider2("clko2_pre_div", "clko2_cg", base + 0xbe00, 16, 3);
+	//clks[IMX7D_CLKO1_ROOT_PRE_DIV] = imx_clk_divider2("clko1_pre_div", "clko1_cg", base + 0xbd80, 16, 3);
+	//clks[IMX7D_CLKO2_ROOT_PRE_DIV] = imx_clk_divider2("clko2_pre_div", "clko2_cg", base + 0xbe00, 16, 3);
 
 	clks[IMX7D_ARM_A7_ROOT_DIV] = imx_clk_divider_flags("arm_a7_div", "arm_a7_cg", base + 0x8000, 0, 3, CLK_SET_RATE_PARENT | CLK_SET_PARENT_ON);
 	clks[IMX7D_ARM_M4_ROOT_DIV] = imx_clk_divider2("arm_m4_div", "arm_m4_cg", base + 0x8080, 0, 3);
@@ -774,8 +774,8 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
 	clks[IMX7D_CSI_MCLK_ROOT_DIV] = imx_clk_divider2("csi_mclk_post_div", "csi_mclk_pre_div", base + 0xbc00, 0, 6);
 	clks[IMX7D_AUDIO_MCLK_ROOT_DIV] = imx_clk_divider2("audio_mclk_post_div", "audio_mclk_pre_div", base + 0xbc80, 0, 6);
 	clks[IMX7D_WRCLK_ROOT_DIV] = imx_clk_divider2("wrclk_post_div", "wrclk_pre_div", base + 0xbd00, 0, 6);
-	clks[IMX7D_CLKO1_ROOT_DIV] = imx_clk_divider2("clko1_post_div", "clko1_pre_div", base + 0xbd80, 0, 6);
-	clks[IMX7D_CLKO2_ROOT_DIV] = imx_clk_divider2("clko2_post_div", "clko2_pre_div", base + 0xbe00, 0, 6);
+	//clks[IMX7D_CLKO1_ROOT_DIV] = imx_clk_divider2("clko1_post_div", "clko1_pre_div", base + 0xbd80, 0, 6);
+	//clks[IMX7D_CLKO2_ROOT_DIV] = imx_clk_divider2("clko2_post_div", "clko2_pre_div", base + 0xbe00, 0, 6);
 	clks[IMX7D_IPG_ROOT_CLK] = imx_clk_divider2("ipg_root_clk", "ahb_root_clk", base + 0x9080, 0, 2);
 
 	clks[IMX7D_ARM_A7_ROOT_CLK] = imx_clk_gate2_flags("arm_a7_root_clk", "arm_a7_div", base + 0x4000, 0, CLK_SET_RATE_PARENT | CLK_SET_PARENT_ON);
