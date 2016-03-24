@@ -114,19 +114,6 @@
 			regulator-max-microvolt = <3300000>;
 		};
 
-		reg_pcie: regulator@8 {
-			compatible = "regulator-fixed";
-			reg = <8>;
-			pinctrl-names = "default";
-			pinctrl-0 = <&pinctrl_pcie>;
-			regulator-name = "MPCIE_3V3";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			gpio = <&gpio2 0 0>;
-			regulator-always-on;
-			enable-active-high;
-		};
-
 		reg_can_en: regulator@9 {
 			compatible = "regulator-fixed";
 			reg = <9>;
