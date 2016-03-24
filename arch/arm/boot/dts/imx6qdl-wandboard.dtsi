@@ -631,13 +631,15 @@
 };
 
 &usdhc2 {  /* Broadcom Wifi/BT  */
-    pinctrl-names = "default";
-    pinctrl-0 = <&pinctrl_usdhc2>;
-    bus-width = <4>;
-    //non-removable;
-    vmmc-supply = <&reg_3p3v>;
-    keep-power-in-suspend;
-    status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc2>;
+	bus-width = <4>;
+	//non-removable;
+	vmmc-supply = <&reg_3p3v>;
+	keep-power-in-suspend;
+	pm-ignore-notify;
+	wifi-host;
+	status = "okay";
 };
 
 &usdhc3 {
