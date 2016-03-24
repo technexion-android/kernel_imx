@@ -153,33 +153,6 @@
 		hdmi-controller = <&hdmi_audio>;
 	};
 
-    rfkill {
-		compatible = "wand,imx6qdl-wandboard-rfkill";
-		pinctrl-names = "default";
-		pinctrl-0 = <>;
-
-		bluetooth-on = <&gpio3 13 0>;
-		bluetooth-wake = <&gpio3 14 0>;
-		bluetooth-host-wake = <&gpio3 15 0>;
-
-		wifi-ref-on = <&gpio2 29 0>;
-		wifi-rst-n = <&gpio5 2 0>;
-		wifi-reg-on = <&gpio1 26 0>;
-		wifi-host-wake = <&gpio1 29 0>;
-		wifi-wake = <&gpio1 30 0>;
-
-		/* Rev C1 gpio definitions */
-		bluetooth-on-revc1 = <&gpio5 21 0>;
-		bluetooth-wake-revc1 = <&gpio5 30 0>;
-		bluetooth-host-wake-revc1 = <&gpio5 20 0>;
-
-		wifi-ref-on-revc1 = <&gpio5 31 0>; /* Controls external FET switch */
-
-		/* Rev B/C probe gpio */
-		wand-rev-gpio = <&gpio2 28 0>;
-	};
-
-
 	mxcfb1: fb@0 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "hdmi";
