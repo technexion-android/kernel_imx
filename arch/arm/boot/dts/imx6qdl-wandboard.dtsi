@@ -23,6 +23,12 @@
 		stdout-path = &uart1;
 	};
 
+	bcmdhd_wlan_0: bcmdhd_wlan@0 {
+		compatible = "android,bcm4329_wlan";
+		pinctrl-0 = <&pinctrl_wifi_ctrl>;
+		wlreg_on-supply = <&wlreg_on>;
+	};
+
 	memory: memory {
 		reg = <0x10000000 0x40000000>;
 	};
@@ -119,7 +125,7 @@
 		};
 
 		gpio_p264 {
-		label = "GPIO_P264";
+			label = "GPIO_P264";
 			gpios = <&gpio7 8 1>;
 			dir   = "in";
 		};
@@ -315,22 +321,7 @@
 				MX6QDL_PAD_GPIO_6__GPIO1_IO06		0x0b0b0		/* ov5640 mipi powerdown */
 				MX6QDL_PAD_KEY_COL4__GPIO4_IO14		0x000b0		/* ov5640 mipi reset */
 				MX6QDL_PAD_GPIO_3__CCM_CLKO2		0x000b0		/* ov5640 mclk */
-				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x0f0b0		/* WIFI_ON (reset, active low) */
-				MX6QDL_PAD_ENET_RXD1__GPIO1_IO26	0x000b0		/* WL_REG_ON (unused) */
-				MX6QDL_PAD_ENET_TXD1__GPIO1_IO29	0x80000000	/* WL_HOST_WAKE, input */
-				MX6QDL_PAD_EIM_EB1__GPIO2_IO29		0x0f0b0		/* EIM_EB1 (Wifi Power Enable) */
-				MX6QDL_PAD_ENET_TXD0__GPIO1_IO30	0x80000000	/* WL_WAKE (unused) */
 				MX6QDL_PAD_EIM_D29__GPIO3_IO29   	0x80000000
-				MX6QDL_PAD_EIM_DA13__GPIO3_IO13  	0x80000000 	/* BT_ON */
-				MX6QDL_PAD_EIM_DA14__GPIO3_IO14  	0x80000000 	/* BT_WAKE */
-				MX6QDL_PAD_EIM_DA15__GPIO3_IO15  	0x80000000 	/* BT_HOST_WAKE */
-				MX6QDL_PAD_EIM_EB0__GPIO2_IO28		0x1B880         /* Wandboard C1 Revision check */
-				/* GPIO used in Wandboard rev C1 */
-				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00	0x0f0b0		/* WIFI_ON (reset, active low) */
-				MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x0f0b0		/* GPIO5_IO31 (Wifi Power Enable) */
-				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x80000000	/* BT_ON */
-				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x80000000	/* BT_WAKE */
-				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20     0x80000000	/*BT_HOST_WAKE */
 			>;
 		};
 
