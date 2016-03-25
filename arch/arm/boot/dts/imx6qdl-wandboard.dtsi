@@ -563,10 +563,6 @@
 	status = "okay";
 };
 
-&pcie {
-	status = "okay";
-};
-
 /*&pwm1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pwm1>;
@@ -641,7 +637,7 @@
 };
 
 &wdog1 {
-	status = "disabled";
+	status = "okay";
 };
 
 &ecspi1 {
