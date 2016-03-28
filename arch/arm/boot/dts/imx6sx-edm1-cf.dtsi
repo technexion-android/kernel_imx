@@ -636,19 +636,23 @@
 	status = "okay";
 };
 
-&usdhc3 { /* Module i-Nand */
+/* baseboard SD card */
+&usdhc3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc3>;
+	cd-gpios = <&gpio6 0 GPIO_ACTIVE_LOW>;
+	wp-gpios = <&gpio6 1 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+};
+
+/* Module i-Nand */
+&usdhc4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc4_1>;
 	bus-width = <8>;
 	keep-power-in-suspend;
 	enable-sdio-wakeup;
 	non-removable;
-	status = "okay";
-};
-
-&usdhc4 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_usdhc4>;
 	status = "okay";
 };
 
@@ -1014,6 +1018,8 @@
 				MX6SX_PAD_SD3_DATA5__USDHC3_DATA5	0x17069
 				MX6SX_PAD_SD3_DATA6__USDHC3_DATA6	0x17069
 				MX6SX_PAD_SD3_DATA7__USDHC3_DATA7	0x17069
+				MX6SX_PAD_SD1_CLK__GPIO6_IO_0		0x17059 /* CD */
+				MX6SX_PAD_SD1_CMD__GPIO6_IO_1		0x17059 /* WP */
 			>;
 		};
 
