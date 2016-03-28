@@ -145,6 +145,7 @@
 			regulator-max-microvolt = <3300000>;
 			regulator-always-on;
 		};
+
 	};
 
 	gpio-edm {
@@ -219,7 +220,7 @@
 
 	sound-spdif {
 		compatible = "fsl,imx-audio-spdif",
-			   "fsl,edm1-cf-imx6sx-sgtl5000";
+			   "fsl,edm1-cf-imx6sx-spdif";
 		model = "imx-spdif";
 		spdif-controller = <&spdif>;
 		spdif-out;
@@ -925,7 +926,7 @@
 
 		pinctrl_spdif: spdifgrp {
 			fsl,pins = <
-				MX6SX_PAD_SD4_DATA4__SPDIF_OUT          0x1b0b0
+				MX6SX_PAD_ENET1_RX_CLK__SPDIF_OUT	0x1b0b0
 			>;
 		};
 
