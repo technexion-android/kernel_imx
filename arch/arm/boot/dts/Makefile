@@ -285,6 +285,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-sabresd-enetirq.dtb \
 	imx6dl-wandboard-revc1.dtb \
 	imx6dl-wandboard-revb1.dtb \
+	imx6dl-edm1-cf.dtb \
 	imx6q-arm2.dtb \
 	imx6q-pop-arm2.dtb \
 	imx6q-cm-fx6.dtb \
@@ -330,7 +331,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-tx6q-1110.dtb \
 	imx6q-udoo.dtb \
 	imx6q-wandboard-revc1.dtb \
-	imx6q-wandboard-revb1.dtb
+	imx6q-wandboard-revb1.dtb \
+	imx6q-edm1-cf.dtb
 dtb-$(CONFIG_SOC_IMX6SL) += \
 	imx6sl-evk.dtb \
 	imx6sl-evk-ldo.dtb \
