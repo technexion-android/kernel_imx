@@ -146,6 +146,19 @@
 			regulator-always-on;
 		};
 
+		wlreg_on: wlreg_on {
+			compatible = "regulator-fixed";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			regulator-name = "wlreg_on";
+			gpio = <&pca9555 11 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+	};
+
+	bcmdhd_wlan_0: bcmdhd_wlan@0 {
+		compatible = "android,bcmdhd_wlan";
+		wlreg_on-supply = <&wlreg_on>;
 	};
 
 	gpio-edm {
@@ -199,6 +212,11 @@
 		gpio_p264 {
 			label = "GPIO_P264";
 			gpios = <&pca9555 7 0>;
+			dir   = "out";
+		};
+		wifi-bt-pwr-on {
+			label = "wifi-bt-pwr-on";
+			gpios = <&pca9555 10 1>;
 			dir   = "out";
 		};
 	};
@@ -632,7 +650,11 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc2>;
 	bus-width = <4>;
-	keep-power-in-suspend;
+	no-1-8-v;	/* force 3.3V VIO */
+	non-removable;
+	cd-post;
+	pm-ignore-notify;
+	wifi-host;
 	status = "okay";
 };
 
