@@ -23,12 +23,6 @@
 		stdout-path = &uart1;
 	};
 
-	bcmdhd_wlan_0: bcmdhd_wlan@0 {
-		compatible = "android,bcm4329_wlan";
-		pinctrl-0 = <&pinctrl_wifi_ctrl>;
-		wlreg_on-supply = <&wlreg_on>;
-	};
-
 	memory: memory {
 		reg = <0x10000000 0x40000000>;
 	};
