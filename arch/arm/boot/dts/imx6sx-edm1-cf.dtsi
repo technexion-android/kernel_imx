@@ -600,6 +600,10 @@
 	status = "okay";
 };
 
+&snvs_pwrkey {
+	status = "disabled";
+};
+
 &spdif {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_spdif>;
