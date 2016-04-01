@@ -342,6 +342,7 @@ dtb-$(CONFIG_SOC_IMX6SL) += \
 dtb-$(CONFIG_SOC_IMX6SX) += \
 	imx6sx-14x14-arm2.dtb \
 	imx6sx-edm1-cf.dtb \
+	imx6sx-edm1-cf-m4.dtb \
 	imx6sx-sabreauto.dtb \
 	imx6sx-sabreauto-m4.dtb \
 	imx6sx-sdb-reva.dtb \
