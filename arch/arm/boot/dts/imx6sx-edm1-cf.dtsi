@@ -65,14 +65,6 @@
 			gpio = <&gpio1 9 GPIO_ACTIVE_HIGH>;
 		};
 
-		reg_psu_5v: regulator@3 {
-			compatible = "regulator-fixed";
-			reg = <3>;
-			regulator-name = "PSU-5V0";
-			regulator-min-microvolt = <5000000>;
-			regulator-max-microvolt = <5000000>;
-		};
-
 		reg_lcd_3v3: regulator@4 {
 			compatible = "regulator-fixed";
 			reg = <4>;
@@ -90,7 +82,7 @@
 			regulator-name = "peri_3v3";
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
-			gpios = <&gpio4 16 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio4 19 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
 			regulator-always-on;
 		};
@@ -114,22 +106,6 @@
 			regulator-max-microvolt = <3300000>;
 		};
 
-		reg_can_en: regulator@9 {
-			compatible = "regulator-fixed";
-			reg = <9>;
-			regulator-name = "can-en";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-		};
-
-		reg_can_stby: regulator@10 {
-			compatible = "regulator-fixed";
-			reg = <10>;
-			regulator-name = "can-stby";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-		};
-		
 		reg_2p5v: 2p5v {
 			compatible = "regulator-fixed";
 			regulator-name = "2P5V";
