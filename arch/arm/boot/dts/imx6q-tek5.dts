@@ -16,7 +16,7 @@
 
 #include <dt-bindings/interrupt-controller/irq.h>
 #include "imx6q.dtsi"
-#include "imx6q-tek5.dts"
+#include "imx6qdl-tek5.dtsi"
 
 / {
 	model = "Technexion TEK5-IMX6 Quad board";
