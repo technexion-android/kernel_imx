@@ -13,11 +13,11 @@
 
 #include <dt-bindings/interrupt-controller/irq.h>
 #include "imx6dl.dtsi"
-#include "imx6qdl-tek3.dtsi"
+#include "imx6qdl-tek5.dtsi"
 
 / {
-	model = "Technexion TEK3-IMX6 Quad board";
-	compatible = "fsl,tek3-imx6q", "fsl,imx6dl";
+	model = "Technexion TEK5-IMX6 Quad board";
+	compatible = "fsl,tek5-imx6q", "fsl,imx6dl";
 };
 
 &ldb {

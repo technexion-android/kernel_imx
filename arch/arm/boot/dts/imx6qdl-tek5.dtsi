@@ -145,7 +145,7 @@
 	};
 
 	sound {
-		compatible = "fsl,imx6-tek3-sgtl5000",
+		compatible = "fsl,imx6-tek5-sgtl5000",
 			     "fsl,imx-audio-sgtl5000";
 		model = "audio-sgtl5000";
 		ssi-controller = <&ssi1>;
@@ -386,7 +386,7 @@
 	pinctrl-names = "default";
     pinctrl-0 = <&pinctrl_hog_1>;
 
-    imx6qdl-tek3 {
+    imx6qdl-tek5 {
 
 		pinctrl_hog_1: hoggrp-1 {
 			fsl,pins = <
