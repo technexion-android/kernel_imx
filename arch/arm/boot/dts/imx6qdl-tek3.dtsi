@@ -549,11 +549,11 @@
 			>;
 		};
 
-/*		pinctrl_pwm1: pwm1grp {
+		pinctrl_pwm1: pwm1grp {
 			fsl,pins = <
-				MX6QDL_PAD_SD1_DAT3__PWM1_OUT 0x1b0b1
+				MX6QDL_PAD_GPIO_9__PWM1_OUT 0x1b0b1
 			>;
-		};*/
+		};
 
 		pinctrl_pwm3: pwm3grp {
 			fsl,pins = <
@@ -728,17 +728,11 @@
 	status = "okay";
 };
 
-/*&pwm1 {
+&pwm1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pwm1>;
 	status = "okay";
-};*/
-
-/*&pwm3 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pwm3>;
-	status = "okay";
-};*/
+};
 
 &ssi1 {
 	status = "okay";
