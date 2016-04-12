@@ -81,17 +81,6 @@
 			enable-active-high;
 			regulator-always-on;
 		};
-		
-		reg_enet_3v3: regulator@5 {
-			compatible = "regulator-fixed";
-			reg = <5>;
-			pinctrl-names = "default";
-			pinctrl-0 = <&pinctrl_enet_3v3>;
-			regulator-name = "enet_3v3";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			gpios = <&gpio7 13 GPIO_ACTIVE_LOW>;
-		};
 	};
 
 	gpio-edm {
@@ -423,9 +412,9 @@
 
 &iomuxc {
 	pinctrl-names = "default";
-    pinctrl-0 = <&pinctrl_hog_1>;
+	pinctrl-0 = <&pinctrl_hog_1>;
 
-    imx6qdl-tek3 {
+	imx6qdl-tek3 {
 		pinctrl_hog_1: hoggrp-1 {
 			fsl,pins = <
 				MX6QDL_PAD_EIM_D22__GPIO3_IO22		0x80000000	/* USB Power Enable */
@@ -443,7 +432,6 @@
 				MX6QDL_PAD_GPIO_4__GPIO1_IO04		0x80000000	/* power board - GPIO_P135 RFU - 4   */
 				MX6QDL_PAD_GPIO_6__GPIO1_IO06		0x80000000	/* power board - GPIO_P137 RFU - 6   */
 				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x80000000	/* power board - GPIO_P139 RFU - 155 */
-
 			>;
 		};
 
@@ -488,6 +476,7 @@
 				MX6QDL_PAD_RGMII_RD3__RGMII_RD3       0x1b0b0
 				MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL 0x1b0b0
 				MX6QDL_PAD_ENET_TX_EN__ENET_TX_EN     0x1b0b0
+				MX6QDL_PAD_GPIO_18__GPIO7_IO13        0x80000000
 			>;
 		};
 
@@ -652,8 +641,8 @@
 &fec {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet>;
-	phy-supply = <&reg_enet_3v3>;
 	phy-mode = "rgmii";
+	pinctrl-assert-gpios = <&gpio7 13 GPIO_ACTIVE_LOW>;
 	status = "okay";
 };
 
