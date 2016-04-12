@@ -412,6 +412,12 @@
 		compatible = "mxim,ds1337";
 		reg = <0x68>;
 	};
+
+	at24@50 {
+		compatible = "at24,24c02";
+		pagesize = <16>;
+		reg = <0x51>;
+	};
 };
 
 
