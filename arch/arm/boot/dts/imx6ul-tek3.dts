@@ -1,9 +1,13 @@
 /*
- * Copyright (C) 2015 Freescale Semiconductor, Inc.
+ * Copyright 2016 Technexion Ltd.
+ *
+ * Author: Richard Hu <richard.hu@technexion.com>
+ *
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
+ *
  */
 
 /dts-v1/;
@@ -20,7 +24,7 @@
 	};
 
 	memory {
-		reg = <0x80000000 0x20000000>;
+		reg = <0x80000000 0x10000000>;
 	};
 
 	reserved-memory {
@@ -31,7 +35,7 @@
 		linux,cma {
 			compatible = "shared-dma-pool";
 			reusable;
-			size = <0x14000000>;
+			size = <0x6000000>;
 			linux,cma-default;
 		};
 	};
@@ -54,66 +58,41 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		reg_can_3v3: regulator@0 {
+		reg_usb_otg_vbus: regulator@0 {
 			compatible = "regulator-fixed";
 			reg = <0>;
-			regulator-name = "can-3v3";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			gpios = <&gpio_spi 3 GPIO_ACTIVE_LOW>;
-		};
-
-		reg_sd1_vmmc: regulator@1 {
-			compatible = "regulator-fixed";
-			regulator-name = "VSD_3V3";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			gpio = <&gpio1 9 GPIO_ACTIVE_HIGH>;
-			enable-active-high;
-		};
-
-		reg_gpio_dvfs: regulator-gpio {
-			compatible = "regulator-gpio";
 			pinctrl-names = "default";
-			pinctrl-0 = <&pinctrl_dvfs>;
-			regulator-min-microvolt = <1300000>;
-			regulator-max-microvolt = <1400000>;
-			regulator-name = "gpio_dvfs";
-			regulator-type = "voltage";
-			gpios = <&gpio5 3 GPIO_ACTIVE_HIGH>;
-			states = <1300000 0x1 1400000 0x0>;
-		};
-	};
-
-	spi4 {
-		compatible = "spi-gpio";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_spi4>;
-		pinctrl-assert-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
-		status = "okay";
-		gpio-sck = <&gpio5 11 0>;
-		gpio-mosi = <&gpio5 10 0>;
-		cs-gpios = <&gpio5 7 0>;
-		num-chipselects = <1>;
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		gpio_spi: gpio_spi@0 {
-			compatible = "fairchild,74hc595";
-			gpio-controller;
-			#gpio-cells = <2>;
-			reg = <0>;
-			registers-number = <1>;
-			registers-default = /bits/ 8 <0x57>;
-			spi-max-frequency = <100000>;
+			pinctrl-0 = <&pinctrl_usb_otg1>;
+			regulator-name = "usb_otg_vbus";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			gpio = <&gpio5 9 0>;
 		};
 	};
 };
 
 &cpu0 {
-	arm-supply = <&reg_arm>;
-	soc-supply = <&reg_soc>;
-	dc-supply = <&reg_gpio_dvfs>;
+	/*
+	 * on i.MX6UL, no seperated VDD_ARM_IN and VDD_SOC_IN,
+	 * to align with other platform and use the same cpufreq
+	 * driver, still use the seperated OPP define for arm
+	 * and soc.
+	 */
+	operating-points = <
+		/* kHz	uV */
+		528000	1175000
+		396000	1175000
+		198000	1175000
+	>;
+	fsl,soc-operating-points = <
+		/* KHz	uV */
+		528000	1175000
+		396000	1175000
+		198000	1175000
+	>;
+	arm-supply = <&sw1b_reg>;
+	soc-supply = <&sw1b_reg>;
+	fsl,arm-soc-shared = <1>;
 };
 
 &clks {
@@ -155,14 +134,12 @@
 &flexcan1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_flexcan1>;
-	xceiver-supply = <&reg_can_3v3>;
 	status = "okay";
 };
 
 &flexcan2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_flexcan2>;
-	xceiver-supply = <&reg_can_3v3>;
 	status = "okay";
 };
 
@@ -272,13 +249,10 @@
 &iomuxc {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_hog_1>;
-	imx6ul-evk {
+	imx6ul-tek3 {
 		pinctrl_hog_1: hoggrp-1 {
 			fsl,pins = <
 				MX6UL_PAD_CSI_DATA02__GPIO4_IO23	0x17059 /* SD1 CD */
-				MX6UL_PAD_GPIO1_IO05__USDHC1_VSELECT	0x17059 /* SD1 VSELECT */
-				MX6UL_PAD_GPIO1_IO09__GPIO1_IO09        0x17059 /* SD1 RESET */
-				MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x80000000
 			>;
 		};
 
@@ -296,12 +270,6 @@
 				MX6UL_PAD_CSI_DATA05__CSI_DATA07	0x1b088
 				MX6UL_PAD_CSI_DATA06__CSI_DATA08	0x1b088
 				MX6UL_PAD_CSI_DATA07__CSI_DATA09	0x1b088
-			>;
-		};
-
-		pinctrl_dvfs: dvfsgrp {
-			fsl,pins = <
-				MX6UL_PAD_SNVS_TAMPER3__GPIO5_IO03	0x79
 			>;
 		};
 
@@ -396,14 +364,24 @@
 				MX6UL_PAD_LCD_ENABLE__LCDIF_ENABLE  0x79
 				MX6UL_PAD_LCD_HSYNC__LCDIF_HSYNC    0x79
 				MX6UL_PAD_LCD_VSYNC__LCDIF_VSYNC    0x79
-				/* used for lcd reset */
-				MX6UL_PAD_SNVS_TAMPER9__GPIO5_IO09  0x79
 			>;
 		};
 
 		pinctrl_pwm1: pwm1grp {
 			fsl,pins = <
 				MX6UL_PAD_GPIO1_IO08__PWM1_OUT   0x110b0
+			>;
+		};
+
+		pinctrl_usb_otg1_id: usbotg1idgrp {
+			fsl,pins = <
+				MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID	0x17059
+			>;
+		};
+
+		pinctrl_usb_otg1: usbotg1grp {
+			fsl,pins = <
+				MX6UL_PAD_SNVS_TAMPER9__GPIO5_IO09        0x10b0
 			>;
 		};
 
@@ -524,6 +502,10 @@
 				MX6UL_PAD_NAND_DATA01__USDHC2_DATA1 0x17059
 				MX6UL_PAD_NAND_DATA02__USDHC2_DATA2 0x17059
 				MX6UL_PAD_NAND_DATA03__USDHC2_DATA3 0x17059
+				MX6UL_PAD_NAND_DATA04__USDHC2_DATA4 0x17059
+				MX6UL_PAD_NAND_DATA05__USDHC2_DATA5 0x17059
+				MX6UL_PAD_NAND_DATA06__USDHC2_DATA6 0x17059
+				MX6UL_PAD_NAND_DATA07__USDHC2_DATA7 0x17059
 			>;
 		};
 
@@ -639,6 +621,15 @@
 	status = "okay";
 };
 
+&usbotg1 {
+	vbus-supply = <&reg_usb_otg_vbus>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usb_otg1_id>;
+	dr_mode = "otg";
+	disable-over-current;
+	status = "okay";
+};
+
 &usbotg2 {
 	dr_mode = "host";
 	disable-over-current;
@@ -653,16 +644,17 @@
 	tx-d-cal = <0x5>;
 };
 
+/* Baseboard microSD slot */
 &usdhc1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc1>;
 	cd-gpios = <&gpio4 23 GPIO_ACTIVE_LOW>;
 	keep-power-in-suspend;
 	enable-sdio-wakeup;
-	vmmc-supply = <&reg_sd1_vmmc>;
 	status = "okay";
 };
 
+/* Module i-Nand */
 &usdhc2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc2>;
