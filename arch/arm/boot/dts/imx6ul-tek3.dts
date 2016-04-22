@@ -106,6 +106,8 @@
 	phy-mode = "rmii";
 	phy-handle = <&ethphy0>;
 	status = "okay";
+	phy-reset-gpios = <&gpio5 2 GPIO_ACTIVE_LOW>;
+	phy-reset-duration = <11>;
 };
 
 &fec2 {
@@ -114,6 +116,8 @@
 	phy-mode = "rmii";
 	phy-handle = <&ethphy1>;
 	status = "okay";
+	phy-reset-gpios = <&gpio5 3 GPIO_ACTIVE_LOW>;
+	phy-reset-duration = <11>;
 
 	mdio {
 		#address-cells = <1>;
@@ -122,11 +126,17 @@
 		ethphy0: ethernet-phy@2 {
 			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <2>;
+			max-speed = <100>;
+			interrupt-parent = <&gpio5>;
+			interrupts = <5 IRQ_TYPE_LEVEL_LOW 0>;
 		};
 
 		ethphy1: ethernet-phy@1 {
 			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <1>;
+			max-speed = <100>;
+			interrupt-parent = <&gpio5>;
+			interrupts = <6 IRQ_TYPE_LEVEL_LOW 0>;
 		};
 	};
 };
@@ -283,6 +293,8 @@
 				MX6UL_PAD_ENET1_TX_DATA0__ENET1_TDATA00	0x1b0b0
 				MX6UL_PAD_ENET1_TX_DATA1__ENET1_TDATA01	0x1b0b0
 				MX6UL_PAD_ENET1_TX_CLK__ENET1_REF_CLK1	0x4001b031
+				MX6UL_PAD_SNVS_TAMPER5__GPIO5_IO05	0x800
+				MX6UL_PAD_SNVS_TAMPER2__GPIO5_IO02	0x79
 			>;
 		};
 
@@ -298,6 +310,8 @@
 				MX6UL_PAD_ENET2_TX_DATA0__ENET2_TDATA00	0x1b0b0
 				MX6UL_PAD_ENET2_TX_DATA1__ENET2_TDATA01	0x1b0b0
 				MX6UL_PAD_ENET2_TX_CLK__ENET2_REF_CLK2	0x4001b031
+				MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x800
+				MX6UL_PAD_SNVS_TAMPER3__GPIO5_IO03	0x79
 			>;
 		};
 
@@ -585,15 +599,6 @@
 	pinctrl-assert-gpios = <&gpio4 23 GPIO_ACTIVE_HIGH>;
 	port = <1>;
 	sven_low_active;
-	status = "okay";
-};
-
-&tsc {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_tsc>;
-	xnur-gpio = <&gpio1 3 GPIO_ACTIVE_LOW>;
-	measure-delay-time = <0xffff>;
-	pre-charge-time = <0xfff>;
 	status = "okay";
 };
 
