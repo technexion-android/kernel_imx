@@ -444,6 +444,12 @@
 			>;
 		};
 
+		pinctrl_pcie_reset: pciegrp {
+			fsl,pins = <
+				MX6QDL_PAD_EIM_D31__GPIO3_IO31 0x130b0			/* PCIE_nRST */
+			>;
+		};
+
 		pinctrl_audmux: audmuxgrp {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT7__AUD3_RXD		0x130b0
@@ -700,6 +706,12 @@
 	csi_id = <0>;
 	v_channel = <0>;
 	lanes = <2>;
+	status = "okay";
+};
+
+&pcie {
+	pinctrl-0 = <&pinctrl_pcie_reset>;
+	reset-gpio = <&gpio3 31 0>;
 	status = "okay";
 };
 
