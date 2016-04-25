@@ -552,6 +552,12 @@
 				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
 			>;
 		};
+
+		pinctrl_pcie_reset: pciegrp {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21 0x130b0			/* PCIE_nRST */
+			>;
+		};
 	};
 };
 
@@ -614,6 +620,12 @@
 	csi_id = <0>;
 	v_channel = <0>;
 	lanes = <2>;
+	status = "okay";
+};
+
+&pcie {
+	pinctrl-0 = <&pinctrl_pcie_reset>;
+	reset-gpio = <&gpio5 21 0>;
 	status = "okay";
 };
 
