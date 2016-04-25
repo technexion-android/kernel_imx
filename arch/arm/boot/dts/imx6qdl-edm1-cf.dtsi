@@ -67,7 +67,7 @@
 
 		reg_1p8v: 1p8v {
 			compatible = "regulator-fixed";
-            reg = <2>;
+			reg = <2>;
 			regulator-name = "1P8V";
 			regulator-min-microvolt = <1800000>;
 			regulator-max-microvolt = <1800000>;
@@ -383,7 +383,7 @@
 		compatible = "fsl,isl29023";
 		reg = <0x44>;
 		rext = <499>;
-		};
+	};
 
 	ds1337: rtc@68 {
 		compatible = "mxim,ds1337";
@@ -394,9 +394,9 @@
 
 &iomuxc {
 	pinctrl-names = "default";
-    pinctrl-0 = <&pinctrl_hog_1>;
+	pinctrl-0 = <&pinctrl_hog_1>;
 
-    imx6qdl-edm1-cf {
+	imx6qdl-edm1-cf {
 
 		pinctrl_hog_1: hoggrp-1 {
 			fsl,pins = <
