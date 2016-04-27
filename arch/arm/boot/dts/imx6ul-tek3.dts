@@ -262,7 +262,7 @@
 	imx6ul-tek3 {
 		pinctrl_hog_1: hoggrp-1 {
 			fsl,pins = <
-				MX6UL_PAD_CSI_DATA02__GPIO4_IO23	0x17059 /* SD1 CD */
+				MX6UL_PAD_UART1_RTS_B__USDHC1_CD_B 0x03029 /* SD1 CD */
 			>;
 		};
 
@@ -653,7 +653,7 @@
 &usdhc1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc1>;
-	cd-gpios = <&gpio4 23 GPIO_ACTIVE_LOW>;
+	cd-gpios = <&gpio1 19 GPIO_ACTIVE_LOW>;
 	keep-power-in-suspend;
 	enable-sdio-wakeup;
 	status = "okay";
