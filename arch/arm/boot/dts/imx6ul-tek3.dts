@@ -663,6 +663,7 @@
 &usdhc2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc2>;
+	bus-width = <8>;
 	no-1-8-v;
 	non-removable;
 	keep-power-in-suspend;
