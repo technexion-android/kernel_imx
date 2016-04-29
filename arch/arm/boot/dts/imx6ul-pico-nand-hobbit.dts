@@ -25,7 +25,7 @@
 	};
 
 	chosen {
-		stdout-path = &uart6;
+		stdout-path = &uart4;
 	};
 
 	backlight {
@@ -202,6 +202,13 @@
 	fsl,ldo-bypass = <0>; /* DCDC, ldo-enable */
 };
 
+/* Debug Console */
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart4>;
+	status = "okay";
+};
+
 &uart5 { /* Bluetooth */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5 &pinctrl_bt_ctrl>;
@@ -336,6 +343,13 @@
 &iomuxc {
 	pinctrl-names = "default";
 	pico-imx6ul {
+		pinctrl_uart4: uart4grp {
+			fsl,pins = <
+				MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX 0x1b0b1
+				MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX 0x1b0b1
+			>;
+		};
+
 		pinctrl_uart5: uart5grp {
 			fsl,pins = <
 				MX6UL_PAD_GPIO1_IO04__UART5_DCE_TX	0x1b0b1
