@@ -69,6 +69,71 @@
 			gpio = <&gpio5 9 0>;
 		};
 	};
+
+	gpio-edm {
+		compatible = "gpio-edm";
+
+		gpio_p133 {
+			label = "GPIO_P133";
+			gpios = <&pca9555 0 0>;
+			dir   = "out";
+		};
+		gpio_p135 {
+			label = "GPIO_P135";
+			gpios = <&pca9555 1 0>;
+			dir   = "out";
+		};
+		gpio_p137 {
+			label = "GPIO_P137";
+			gpios = <&pca9555 2 0>;
+			dir   = "in";
+		};
+		gpio_p139 {
+			label = "GPIO_P139";
+			gpios = <&pca9555 3 0>;
+			dir   = "in";
+		};
+		gpio_p233 {
+			label = "GPIO_P233";
+			gpios = <&gpio1 4 1>;
+			dir   = "out";
+		};
+		gpio_p235 {
+			label = "GPIO_P235";
+			gpios = <&gpio1 5 1>;
+			dir   = "out";
+		};
+		gpio_p237 {
+			label = "GPIO_P237";
+			gpios = <&gpio4 16 1>;
+			dir   = "in";
+		};
+		gpio_p239 {
+			label = "GPIO_P239";
+			gpios = <&pca9555 4 1>;
+			dir   = "in";
+		};
+		gpio_p241 {
+			label = "GPIO_P241";
+			gpios = <&pca9555 5 1>;
+			dir   = "out";
+		};
+		gpio_p243 {
+			label = "GPIO_P243";
+			gpios = <&pca9555 6 1>;
+			dir   = "out";
+		};
+		gpio_p245 {
+			label = "GPIO_P245";
+			gpios = <&pca9555 7 1>;
+			dir   = "in";
+		};
+		gpio_p247 {
+			label = "GPIO_P247";
+			gpios = <&pca9555 8 1>;
+			dir   = "in";
+		};
+	};
 };
 
 &cpu0 {
@@ -254,6 +319,17 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c2>;
 	status = "okay";
+
+	pca9555: pca9555@23 {
+		compatible = "nxp,pca9555";
+//		interrupt-parent = <&gpio1>;
+//		interrupts = <7 0x2>;
+		gpio-controller;
+		#gpio-cells = <2>;
+//		interrupt-controller;
+		#interrupt-cells = <2>;
+		reg = <0x23>;
+	};
 };
 
 &iomuxc {
@@ -263,6 +339,10 @@
 		pinctrl_hog_1: hoggrp-1 {
 			fsl,pins = <
 				MX6UL_PAD_UART1_RTS_B__USDHC1_CD_B 0x03029 /* SD1 CD */
+				MX6UL_PAD_GPIO1_IO08__GPIO1_IO08	0x03029 /* PCA9555 interrupt */
+				MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0x1b0b9		/* IO expansion board output- GPIO_P233 - 1   */
+				MX6UL_PAD_GPIO1_IO05__GPIO1_IO05	0x1b0b9		/* IO expansion board output- GPIO_P235 - 41  */
+				MX6UL_PAD_NAND_DQS__GPIO4_IO16		0x80000000	/* IO expansion board input - GPIO_P237 - 42  */
 			>;
 		};
 
@@ -571,12 +651,6 @@
 			};
 		};
 	};
-};
-
-&pwm1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pwm1>;
-	status = "okay";
 };
 
 &pxp {
