@@ -504,7 +504,6 @@
 				MX6UL_PAD_ENET2_TX_DATA1__ENET2_TDATA01	0x1b0b0
 				MX6UL_PAD_ENET2_TX_CLK__ENET2_REF_CLK2	0x4001b031
 				MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x800
-				MX6UL_PAD_UART4_TX_DATA__GPIO1_IO28	0x79
 			>;
 		};
 
@@ -684,7 +683,7 @@
 	phy-mode = "rmii";
 	phy-handle = <&ethphy1>;
 	status = "okay";
-	phy-reset-gpios = <&gpio2 15 GPIO_ACTIVE_LOW>;
+	phy-reset-gpios = <&pca9554 7 GPIO_ACTIVE_LOW>;
 	phy-reset-duration = <11>;
 	
 	mdio {
