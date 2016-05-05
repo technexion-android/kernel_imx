@@ -101,6 +101,7 @@
 		compatible = "android,bcmdhd_wlan";
 		pinctrl-0 = <&pinctrl_wifi_ctrl>;
 		wlreg_on-supply = <&wlreg_on>;
+		status="okay";
 	};
 
 	sound {
@@ -131,19 +132,6 @@
                         clock-frequency = <24576000>;
                 };
         };
-
-	external_gpio {
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_gpio>;
-		enable-gpios =  <&gpio4 19 0>,
-				<&gpio4 21 0>,
-				<&gpio4 22 0>,
-				<&gpio4 23 0>,
-				<&gpio4 24 0>,
-				<&gpio1 29 0>,
-				<&gpio5 2 0>;
-		status = "okay";
-	};
 
 	leds {
 		compatible = "gpio-leds";
@@ -418,16 +406,16 @@
 
 		pinctrl_wifi_ctrl: wifi_ctrlgrp {
 			fsl,pins = <
-				MX6UL_PAD_NAND_DATA06__GPIO4_IO08 0x03029 /* wifi-reg-on */
-				MX6UL_PAD_NAND_DATA04__GPIO4_IO06 0x79    /* wifi-host-wake */
+				MX6UL_PAD_CSI_MCLK__GPIO4_IO17 0x03029 /* wifi-reg-on */
+				MX6UL_PAD_JTAG_TCK__GPIO1_IO14 0x79    /* wifi-host-wake */
 			>;
 		};
 
 		pinctrl_bt_ctrl: bt_ctrlgrp {
 			fsl,pins = <
-				MX6UL_PAD_SNVS_TAMPER9__GPIO5_IO09   0x79   /* bluetooth-reg-on */
-				MX6UL_PAD_SNVS_TAMPER8__GPIO5_IO08   0x79   /* bluetooth-wake */
-				MX6UL_PAD_NAND_DATA05__GPIO4_IO07    0x79   /* bluetooth-host-wake */
+				MX6UL_PAD_JTAG_TRST_B__GPIO1_IO15   0x79   /* bluetooth-reg-on */
+				MX6UL_PAD_JTAG_TDO__GPIO1_IO12      0x79   /* bluetooth-wake */
+				MX6UL_PAD_JTAG_TCK__GPIO1_IO14      0x79   /* bluetooth-host-wake */
 			>;
 		};
 
@@ -509,12 +497,12 @@
 
 		pinctrl_usdhc2: usdhc2grp {
 			fsl,pins = <
-				MX6UL_PAD_NAND_WE_B__USDHC2_CMD		0x17059
-				MX6UL_PAD_NAND_RE_B__USDHC2_CLK		0x10059
-				MX6UL_PAD_NAND_DATA00__USDHC2_DATA0	0x17059
-				MX6UL_PAD_NAND_DATA01__USDHC2_DATA1	0x17059
-				MX6UL_PAD_NAND_DATA02__USDHC2_DATA2	0x17059
-				MX6UL_PAD_NAND_DATA03__USDHC2_DATA3	0x17059
+				MX6UL_PAD_CSI_VSYNC__USDHC2_CLK		0x10059
+				MX6UL_PAD_CSI_HSYNC__USDHC2_CMD		0x17059
+				MX6UL_PAD_CSI_DATA00__USDHC2_DATA0	0x17059
+				MX6UL_PAD_CSI_DATA01__USDHC2_DATA1	0x17059
+				MX6UL_PAD_CSI_DATA02__USDHC2_DATA2	0x17059
+				MX6UL_PAD_CSI_DATA03__USDHC2_DATA3	0x17059
 			>;
 		};
 
@@ -559,9 +547,9 @@
 			>;
 		};
 
-		pinctrl_pwm3: pwm3grp {
+		pinctrl_pwm5: pwm5grp {
 			fsl,pins = <
-				MX6UL_PAD_NAND_ALE__PWM3_OUT	0x110b0
+				MX6UL_PAD_NAND_DQS__PWM5_OUT	0x110b0
 			>;
 		};
 
@@ -598,28 +586,7 @@
 				MX6UL_PAD_ENET1_RX_ER__PWM8_OUT	0x110b0
 			>;
 		};
-
-		pinctrl_gpio: gpio {
-			fsl,pins = <
-				MX6UL_PAD_CSI_VSYNC__GPIO4_IO19 0x79
-				MX6UL_PAD_CSI_HSYNC__GPIO4_IO20 0x79
-				MX6UL_PAD_CSI_DATA00__GPIO4_IO21 0x79
-				MX6UL_PAD_CSI_DATA01__GPIO4_IO22 0x79
-				MX6UL_PAD_CSI_DATA02__GPIO4_IO23 0x79
-				MX6UL_PAD_CSI_DATA03__GPIO4_IO24 0x79
-				MX6UL_PAD_UART4_RX_DATA__GPIO1_IO29 0x79
-				MX6UL_PAD_SNVS_TAMPER2__GPIO5_IO02 0x79
-			>;
-		};
 	};
-};
-
-&pwm3 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pwm3>;
-	clocks = <&clks IMX6UL_CLK_PWM3>,
-		 <&clks IMX6UL_CLK_PWM3>;
-	status = "okay";
 };
 
 &usbotg1 {
@@ -674,6 +641,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_gpmi_nand>;
 	nand-on-flash-bbt;
+	status = "okay";
 };
 
 
@@ -704,8 +672,7 @@
 &usdhc1 {  /* Baseboard microSD slot */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc1>;
-	pinctrl-1 = <&pinctrl_usdhc1b>;
-	bus-width = <8>;
+	bus-width = <4>;
 	no-1-8-v;
 	keep-power-in-suspend;
 	status = "okay";
@@ -772,9 +739,12 @@
 	};
 };
 
-&pwm1 {
-	clocks = <&clks IMX6UL_CLK_DUMMY>,
-		 <&clks IMX6UL_CLK_DUMMY>;
+&pwm5 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm5>;
+	clocks = <&clks IMX6UL_CLK_PWM5>,
+		 <&clks IMX6UL_CLK_PWM5>;
+	status = "okay";
 };
 
 &pwm7 {
