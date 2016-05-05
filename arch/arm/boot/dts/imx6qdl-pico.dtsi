@@ -342,6 +342,8 @@
 				MX6QDL_PAD_GPIO_3__CCM_CLKO2		0x000b0		/* ov5640 mclk */
 				MX6QDL_PAD_EIM_D29__GPIO3_IO29   	0x80000000
 				MX6QDL_PAD_ENET_RXD0__XTALOSC_REF_CLK_32K	0x000b0	/* wifi LPO 32K Hz clock */
+				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x80000000	/* resistive touch irq for Dwarf baseboard */
+				MX6QDL_PAD_CSI0_DAT15__GPIO6_IO01	0x80000000	/* resistive touch irq for Hobbit baseboard */
 			>;
 		};
 
