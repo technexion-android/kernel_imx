@@ -134,6 +134,25 @@
 			dir   = "in";
 		};
 	};
+
+	gpio-leds {
+		compatible = "gpio-leds";
+
+		led_d32 {
+			gpios = <&pca9555 9 0>;
+			default-state = "on";
+		};
+
+		led_d33 {
+			gpios = <&pca9555 10 0>;
+			default-state = "on";
+		};
+
+		led_d34 {
+			gpios = <&pca9555 11 0>;
+			default-state = "on";
+		};
+	};
 };
 
 &cpu0 {
