@@ -326,9 +326,9 @@
 
 &iomuxc {
 	pinctrl-names = "default";
-    pinctrl-0 = <&pinctrl_hog_1>;
+	pinctrl-0 = <&pinctrl_hog_1>;
 
-    imx6qdl-pico {
+	imx6qdl-pico {
 
 		pinctrl_hog_1: hoggrp-1 {
 			fsl,pins = <
@@ -478,12 +478,6 @@
 			>;
 		};
 
-/*		pinctrl_pwm1: pwm1grp {
-			fsl,pins = <
-				MX6QDL_PAD_SD1_DAT3__PWM1_OUT 0x1b0b1
-			>;
-		};*/
-
 		pinctrl_pwm3: pwm3grp {
 			fsl,pins = <
 				MX6QDL_PAD_SD4_DAT1__PWM3_OUT 0x1b0b1
@@ -569,8 +563,8 @@
 };
 
 &clks {
-    fsl,ldb-di0-parent = <&clks IMX6QDL_CLK_PLL2_PFD0_352M>;
-    fsl,ldb-di1-parent = <&clks IMX6QDL_CLK_PLL2_PFD0_352M>;
+	fsl,ldb-di0-parent = <&clks IMX6QDL_CLK_PLL2_PFD0_352M>;
+	fsl,ldb-di1-parent = <&clks IMX6QDL_CLK_PLL2_PFD0_352M>;
 };
 
 &fec {
