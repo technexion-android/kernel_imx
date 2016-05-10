@@ -87,7 +87,7 @@
 			regulator-min-microvolt = <5000000>;
 			regulator-max-microvolt = <5000000>;
 			regulator-name = "wlreg_on";
-			gpio = <&gpio6 0 GPIO_ACTIVE_HIGH>;
+			gpio = <&gpio1 26 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
 		};
 	};
@@ -149,12 +149,6 @@
 		wl_on {
 			label = "wl_on";
 			gpios = <&gpio5 31 1>;
-			dir   = "out";
-		};
-
-		wl_reg {
-			label = "wl_reg";
-			gpios = <&gpio1 26 1>;
 			dir   = "out";
 		};
 
