@@ -97,17 +97,17 @@
 
 		gpio_p255 {
 			label = "GPIO_P255";
-			gpios = <&gpio3 12 1>;
+			gpios = <&gpio6 5 1>;
 			dir   = "in";
 		};
 		gpio_p256 {
 			label = "GPIO_P256";
-			gpios = <&gpio3 11 1>;
+			gpios = <&gpio6 2 1>;
 			dir   = "in";
 		};
 		gpio_p257 {
 			label = "GPIO_P257";
-			gpios = <&gpio3 10 1>;
+			gpios = <&gpio6 4 1>;
 			dir   = "in";
 		};
 		gpio_p258 {
@@ -127,7 +127,7 @@
 		};
 		gpio_p261 {
 			label = "GPIO_P261";
-			gpios = <&gpio3 8 1>;
+			gpios = <&gpio6 3 1>;
 			dir   = "in";
 		};
 		gpio_p262 {
