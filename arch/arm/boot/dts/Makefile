@@ -286,6 +286,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-wandboard-revc1.dtb \
 	imx6dl-wandboard-revb1.dtb \
 	imx6dl-edm1-cf.dtb \
+	imx6dl-edm1-cf-pmic_fairy.dtb \
 	imx6dl-pico.dtb \
 	imx6dl-tek3.dtb \
 	imx6dl-tek5.dtb \
@@ -336,6 +337,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-wandboard-revc1.dtb \
 	imx6q-wandboard-revb1.dtb \
 	imx6q-edm1-cf.dtb \
+	imx6q-edm1-cf-pmic_fairy.dtb \
 	imx6q-pico.dtb \
 	imx6q-tek3.dtb \
 	imx6q-tek5.dtb
