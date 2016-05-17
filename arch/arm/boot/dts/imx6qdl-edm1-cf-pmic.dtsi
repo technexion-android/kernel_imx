@@ -639,6 +639,12 @@
 				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
 			>;
 		};
+
+		pinctrl_enet_3v3: enet3v3grp {
+			fsl,pins = <
+				MX6QDL_PAD_GPIO_18__GPIO7_IO13		0x80000000
+			>;
+		};
 	};
 };
 
@@ -649,7 +655,8 @@
 
 &fec {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_enet>;
+	pinctrl-0 = <&pinctrl_enet &pinctrl_enet_3v3>;
+	pinctrl-assert-gpios = <&gpio7 13 GPIO_ACTIVE_LOW>; /* enet 3v3 power control - active low */
 	phy-mode = "rgmii";
 	status = "okay";
 };
