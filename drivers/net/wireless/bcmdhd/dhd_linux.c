@@ -4324,6 +4324,32 @@ int dhd_get_fw_mode(dhd_info_t *dhdinfo)
 	return DHD_FLAG_STA_MODE;
 }
 
+<<<<<<< HEAD
+=======
+#define BCM4330_FIRMWARE_NAME	"/lib/firmware/brcm/fw_bcm4330_bg.bin"
+#define BCM4330_AP_MODE_FIRMWARE_NAME	"/lib/firmware/brcm/fw_bcm4330_apsta_bg.bin"
+#define BCM4330_NVRAM_NAME	"/lib/firmware/brcm/brcmfmac4330-sdio.txt"
+#define BCM4339_FIRMWARE_NAME	"/lib/firmware/brcm/fw_bcm4339a0_ag.bin"
+#define BCM4339_AP_MODE_FIRMWARE_NAME	"/lib/firmware/brcm/fw_bcm4339a0_ag_apsta.bin"
+#define BCM4339_NVRAM_NAME	"/lib/firmware/brcm/nvram_ap6335.txt"
+
+struct dhd_firmware_names {
+	uint chipid;
+	const char *bin;
+	const char *ap_bin;
+	const char *nv;
+};
+
+#define DHD_FIRMWARE_NVRAM(name) \
+	name ## _FIRMWARE_NAME, name ## _AP_MODE_FIRMWARE_NAME, name ## _NVRAM_NAME
+
+
+static const struct dhd_firmware_names dhd_fwname_data[] = {
+{ BCM4330_CHIP_ID, DHD_FIRMWARE_NVRAM(BCM4330) },
+{ BCM4339_CHIP_ID, DHD_FIRMWARE_NVRAM(BCM4339) }
+};
+
+>>>>>>> 09fd04194b79... bcmdhd: AP6335 wifi AP mode only works to use Ampak firmware
 bool dhd_update_fw_nv_path(dhd_info_t *dhdinfo)
 {
 	int fw_len;
