@@ -476,7 +476,6 @@
 				MX6QDL_PAD_RGMII_RD3__RGMII_RD3       0x1b0b0
 				MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL 0x1b0b0
 				MX6QDL_PAD_ENET_TX_EN__ENET_TX_EN     0x1b0b0
-				MX6QDL_PAD_GPIO_18__GPIO7_IO13        0x80000000
 			>;
 		};
 
@@ -640,7 +639,7 @@
 
 &fec {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_enet>;
+	pinctrl-0 = <&pinctrl_enet &pinctrl_enet_3v3>;
 	phy-mode = "rgmii";
 	pinctrl-assert-gpios = <&gpio7 13 GPIO_ACTIVE_LOW>;
 	status = "okay";
