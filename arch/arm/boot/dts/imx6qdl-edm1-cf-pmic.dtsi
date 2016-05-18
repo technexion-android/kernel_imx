@@ -59,9 +59,10 @@
 
 	bt_rfkill {
 		compatible = "net,rfkill-bcm43xx";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
 		name = "bt_rfkill";
 		type = <2>;     /* bluetooth */
-		bt_rfkill_reset-gpios = <&gpio5 21 0>;
+		bt_rfkill_reset-gpios = <&gpio5 30 0>;
 	};
 
 	memory: memory {
@@ -121,22 +122,10 @@
 	gpio-edm {
 		compatible = "gpio-edm";
 
-		wl_on {
-			label = "wl_on";
+		wifi_on {
+			label = "wifi_on";
 			gpios = <&gpio6 0 1>;
 			dir   = "out";
-		};
-
-		bluetooth-wake {
-			label = "bluetooth-wake";
-			gpios = <&gpio5 30 1>;
-			dir   = "in";
-		};
-
-		bluetooth-host-wake {
-			label = "bluetooth-host-wake";
-			gpios = <&gpio5 20 1>;
-			dir   = "in";
 		};
 	};
 
@@ -404,7 +393,8 @@
 				MX6QDL_PAD_GPIO_6__GPIO1_IO06		0x0b0b0		/* ov5640 mipi powerdown */
 				MX6QDL_PAD_GPIO_8__GPIO1_IO08		0x0b0b0		/* ov5640 mipi reset */
 				MX6QDL_PAD_GPIO_3__CCM_CLKO2		0x000b0		/* ov5640 mclk */
-				MX6QDL_PAD_EIM_D29__GPIO3_IO29   	0x80000000
+				MX6QDL_PAD_EIM_D29__GPIO3_IO29   	0x80000000	/* RGMII PHY reset */
+				MX6QDL_PAD_ENET_RXD0__XTALOSC_REF_CLK_32K	0x000b0	/* wifi LPO 32K Hz clock */
 			>;
 		};
 
@@ -430,18 +420,17 @@
 
 		pinctrl_wifi_ctrl: wifi_ctrlgrp {
 			fsl,pins = <
-				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00 0x000b0			/* wifi-power */
-				MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31 0x000b0			/* wifi-on */
-				MX6QDL_PAD_ENET_RXD1__GPIO1_IO26  0x000b0			/* wifi-reg-on */
-				MX6QDL_PAD_ENET_TXD1__GPIO1_IO29  0x80000000		/* wifi-host-wake */
+				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00	0x000b0		/* WIFI_ON, wifi-power */
+				MX6QDL_PAD_ENET_RXD1__GPIO1_IO26	0x000b0		/* wifi-reg-on */
+				MX6QDL_PAD_ENET_TXD1__GPIO1_IO29	0x80000000	/* wifi-host-wake - input */
 			>;
 		};
 
 		pinctrl_bt_ctrl: bt_ctrlgrp {
 			fsl,pins = <
-				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x000b0		/* bluetooth-reg-on */
-				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x80000000	/* bluetooth-wake */
-				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x80000000	/* bluetooth-host-wake */
+				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x000b0		/* BT_RST_N */
+				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x000b0		/* BT_WAKE - output */
+				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x80000000	/* BT_HOST_WAKE - input */
 			>;
 		};
 
@@ -597,7 +586,9 @@
 				MX6QDL_PAD_EIM_D24__UART3_TX_DATA	0x1b0b1
 				MX6QDL_PAD_EIM_D25__UART3_RX_DATA	0x1b0b1
 				MX6QDL_PAD_EIM_D23__UART3_CTS_B		0x1b0b1
-				MX6QDL_PAD_EIM_EB3__UART3_RTS_B		0x1b0b1
+				MX6QDL_PAD_EIM_EB3__UART3_RTS_B		0x1f0b1	/* EIM_EB3 is also used in boot config.
+										Decrease internal pull-up resistor to 22K ohm
+										to ensure it can be pulled high */
 			>;
 		};
 
