@@ -352,6 +352,11 @@
 		#interrupt-cells = <2>;
 		reg = <0x23>;
 	};
+
+	ds1337: rtc@68 {
+		compatible = "mxim,ds1337";
+		reg = <0x68>;
+	};
 };
 
 &iomuxc {
