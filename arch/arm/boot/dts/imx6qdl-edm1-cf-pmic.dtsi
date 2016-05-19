@@ -22,7 +22,7 @@
 #define EDM1_EXT_GPIO_P260 &gpio6 31
 #define EDM1_EXT_GPIO_P261 &gpio6 3
 #define EDM1_EXT_GPIO_P262 &gpio1 24
-#define EDM1_EXT_GPIO_P263 &gpio4 5
+#define EDM1_EXT_GPIO_P263 &gpio1 4
 #define EDM1_EXT_GPIO_P264 &gpio7 8
 
 #define EDM1_EXT_GPIO_IOMUX_FAIRY &pinctrl_ext_gpio_fairy
@@ -34,8 +34,8 @@
 #define EDM1_AUD_CLK_SRC &clks 201
 
 /* Touch */
-#define EDM1_EXT_GPIO_P263_INT_PARENT &gpio4
-#define EDM1_EXT_GPIO_P263_INT 5
+#define EDM1_EXT_GPIO_P263_INT_PARENT &gpio1
+#define EDM1_EXT_GPIO_P263_INT 4
 #define EDM1_EXT_GPIO_P263_IOMUX &pinctrl_ext_gpio_p263_touch_irq
 
 
@@ -414,7 +414,7 @@
 
 		pinctrl_ext_gpio_p263_touch_irq: ext-gpio-p263-touch-irq {
 			fsl,pins = <
-				MX6QDL_PAD_GPIO_19__GPIO4_IO05     0x4001b0b5 /* GPIO4_05 EDM pin 263 touch irq */
+				MX6QDL_PAD_GPIO_4__GPIO1_IO04     0x4001b0b5 /* GPIO1_04 EDM pin 263 touch irq */
 			>;
 		};
 
