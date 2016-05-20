@@ -14,29 +14,27 @@
 #include <dt-bindings/gpio/gpio.h>
 
 /* external GPIO */
-#define EDM1_EXT_GPIO_P255 &gpio6 5
-#define EDM1_EXT_GPIO_P256 &gpio6 2
-#define EDM1_EXT_GPIO_P257 &gpio6 4
-#define EDM1_EXT_GPIO_P258 &gpio3 27
-#define EDM1_EXT_GPIO_P259 &gpio3 26
-#define EDM1_EXT_GPIO_P260 &gpio6 31
-#define EDM1_EXT_GPIO_P261 &gpio6 3
-#define EDM1_EXT_GPIO_P262 &gpio1 24
-#define EDM1_EXT_GPIO_P263 &gpio1 4
-#define EDM1_EXT_GPIO_P264 &gpio7 8
+#define EDM1_EXT_GPIO_P255 gpio6 5
+#define EDM1_EXT_GPIO_P256 gpio6 2
+#define EDM1_EXT_GPIO_P257 gpio6 4
+#define EDM1_EXT_GPIO_P258 gpio3 27
+#define EDM1_EXT_GPIO_P259 gpio3 26
+#define EDM1_EXT_GPIO_P260 gpio6 31
+#define EDM1_EXT_GPIO_P261 gpio6 3
+#define EDM1_EXT_GPIO_P262 gpio1 24
+#define EDM1_EXT_GPIO_P263 gpio1 4
+#define EDM1_EXT_GPIO_P264 gpio7 8
 
-#define EDM1_EXT_GPIO_IOMUX_FAIRY &pinctrl_ext_gpio_fairy
+#define EDM1_EXT_GPIO_IOMUX_FAIRY pinctrl_ext_gpio_fairy
 
 /* audio codec */
-#define EDM1_AUD_I2S_CHANNEL &ssi1
+#define EDM1_AUD_I2S_CHANNEL ssi1
 #define EDM1_AUD_MUX_INT 1
 #define EDM1_AUD_MUX_EXT 3
-#define EDM1_AUD_CLK_SRC &clks 201
+#define EDM1_AUD_CLK_SRC clks 201
 
-/* Touch */
-#define EDM1_EXT_GPIO_P263_INT_PARENT &gpio1
-#define EDM1_EXT_GPIO_P263_INT 4
-#define EDM1_EXT_GPIO_P263_IOMUX &pinctrl_ext_gpio_p263_touch_irq
+/* ADS7846 Touch */
+#define EDM1_EXT_ADS7846_IOMUX_FAIRY pinctrl_ext_gpio_ads7846_touch_irq_fairy
 
 
 / {
@@ -412,7 +410,7 @@
 			>;
 		};
 
-		pinctrl_ext_gpio_p263_touch_irq: ext-gpio-p263-touch-irq {
+		pinctrl_ext_gpio_ads7846_touch_irq_fairy: ext-gpio-ads7846-touch-irq-fairy {
 			fsl,pins = <
 				MX6QDL_PAD_GPIO_4__GPIO1_IO04     0x4001b0b5 /* GPIO1_04 EDM pin 263 touch irq */
 			>;
