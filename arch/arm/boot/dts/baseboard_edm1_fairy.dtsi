@@ -18,7 +18,7 @@
 		compatible = "gpio-edm";
 /* custom GPIO may be from GPIO expander on CPU module */
 #ifdef EDM1_EXT_GPIO_IOMUX_FAIRY
-		pinctrl-0 = <&EDM1_EXT_GPIO_IOMUX_FAIRY>;
+		pinctrl-0 = <EDM1_EXT_GPIO_IOMUX_FAIRY>;
 #endif
 		gpio_p256 {
 			label = "GPIO_P256";
@@ -38,11 +38,6 @@
 		gpio_p260 {
 			label = "GPIO_P260";
 			gpios = <&EDM1_EXT_GPIO_P260 1>;
-			dir   = "in";
-		};
-		gpio_p261 {
-			label = "GPIO_P261";
-			gpios = <&EDM1_EXT_GPIO_P261 1>;
 			dir   = "in";
 		};
 		gpio_p262 {
@@ -80,6 +75,20 @@
 		clocks = <&EDM1_AUD_CLK_SRC>;
 		VDDA-supply = <&reg_2p5v>;
 		VDDIO-supply = <&reg_3p3v>;
+	};
+
+	polytouch: edt-ft5x06@38 {
+		compatible = "edt,edt-ft5x06";
+		reg = <0x38>;
+		pinctrl-names = "default";
+#ifdef EDM1_EXT_FT5X06_IOMUX_FAIRY
+		pinctrl-0 = <EDM1_EXT_FT5X06_IOMUX_FAIRY>; /* Touch IRQ and Touch Reset */
+#endif
+		interrupt-parent = <&GPIO_BANK(EDM1_EXT_GPIO_P261)>; /* GPIO_P261 J1B-261 */
+		interrupts = <GPIO_NO(EDM1_EXT_GPIO_P261) 0>;
+		reset-gpios = <&EDM1_EXT_GPIO_P264 GPIO_ACTIVE_LOW>; /* GPIO_P264 J1B-264 */
+		touchscreen-size-x = <800>;
+		touchscreen-size-y = <480>;
 	};
 };
 
@@ -153,7 +162,7 @@
 		reg = <0>;  /* CS0 */
 		compatible = "ti,ads7846";
 #ifdef EDM1_EXT_ADS7846_IOMUX_FAIRY
-		pinctrl-0 = <&EDM1_EXT_ADS7846_IOMUX_FAIRY>;
+		pinctrl-0 = <EDM1_EXT_ADS7846_IOMUX_FAIRY>;
 #endif
 		interrupt-parent = <&GPIO_BANK(EDM1_EXT_GPIO_P263)>; /* GPIO_P263 J1B-263 */
 		interrupts = <GPIO_NO(EDM1_EXT_GPIO_P263) 0>;

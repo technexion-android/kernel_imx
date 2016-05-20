@@ -25,7 +25,7 @@
 #define EDM1_EXT_GPIO_P263 gpio1 4
 #define EDM1_EXT_GPIO_P264 gpio7 8
 
-#define EDM1_EXT_GPIO_IOMUX_FAIRY pinctrl_ext_gpio_fairy
+#define EDM1_EXT_GPIO_IOMUX_FAIRY &pinctrl_ext_gpio_fairy
 
 /* audio codec */
 #define EDM1_AUD_I2S_CHANNEL ssi1
@@ -34,8 +34,10 @@
 #define EDM1_AUD_CLK_SRC clks 201
 
 /* ADS7846 Touch */
-#define EDM1_EXT_ADS7846_IOMUX_FAIRY pinctrl_ext_gpio_ads7846_touch_irq_fairy
+#define EDM1_EXT_ADS7846_IOMUX_FAIRY &pinctrl_ext_gpio_ads7846_touch_irq_fairy
 
+/* FT5606 Touch */
+#define EDM1_EXT_FT5X06_IOMUX &pinctrl_ext_gpio_ft5606_touch_irq_fairy &pinctrl_ext_gpio_ft5606_touch_reset_fairy
 
 / {
 	aliases {
@@ -404,15 +406,25 @@
 				MX6QDL_PAD_EIM_D27__GPIO3_IO27     0x4001b0b5 /* GPIO3_27 EDM pin 258 */
 				MX6QDL_PAD_EIM_D26__GPIO3_IO26     0x4001b0b5 /* GPIO3_26 EDM pin 259 */
 				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31    0x4001b0b5 /* GPIO6_31 EDM pin 260 */
-				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03  0x4001b0b5 /* GPIO6_03 EDM pin 261 */
 				MX6QDL_PAD_ENET_RX_ER__GPIO1_IO24  0x4001b0b5 /* GPIO1_24 EDM pin 262 */
-				MX6QDL_PAD_SD3_RST__GPIO7_IO08     0x4001b0b5 /* GPIO7_08 EDM pin 264 */
 			>;
 		};
 
 		pinctrl_ext_gpio_ads7846_touch_irq_fairy: ext-gpio-ads7846-touch-irq-fairy {
 			fsl,pins = <
 				MX6QDL_PAD_GPIO_4__GPIO1_IO04     0x4001b0b5 /* GPIO1_04 EDM pin 263 touch irq */
+			>;
+		};
+
+		pinctrl_ext_gpio_ft5606_touch_irq_fairy: ext-gpio-ft5606-touch-irq-fairy {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03  0x4001b0b5 /* GPIO6_03 EDM pin 261, touch irq */
+			>;
+		};
+
+		pinctrl_ext_gpio_ft5606_touch_reset_fairy: ext-gpio-ft5606-touch-reset-fairy {
+			fsl,pins = <
+				MX6QDL_PAD_SD3_RST__GPIO7_IO08     0x4001b0b5 /* GPIO7_08 EDM pin 264, touch reset */
 			>;
 		};
 
