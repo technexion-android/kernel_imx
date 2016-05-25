@@ -119,8 +119,7 @@
 			"CPU-Playback", "ASRC-Playback",
 			"ASRC-Capture", "CPU-Capture",
 			"CPU-Capture", "Capture";
-		mux-int-port = <1>;
-		mux-ext-port = <1>;
+		fsl,no-audmux = "true";
 		codec-master;
 	};
 
