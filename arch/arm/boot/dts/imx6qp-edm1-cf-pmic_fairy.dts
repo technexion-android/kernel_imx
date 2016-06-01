@@ -45,3 +45,11 @@
 	memory-region = <&memory>;
 	status = "okay";
 };
+
+&sata {
+	status = "okay";
+};
+
+&pcie {
+	status = "okay";
+};
