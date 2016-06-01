@@ -393,7 +393,7 @@
 				MX6QDL_PAD_GPIO_6__GPIO1_IO06		0x0b0b0		/* ov5640 mipi powerdown */
 				MX6QDL_PAD_GPIO_8__GPIO1_IO08		0x0b0b0		/* ov5640 mipi reset */
 				MX6QDL_PAD_GPIO_3__CCM_CLKO2		0x000b0		/* ov5640 mclk */
-				MX6QDL_PAD_EIM_D29__GPIO3_IO29   	0x80000000	/* RGMII PHY reset */
+				MX6QDL_PAD_EIM_D29__GPIO3_IO29   	0x1f0b1		/* RGMII PHY reset */
 				MX6QDL_PAD_ENET_RXD0__XTALOSC_REF_CLK_32K	0x000b0	/* wifi LPO 32K Hz clock */
 			>;
 		};
@@ -659,6 +659,7 @@
 &fec {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet &pinctrl_enet_3v3>;
+	phy-reset-gpios = <&gpio3 29 GPIO_ACTIVE_LOW>;
 	pinctrl-assert-gpios = <&gpio7 13 GPIO_ACTIVE_LOW>; /* enet 3v3 power control - active low */
 	phy-mode = "rgmii";
 	status = "okay";
