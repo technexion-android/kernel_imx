@@ -287,6 +287,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-wandboard-revb1.dtb \
 	imx6dl-edm1-cf_fairy.dtb \
 	imx6dl-edm1-cf-pmic_fairy.dtb \
+	imx6dl-edm1-cf_tc0700.dtb \
+	imx6dl-edm1-cf-pmic_tc0700.dtb \
 	imx6dl-pico.dtb \
 	imx6dl-tek3.dtb \
 	imx6dl-tek5.dtb \
@@ -321,6 +323,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6qp-sabresd-hdcp.dtb \
 	imx6qp-sabresd-ldo.dtb \
 	imx6qp-edm1-cf-pmic_fairy.dtb \
+	imx6qp-edm1-cf-pmic_tc0700.dtb \
 	imx6q-sabrelite.dtb \
 	imx6q-sabresd.dtb \
 	imx6q-sabresd-btwifi.dtb \
@@ -339,6 +342,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-wandboard-revb1.dtb \
 	imx6q-edm1-cf_fairy.dtb \
 	imx6q-edm1-cf-pmic_fairy.dtb \
+	imx6q-edm1-cf_tc0700.dtb \
+	imx6q-edm1-cf-pmic_tc0700.dtb \
 	imx6q-pico.dtb \
 	imx6q-tek3.dtb \
 	imx6q-tek5.dtb
