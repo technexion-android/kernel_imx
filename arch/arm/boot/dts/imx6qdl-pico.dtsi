@@ -13,6 +13,26 @@
 
 #include <dt-bindings/gpio/gpio.h>
 
+/* external GPIO */
+#define PICO_EXT_GPIO_EXP0 pca9554 0
+#define PICO_EXT_GPIO_EXP1 pca9554 1
+#define PICO_EXT_GPIO_EXP2 pca9554 2
+#define PICO_EXT_GPIO_EXP3 pca9554 3
+#define PICO_EXT_GPIO_EXP4 pca9554 4
+#define PICO_EXT_GPIO_EXP5 pca9554 5
+#define PICO_EXT_GPIO_EXP6 gpio5 30
+#define PICO_EXT_GPIO_EXP7 gpio5 27
+
+
+/* audio codec */
+#define PICO_AUD_I2S_CHANNEL ssi1
+#define PICO_AUD_MUX_INT 1
+#define PICO_AUD_MUX_EXT 3
+#define PICO_AUD_CLK_SRC clks 201
+
+/* ADS7846 Touch */
+#define PICO_EXT_ADS7846_IOMUX &pinctrl_ext_gpio_ads7846_touch_irq_dwarf
+
 / {
 	aliases {
 		mxcfb0 = &mxcfb1;
@@ -96,50 +116,6 @@
 	gpio-edm {
 		compatible = "gpio-edm";
 
-		gpio_exp0 {
-			label = "GPIO_EXP0";
-			gpios = <&pca9554 0 0>;
-			dir   = "in";
-		};
-		gpio_exp1 {
-			label = "GPIO_EXP1";
-			gpios = <&pca9554 1 0>;
-			dir   = "in";
-		};
-		gpio_exp2 {
-			label = "GPIO_EXP2";
-			gpios = <&pca9554 2 0>;
-			dir   = "in";
-		};
-		gpio_exp3 {
-			label = "GPIO_EXP3";
-			gpios = <&pca9554 3 0>;
-			dir   = "in";
-		};
-		gpio_exp4 {
-			label = "GPIO_EXP4";
-			gpios = <&pca9554 4 0>;
-			dir   = "in";
-		};
-		gpio_exp5 {
-			label = "GPIO_EXP5";
-			gpios = <&pca9554 5 0>;
-			dir   = "in";
-		};
-	};
-
-	sound {
-		compatible = "fsl,imx6-pico-sgtl5000",
-			     "fsl,imx-audio-sgtl5000";
-		model = "audio-sgtl5000";
-		ssi-controller = <&ssi1>;
-		audio-codec = <&codec>;
-		audio-routing =
-			"MIC_IN", "Mic Jack",
-			"Mic Jack", "Mic Bias",
-			"Headphone Jack", "HP_OUT";
-		mux-int-port = <1>;
-		mux-ext-port = <3>;
 	};
 
 	sound-hdmi {
@@ -241,29 +217,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c1>;
 	status = "okay";
-
-	codec: sgtl5000@0a {
-		compatible = "fsl,sgtl5000";
-		reg = <0x0a>;
-		clocks = <&clks 201>;
-		VDDA-supply = <&reg_2p5v>;
-		VDDIO-supply = <&reg_3p3v>;
-	};
-
-	fxas2100x@21 {
-		compatible = "fsl,fxas2100x";
-		reg = <0x21>;
-	};
-
-	fxos8700@1e {
-		compatible = "fsl,fxos8700";
-		reg = <0x1e>;
-	};
-
-	mpl3115@60 {
-		compatible = "fsl,mpl3115";
-		reg = <0x60>;
-	};
 };
 
 &i2c2 {
@@ -275,22 +228,6 @@
 	hdmi: edid@50 {
 		compatible = "fsl,imx6-hdmi-i2c";
 		reg = <0x50>;
-	};
-
-	ov5640_mipi: ov5640_mipi@3c {
-		compatible = "ovti,ov564x_mipi";
-		reg = <0x3c>;
-		clocks = <&clks 200>;
-		clock-names = "csi_mclk";
-		DOVDD-supply = <&reg_1p8v>;
-		AVDD-supply = <&reg_2p5v>;
-		DVDD-supply = <&reg_1p8v>;
-		pwn-gpios = <&gpio1 6 1>;
-		rst-gpios = <&gpio1 8 0>;
-		ipu_id = <0>;
-		csi_id = <0>;
-		mclk = <24000000>;
-		mclk_source = <0>;
 	};
 
 	fusion7: fusion7@10 {
@@ -305,14 +242,6 @@
 		touch_ymax=<899>;
 		flip_x=<0>;
 		flip_y=<0>;
-	};
-
-	pca9554: pca9554@25 {
-		compatible = "nxp,pca9554";
-		gpio-controller;
-		#gpio-cells = <2>;
-		#interrupt-cells = <2>;
-		reg = <0x25>;
 	};
 };
 
@@ -342,8 +271,13 @@
 				MX6QDL_PAD_GPIO_3__CCM_CLKO2		0x000b0		/* ov5640 mclk */
 				MX6QDL_PAD_EIM_D29__GPIO3_IO29   	0x80000000
 				MX6QDL_PAD_ENET_RXD0__XTALOSC_REF_CLK_32K	0x000b0	/* wifi LPO 32K Hz clock */
+					>;
+		};
+
+
+		pinctrl_ext_gpio_ads7846_touch_irq_dwarf: ext-gpio-ads7846-touch-irq-dwarf {
+			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x80000000	/* resistive touch irq for Dwarf baseboard */
-				MX6QDL_PAD_CSI0_DAT15__GPIO6_IO01	0x80000000	/* resistive touch irq for Hobbit baseboard */
 			>;
 		};
 
@@ -738,30 +672,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi2>;
 	status = "okay";
-
-	ads7846@0 {
-		reg = <0>;  /* CS0 */
-		compatible = "ti,ads7846";
-		pinctrl-names = "default";
-		interrupt-parent = <&gpio5>;
-		interrupts = <27 0>;
-		spi-max-frequency = <1000000>;
-		pendown-gpio = <&gpio5 27 0>;
-		vcc-supply = <&reg_3p3v>;
-
-		ti,x-min = /bits/ 16 <0>;
-		ti,x-max = /bits/ 16 <4095>;
-		ti,y-min = /bits/ 16 <0>;
-		ti,y-max = /bits/ 16 <4095>;
-		ti,pressure-max = /bits/ 16 <1024>;
-		ti,x-plate-ohms = /bits/ 16 <90>;
-		ti,y-plate-ohms = /bits/ 16 <90>;
-		ti,debounce-max = /bits/ 16 <70>;
-		ti,debounce-tol = /bits/ 16 <3>;
-		ti,debounce-rep = /bits/ 16 <2>;
-		ti,settle-delay-usec = /bits/ 16 <150>;
-		linux,wakeup;
-    };
 };
 
 &can1 {

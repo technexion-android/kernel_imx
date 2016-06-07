@@ -15,9 +15,9 @@
 #include <dt-bindings/interrupt-controller/irq.h>
 #include "imx6q.dtsi"
 #include "imx6qdl-pico.dtsi"
-
+#include "baseboard_pico_dwarf.dtsi"
 / {
-	model = "Technexion PICO-IMX6 Quad board";
+	model = "Technexion PICO-IMX6 Quad with dwarf board";
 	compatible = "fsl,pico-cf-imx6q", "fsl,imx6q";
 };
 
@@ -153,3 +153,4 @@
 		};
 	};
 };
+
