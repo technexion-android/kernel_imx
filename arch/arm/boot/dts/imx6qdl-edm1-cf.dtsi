@@ -37,7 +37,7 @@
 #define EDM1_EXT_ADS7846_IOMUX_FAIRY &pinctrl_ext_gpio_ads7846_touch_irq_fairy
 
 /* FT5606 Touch */
-#define EDM1_EXT_FT5X06_IOMUX &pinctrl_ext_gpio_ft5606_touch_irq_fairy &pinctrl_ext_gpio_ft5606_touch_reset_fairy
+#define EDM1_EXT_FT5X06_IOMUX_FAIRY &pinctrl_ext_gpio_ft5606_touch_irq_fairy &pinctrl_ext_gpio_ft5606_touch_reset_fairy
 
 / {
 	aliases {
