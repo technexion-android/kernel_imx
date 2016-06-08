@@ -33,6 +33,10 @@
 /* ADS7846 Touch */
 #define PICO_EXT_ADS7846_IOMUX &pinctrl_ext_gpio_ads7846_touch_irq_dwarf
 
+/* FT5606 Touch */
+#define EDM1_EXT_FT5X06_IOMUX_DWARF &pinctrl_ext_gpio_ft5606_touch_irq_dwarf
+
+
 / {
 	aliases {
 		mxcfb0 = &mxcfb1;
@@ -278,6 +282,12 @@
 		pinctrl_ext_gpio_ads7846_touch_irq_dwarf: ext-gpio-ads7846-touch-irq-dwarf {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x80000000	/* resistive touch irq for Dwarf baseboard */
+			>;
+		};
+
+		pinctrl_ext_gpio_ft5606_touch_irq_dwarf: ext-gpio-ft5606-touch-irq-dwarf {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03  0x4001b0b5 /* capacitive touch irq for Dwarf baseboard */
 			>;
 		};
 
