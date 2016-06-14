@@ -287,7 +287,10 @@
 
 		pinctrl_ext_gpio_ft5606_touch_irq_dwarf: ext-gpio-ft5606-touch-irq-dwarf {
 			fsl,pins = <
-				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03  0x4001b0b5 /* capacitive touch irq for Dwarf baseboard */
+				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30  0x4001b0b5 /* capacitive touch irq for dwarf baseboard */
+			>;
+		};
+
 			>;
 		};
 
