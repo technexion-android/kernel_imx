@@ -23,6 +23,17 @@
 #define PICO_EXT_GPIO_EXP6 gpio5 30
 #define PICO_EXT_GPIO_EXP7 gpio5 27
 
+#define PICO_EXT_GPIO_P24 gpio5 19
+#define PICO_EXT_GPIO_P25 gpio5 18
+#define PICO_EXT_GPIO_P26 gpio5 21
+#define PICO_EXT_GPIO_P28 gpio5 20
+#define PICO_EXT_GPIO_P30 gpio5 26
+#define PICO_EXT_GPIO_P32 gpio5 27
+#define PICO_EXT_GPIO_P34 gpio6 0
+#define PICO_EXT_GPIO_P42 gpio5 30
+#define PICO_EXT_GPIO_P48 gpio6 1
+
+
 
 /* audio codec */
 #define PICO_AUD_I2S_CHANNEL ssi1
@@ -30,11 +41,15 @@
 #define PICO_AUD_MUX_EXT 3
 #define PICO_AUD_CLK_SRC clks 201
 
+#define PICO_EXT_GPIO_IOMUX_HOBBIT &pinctrl_ext_gpio_hobbit
+
 /* ADS7846 Touch */
-#define PICO_EXT_ADS7846_IOMUX &pinctrl_ext_gpio_ads7846_touch_irq_dwarf
+#define PICO_EXT_ADS7846_IOMUX_DWARF &pinctrl_ext_gpio_ads7846_touch_irq_dwarf
+#define PICO_EXT_ADS7846_IOMUX_HOBBIT &pinctrl_ext_gpio_ads7846_touch_irq_hobbit
 
 /* FT5606 Touch */
-#define EDM1_EXT_FT5X06_IOMUX_DWARF &pinctrl_ext_gpio_ft5606_touch_irq_dwarf
+#define PICO_EXT_FT5X06_IOMUX_DWARF &pinctrl_ext_gpio_ft5606_touch_irq_dwarf
+#define PICO_EXT_FT5X06_IOMUX_HOBBIT &pinctrl_ext_gpio_ft5606_touch_irq_hobbit &pinctrl_ext_gpio_ft5606_touch_reset_hobiit
 
 
 / {
@@ -279,9 +294,25 @@
 		};
 
 
+		pinctrl_ext_gpio_hobbit: ext-gpio-grp-hobbit {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_MCLK__GPIO5_IO19	0x4001b0b5 /* GPIO5_19 EDM pin 24 */
+				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x4001b0b5 /* GPIO5_21 EDM pin 26 */
+				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x4001b0b5 /* GPIO5_20 EDM pin 28 */
+				MX6QDL_PAD_CSI0_DAT8__GPIO5_IO26	0x4001b0b5 /* GPIO5_26 EDM pin 30 */
+				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00	0x4001b0b5 /* GPIO6_00 EDM pin 34 */
+			>;
+		};
+
 		pinctrl_ext_gpio_ads7846_touch_irq_dwarf: ext-gpio-ads7846-touch-irq-dwarf {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x80000000	/* resistive touch irq for Dwarf baseboard */
+		>;
+		};
+
+		pinctrl_ext_gpio_ads7846_touch_irq_hobbit: ext-gpio-ads7846-touch-irq-hobbit {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT15__GPIO6_IO01	0x80000000	/* resistive touch irq for hobbit baseboard */
 			>;
 		};
 
@@ -291,6 +322,15 @@
 			>;
 		};
 
+		pinctrl_ext_gpio_ft5606_touch_irq_hobbit: ext-gpio-ft5606-touch-irq-hobbit {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_PIXCLK__GPIO5_IO18  0x4001b0b5 /* capacitive touch irq for hobbit baseboard */
+			>;
+		};
+
+		pinctrl_ext_gpio_ft5606_touch_reset_hobiit: ext-gpio-ft5606-touch-reset-hobbit {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27  0x4001b0b5 /* capacitive touch reset for hobbit baseboard */
 			>;
 		};
 
