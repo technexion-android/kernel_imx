@@ -31,6 +31,7 @@
 #define PICO_EXT_GPIO_P32 gpio5 27
 #define PICO_EXT_GPIO_P34 gpio6 0
 #define PICO_EXT_GPIO_P42 gpio5 30
+#define PICO_EXT_GPIO_P44 gpio5 31
 #define PICO_EXT_GPIO_P48 gpio6 1
 
 
@@ -290,17 +291,17 @@
 				MX6QDL_PAD_GPIO_3__CCM_CLKO2		0x000b0		/* ov5640 mclk */
 				MX6QDL_PAD_EIM_D29__GPIO3_IO29   	0x80000000
 				MX6QDL_PAD_ENET_RXD0__XTALOSC_REF_CLK_32K	0x000b0	/* wifi LPO 32K Hz clock */
-					>;
+			>;
 		};
 
 
 		pinctrl_ext_gpio_hobbit: ext-gpio-grp-hobbit {
 			fsl,pins = <
-				MX6QDL_PAD_CSI0_MCLK__GPIO5_IO19	0x4001b0b5 /* GPIO5_19 EDM pin 24 */
-				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x4001b0b5 /* GPIO5_21 EDM pin 26 */
-				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x4001b0b5 /* GPIO5_20 EDM pin 28 */
-				MX6QDL_PAD_CSI0_DAT8__GPIO5_IO26	0x4001b0b5 /* GPIO5_26 EDM pin 30 */
-				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00	0x4001b0b5 /* GPIO6_00 EDM pin 34 */
+				MX6QDL_PAD_CSI0_MCLK__GPIO5_IO19	0x4001b0b5 /* GPIO5_19 pico pin 24 */
+				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x4001b0b5 /* GPIO5_21 pico pin 26 */
+				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x4001b0b5 /* GPIO5_20 pico pin 28 */
+				MX6QDL_PAD_CSI0_DAT8__GPIO5_IO26	0x4001b0b5 /* GPIO5_26 pico pin 30 */
+				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00	0x4001b0b5 /* GPIO6_00 pico pin 34 */
 			>;
 		};
 
@@ -464,6 +465,18 @@
 				MX6QDL_PAD_DISP0_DAT21__IPU1_DISP0_DATA21  0x10
 				MX6QDL_PAD_DISP0_DAT22__IPU1_DISP0_DATA22  0x10
 				MX6QDL_PAD_DISP0_DAT23__IPU1_DISP0_DATA23  0x10
+			>;
+		};
+
+		pinctrl_pwm1: pwm1grp {
+			fsl,pins = <
+				MX6QDL_PAD_GPIO_9__PWM1_OUT 0x1b0b1
+			>;
+		};
+
+		pinctrl_pwm2: pwm2grp {
+			fsl,pins = <
+				MX6QDL_PAD_GPIO_1__PWM2_OUT 0x1b0b1
 			>;
 		};
 
@@ -635,6 +648,18 @@
 &pcie {
 	pinctrl-0 = <&pinctrl_pcie_reset>;
 	reset-gpio = <&gpio5 21 0>;
+	status = "okay";
+};
+
+&pwm1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm1>;
+	status = "okay";
+};
+
+&pwm2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm2>;
 	status = "okay";
 };
 
