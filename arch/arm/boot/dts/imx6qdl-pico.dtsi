@@ -335,6 +335,20 @@
 			>;
 		};
 
+		pinctrl_ext_gpio_nymph: ext-gpio-grp-nymph {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_MCLK__GPIO5_IO19	0x4001b0b5 /* GPIO5_19 pico pin 24 */
+				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x4001b0b5 /* GPIO5_21 pico pin 26 */
+				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x4001b0b5 /* GPIO5_20 pico pin 28 */
+				MX6QDL_PAD_CSI0_DAT8__GPIO5_IO26	0x4001b0b5 /* GPIO5_26 pico pin 30 */
+				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x4001b0b5 /* GPIO5_27 pico pin xx */
+				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x4001b0b5 /* GPIO5_30 pico pin xx */
+				MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x4001b0b5 /* GPIO5_31 pico pin 34 */
+				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00	0x4001b0b5 /* GPIO6_00 pico pin xx */
+				MX6QDL_PAD_CSI0_DAT15__GPIO6_IO01	0x4001b0b5 /* GPIO6_01 pico pin xx */
+			>;
+		};
+
 		pinctrl_gpio: gpiogrp {
 			fsl,pins = <
 				MX6QDL_PAD_EIM_DA12__GPIO3_IO12   0x4001b0b5 /* GPIO3_12 EDM pin 255 */
