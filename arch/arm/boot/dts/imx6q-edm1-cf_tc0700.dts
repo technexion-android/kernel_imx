@@ -27,7 +27,7 @@
 
 &ldb {
 	lvds-channel@0 {
-		crtc = "ipu1-di1";
+		crtc = "ipu2-di0";
 	};
 };
 
