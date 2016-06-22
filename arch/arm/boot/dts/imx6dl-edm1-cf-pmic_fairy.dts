@@ -28,6 +28,14 @@
 	};
 };
 
+&mxcfb1 {
+	status = "okay";
+};
+
+&mxcfb2 {
+	status = "okay";
+};
+
 #if 0
 &mxcfb3 {
 	status = "okay";
