@@ -18,7 +18,7 @@
 #include "baseboard_edm1_fairy.dtsi"
 
 / {
-	model = "Technexion EDM1-CF-IMX6 DualLite/Solo with PMIC and Fairy baseboard";
+	model = "Technexion EDM1-CF-IMX6 DualLite/Solo with PMIC and fairy baseboard";
 	compatible = "fsl,edm1-cf-imx6dl", "fsl,imx6dl";
 };
 

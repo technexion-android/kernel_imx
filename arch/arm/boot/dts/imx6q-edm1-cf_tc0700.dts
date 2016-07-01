@@ -21,7 +21,7 @@
 #include "baseboard_edm1_tc0700.dtsi"
 
 / {
-	model = "Technexion EDM1-CF-IMX6 Quad board";
+	model = "Technexion EDM1-CF-IMX6 Quad/Dual and tc0700 baseboard";
 	compatible = "fsl,edm1-cf-imx6q", "fsl,imx6q";
 };
 

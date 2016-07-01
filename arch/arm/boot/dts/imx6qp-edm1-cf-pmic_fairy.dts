@@ -17,7 +17,7 @@
 #include "imx6qp.dtsi"
 
 / {
-	model = "Technexion EDM1-CF-IMX6 Quad Plus with PMIC and Fairy baseboard";
+	model = "Technexion EDM1-CF-IMX6 Quad Plus with PMIC and fairy baseboard";
 };
 
 &pre1 {

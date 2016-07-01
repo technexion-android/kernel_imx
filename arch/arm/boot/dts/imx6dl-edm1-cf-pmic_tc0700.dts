@@ -18,7 +18,7 @@
 #include "baseboard_edm1_tc0700.dtsi"
 
 / {
-	model = "Technexion EDM1-CF-IMX6 DualLite/Solo with PMIC and tc0700";
+	model = "Technexion EDM1-CF-IMX6 DualLite/Solo with PMIC and tc0700 baseboard";
 	compatible = "fsl,edm1-cf-imx6dl", "fsl,imx6dl";
 };
 
