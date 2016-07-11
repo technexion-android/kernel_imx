@@ -57,13 +57,6 @@
 		wlreg_on-supply = <&wlreg_on>;
 	};
 
-	bt_rfkill {
-		compatible = "net,rfkill-bcm43xx";
-		name = "bt_rfkill";
-		type = <2>;     /* bluetooth */
-		bt_rfkill_reset-gpios = <&gpio5 21 0>;
-	};
-
 	memory: memory {
 		reg = <0x10000000 0x40000000>;
 	};
@@ -121,11 +114,24 @@
 	gpio-edm {
 		compatible = "gpio-edm";
 
+		wl_reset {
+			label = "wl_reset";
+			gpios = <&gpio6 0 1>;
+			dir   = "out";
+		};
+
 		wl_on {
 			label = "wl_on";
 			gpios = <&gpio5 31 1>;
 			dir   = "out";
 		};
+
+		bluetooth-reg-on {
+			label = "bluetooth-reg-on";
+			gpios = <&gpio5 21 1>;
+			dir   = "out";
+		};
+
 
 		bluetooth-wake {
 			label = "bluetooth-wake";

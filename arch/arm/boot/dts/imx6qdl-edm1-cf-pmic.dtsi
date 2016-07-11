@@ -57,13 +57,11 @@
 		wlreg_on-supply = <&wlreg_on>;
 	};
 
-	bt_rfkill {
-		compatible = "net,rfkill-bcm43xx";
-		pinctrl-0 = <&pinctrl_bt_ctrl>;
-		name = "bt_rfkill";
-		type = <2>;     /* bluetooth */
-		bt_rfkill_reset-gpios = <&gpio5 30 0>;
-	};
+	/*bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		bt-power-gpios = <&gpio5 30 0>;
+		status ="okay";
+	};*/
 
 	memory: memory {
 		reg = <0x10000000 0x40000000>;
@@ -127,6 +125,12 @@
 			gpios = <&gpio6 0 1>;
 			dir   = "out";
 		};
+		bt_rst {
+			label = "bt_rst";
+			gpios = <&gpio5 30 1>;
+			dir   = "out";
+		};
+
 	};
 
 	sound-spdif {
