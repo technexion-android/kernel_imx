@@ -117,12 +117,6 @@
 		st,max-limit-z = <750>;
 	};
 
-	isl29023@44 {
-		compatible = "fsl,isl29023";
-		reg = <0x44>;
-		rext = <499>;
-	};
-
 	ds1337: rtc@68 {
 		compatible = "mxim,ds1337";
 		reg = <0x68>;
