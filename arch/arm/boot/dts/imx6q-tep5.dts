@@ -49,6 +49,7 @@
 	status = "okay";
 };
 
+#if 0
 &mxcfb3 {
 	status = "okay";
 };
@@ -56,6 +57,7 @@
 &mxcfb4 {
 	status = "okay";
 };
+#endif
 
 &sata {
 	status = "okay";
