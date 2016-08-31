@@ -141,10 +141,6 @@
 	status = "okay";
 };
 
-&spdif {
-	status = "okay";
-};
-
 &ecspi2 {
 	status = "okay";
 
