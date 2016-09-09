@@ -26,6 +26,7 @@
 #define EDM1_EXT_GPIO_P264 gpio7 8
 
 #define EDM1_EXT_GPIO_IOMUX_FAIRY &pinctrl_ext_gpio_fairy
+#define EDM1_EXT_GPIO_IOMUX_TC0700 &pinctrl_ext_gpio_tc0700
 
 /* audio codec */
 #define EDM1_AUD_I2S_CHANNEL ssi1
@@ -346,6 +347,15 @@
 			>;
 		};
 
+		pinctrl_ext_gpio_tc0700: ext-gpio-grp-tc0700 {
+			fsl,pins = <
+				MX6QDL_PAD_EIM_D26__GPIO3_IO26     0x4001b0b5 /* GPIO3_26 EDM pin 259 */
+				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31    0x4001b0b5 /* GPIO6_31 EDM pin 260 */
+				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03  0x4001b0b5 /* GPIO6_03 EDM pin 261 */
+				MX6QDL_PAD_ENET_RX_ER__GPIO1_IO24  0x4001b0b5 /* GPIO1_24 EDM pin 262 */
+			>;
+		};
+
 		pinctrl_ext_gpio_ads7846_touch_irq_fairy: ext-gpio-ads7846-touch-irq-fairy {
 			fsl,pins = <
 				MX6QDL_PAD_GPIO_19__GPIO4_IO05     0x4001b0b5 /* GPIO1_04 EDM pin 263 touch irq */
@@ -575,6 +585,10 @@
 				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17059
 				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17059
 				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
+				MX6QDL_PAD_SD3_DAT4__SD3_DATA4		0x17059
+				MX6QDL_PAD_SD3_DAT5__SD3_DATA5		0x17059
+				MX6QDL_PAD_SD3_DAT6__SD3_DATA6		0x17059
+				MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17059
 			>;
 		};
 	};
@@ -745,6 +759,7 @@
 &usdhc3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc3>;
+	bus-width = <8>;
 	cd-gpios = <&gpio3 9 GPIO_ACTIVE_LOW>;
 	status = "okay";
 };
