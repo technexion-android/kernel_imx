@@ -53,15 +53,19 @@
 
 	bcmdhd_wlan_0: bcmdhd_wlan@0 {
 		compatible = "android,bcmdhd_wlan";
+		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_wifi_ctrl>;
 		wlreg_on-supply = <&wlreg_on>;
 	};
 
-	/*bt_rfkill {
-		compatible = "fsl,mxc_bt_rfkill";
-		bt-power-gpios = <&gpio5 30 0>;
-		status ="okay";
-	};*/
+	bt_rfkill {
+		compatible = "net,rfkill-bcm43xx";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
+		name = "bt_rfkill";
+		type = <2>;     /* bluetooth */
+		bt_rfkill_reset-gpios = <&gpio5 30 0>;
+	};
 
 	memory: memory {
 		reg = <0x10000000 0x40000000>;
@@ -731,6 +735,7 @@
 };
 
 &pcie {
+	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie_reset>;
 	reset-gpio = <&gpio3 31 0>; /* PCIE_RST J1A-119 */
 	status = "okay";

@@ -18,6 +18,7 @@
 		compatible = "gpio-edm";
 /* custom GPIO may be from GPIO expander on CPU module */
 #ifdef PICO_EXT_GPIO_IOMUX_HOBBIT
+		pinctrl-names = "default";
 		pinctrl-0 = <PICO_EXT_GPIO_IOMUX_HOBBIT>;
 #endif
 		/* RTC interrupt */

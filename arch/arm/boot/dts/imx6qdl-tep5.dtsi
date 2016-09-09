@@ -698,6 +698,7 @@
 };
 
 &pcie {
+	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie_reset>;
 	reset-gpio = <&gpio3 31 0>;
 	status = "okay";

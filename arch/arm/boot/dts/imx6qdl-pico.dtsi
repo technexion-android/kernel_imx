@@ -67,6 +67,7 @@
 
 	bcmdhd_wlan_0: bcmdhd_wlan@0 {
 		compatible = "android,bcmdhd_wlan";
+		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_wifi_ctrl>;
 		wlreg_on-supply = <&wlreg_on>;
 	};
@@ -681,6 +682,7 @@
 };
 
 &pcie {
+	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie_reset>;
 	reset-gpio = <&gpio5 21 0>;
 	status = "okay";
