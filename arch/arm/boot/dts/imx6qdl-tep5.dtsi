@@ -224,9 +224,16 @@
 		default-brightness-level = <7>;
 	};
 
-	backlight_lvds {
+	backlight_lvds1 {
 		compatible = "pwm-backlight";
 		pwms = <&pwm3 0 5000000>;
+		brightness-levels = <0 4 8 16 32 64 128 255>;
+		default-brightness-level = <7>;
+	};
+
+	backlight_lvds2 {
+		compatible = "pwm-backlight";
+		pwms = <&pwm4 0 5000000>;
 		brightness-levels = <0 4 8 16 32 64 128 255>;
 		default-brightness-level = <7>;
 	};
@@ -409,8 +416,6 @@
 				MX6QDL_PAD_GPIO_8__GPIO1_IO08		0x80000000	/* lvds1 power pin */
 				MX6QDL_PAD_ENET_TXD1__GPIO1_IO29	0x80000000	/* lvds2 power pin */
 				MX6QDL_PAD_GPIO_1__GPIO1_IO01		0x1b0b9		/* IO expansion board - GPIO_P233 - 1   */
-				MX6QDL_PAD_SD4_DAT1__GPIO2_IO09		0x1b0b9		/* IO expansion board - GPIO_P235 - 41  */
-				MX6QDL_PAD_SD4_DAT2__GPIO2_IO10		0x80000000	/* IO expansion board - GPIO_P237 - 42  */
 				MX6QDL_PAD_CSI0_DAT15__GPIO6_IO01	0x80000000	/* IO expansion board - GPIO_P239 - 161 */
 				MX6QDL_PAD_CSI0_DAT16__GPIO6_IO02	0x1b0b9		/* IO expansion board - GPIO_P241 - 162 */
 				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03	0x1b0b9		/* IO expansion board - GPIO_P243 - 163 */
@@ -540,15 +545,15 @@
 			>;
 		};
 
-/*		pinctrl_pwm1: pwm1grp {
-			fsl,pins = <
-				MX6QDL_PAD_SD1_DAT3__PWM1_OUT 0x1b0b1
-			>;
-		};*/
-
 		pinctrl_pwm3: pwm3grp {
 			fsl,pins = <
 				MX6QDL_PAD_SD4_DAT1__PWM3_OUT 0x1b0b1
+			>;
+		};
+
+		pinctrl_pwm4: pwm4grp {
+			fsl,pins = <
+				MX6QDL_PAD_SD4_DAT2__PWM4_OUT 0x1b0b1
 			>;
 		};
 
@@ -659,7 +664,7 @@
 
 		display-timings {
 			native-mode = <&timing0>;
-			timing0: hj070na {
+			timing0: hj070na0 {
 				clock-frequency = <71100000>;
 				hactive = <1280>;
 				vactive = <800>;
@@ -671,27 +676,26 @@
 				vsync-len = <10>;
 			};
 		};
-
 	};
 
 	lvds-channel@1 {
 		fsl,data-mapping = "spwg";
-		fsl,data-width = <24>;
+		fsl,data-width = <18>;
 		primary;
 		status = "okay";
 
 		display-timings {
 			native-mode = <&timing1>;
-			timing1: hj070na {
-				clock-frequency = <51000000>;
-				hactive = <1024>;
-				vactive = <600>;
-				hback-porch = <90>;
-				hfront-porch = <120>;
-				vback-porch = <1>;
-				vfront-porch = <1>;
-				hsync-len = <100>;
-				vsync-len = <33>;
+			timing1: hj070na1 {
+				clock-frequency = <71100000>;
+				hactive = <1280>;
+				vactive = <800>;
+				hback-porch = <40>;
+				hfront-porch = <40>;
+				vback-porch = <10>;
+				vfront-porch = <3>;
+				hsync-len = <80>;
+				vsync-len = <10>;
 			};
 		};
 	};
@@ -704,17 +708,17 @@
 	status = "okay";
 };
 
-/*&pwm1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pwm1>;
-	status = "okay";
-};*/
-
-/*&pwm3 {
+&pwm3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pwm3>;
 	status = "okay";
-};*/
+};
+
+&pwm4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm4>;
+	status = "okay";
+};
 
 &ssi1 {
 	status = "okay";
