@@ -21,12 +21,6 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <PICO_EXT_GPIO_IOMUX_HOBBIT>;
 #endif
-		/* RTC interrupt */
-		gpio_p24 {
-			label = "GPIO_P24";
-			gpios = <&PICO_EXT_GPIO_P24 1>;
-			dir   = "in";
-		};
 
 		/* Mikrobus */
 		gpio_p25 {
@@ -35,32 +29,25 @@
 			dir   = "in";
 		};
 
-		/* PCIe reset*/
-		gpio_p26 {
-			label = "GPIO_P26";
-			gpios = <&PICO_EXT_GPIO_P26 0>;
-			dir   = "out";
-		};
-
 		/* GPIO connector, 4 GPIOs */
 		gpio_p28 {
 			label = "GPIO_P28";
-			gpios = <&PICO_EXT_GPIO_P28 1>;
-			dir   = "in";
+			gpios = <&PICO_EXT_GPIO_P28 GPIO_ACTIVE_HIGH>;
+			dir   = "out";
 		};
 		gpio_p30 {
 			label = "GPIO_P30";
-			gpios = <&PICO_EXT_GPIO_P30 1>;
+			gpios = <&PICO_EXT_GPIO_P30 GPIO_ACTIVE_HIGH>;
 			dir   = "in";
 		};
 		gpio_p32 {
 			label = "GPIO_P32";
-			gpios = <&PICO_EXT_GPIO_P32 1>;
-			dir   = "in";
+			gpios = <&PICO_EXT_GPIO_P32 GPIO_ACTIVE_HIGH>;
+			dir   = "out";
 		};
 		gpio_p34 {
 			label = "GPIO_P34";
-			gpios = <&PICO_EXT_GPIO_P34 1>;
+			gpios = <&PICO_EXT_GPIO_P34 GPIO_ACTIVE_HIGH>;
 			dir   = "in";
 		};
 
