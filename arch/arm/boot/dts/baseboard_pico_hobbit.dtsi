@@ -98,7 +98,7 @@
 		reg = <0x38>;
 		pinctrl-names = "default";
 		pinctrl-0 = <PICO_EXT_FT5X06_IOMUX_HOBBIT>; /* Touch IRQ and Touch Reset */
-		interrupt-parent = <&GPIO_BANK(PICO_EXT_GPIO_P25)>; /* GPIO_P42 */
+		interrupt-parent = <&GPIO_BANK(PICO_EXT_GPIO_P25)>; /* GPIO_P25 */
 		interrupts = <GPIO_NO(PICO_EXT_GPIO_P25) 0>;
 		reset-gpios = <&PICO_EXT_GPIO_P32 GPIO_ACTIVE_LOW>; /* GPIO_P32 */
 		touchscreen-size-x = <800>;
