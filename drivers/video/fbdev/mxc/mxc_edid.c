@@ -174,6 +174,11 @@ const struct fb_videomode mxc_cea_mode[64] = {
 		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
 		FB_VMODE_NONINTERLACED | FB_VMODE_ASPECT_16_9, 0
 	},
+        /* #42: 720x480 @ 100Hz reused for TN Q/C 800x480 */
+        [42] = {
+		"CVT-WVGA", 60, 800, 480, 33898, 24, 96, 3, 10, 68, 7,
+		FB_SYNC_VERT_HIGH_ACT, FB_VMODE_NONINTERLACED, 0
+        },
 	/* #47: 1280x720p@119.88/120Hz 16:9 */
 	[47] = {
 		NULL, 120, 1280, 720, 6734, 220, 110, 20, 5, 40, 5,
