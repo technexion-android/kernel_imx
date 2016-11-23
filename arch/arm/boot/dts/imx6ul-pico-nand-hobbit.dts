@@ -679,10 +679,11 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc2>;
 	no-1-8-v;
-	wifi-host;
-	pm-ignore-notify;
 	keep-power-in-suspend;
-	enable-sdio-wakeup;
+	non-removable;
+	cd-post;
+	pm-ignore-notify;
+	wifi-host;
 	status = "okay";
 };
 

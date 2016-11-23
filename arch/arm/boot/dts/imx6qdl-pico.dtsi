@@ -761,10 +761,11 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc2>;
 	bus-width = <4>;
-	vmmc-supply = <&reg_3p3v>;
-	enable-sdio-wakeup;
+	no-1-8-v;
 	keep-power-in-suspend;
-	tuning-step = <2>;
+	non-removable;
+	cd-post;
+	pm-ignore-notify;
 	wifi-host;
 	status = "okay";
 };
