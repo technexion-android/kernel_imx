@@ -180,6 +180,7 @@ static const struct usb_device_id blacklist_table[] = {
 	{ USB_DEVICE(0x0489, 0xe05f), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x0489, 0xe076), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x0489, 0xe078), .driver_info = BTUSB_ATH3012 },
+	{ USB_DEVICE(0x0489, 0xe095), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x04c5, 0x1330), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x04ca, 0x3004), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x04ca, 0x3005), .driver_info = BTUSB_ATH3012 },
@@ -2809,6 +2810,7 @@ struct qca_device_info {
 static const struct qca_device_info qca_devices_table[] = {
 	{ 0x00000100, 20, 4, 10 }, /* Rome 1.0 */
 	{ 0x00000101, 20, 4, 10 }, /* Rome 1.1 */
+	{ 0x00000200, 28, 4, 18 }, /* Rome 2.0 */
 	{ 0x00000201, 28, 4, 18 }, /* Rome 2.1 */
 	{ 0x00000300, 28, 4, 18 }, /* Rome 3.0 */
 	{ 0x00000302, 28, 4, 18 }, /* Rome 3.2 */
