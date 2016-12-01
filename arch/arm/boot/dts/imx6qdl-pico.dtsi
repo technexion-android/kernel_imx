@@ -34,7 +34,7 @@
 #define PICO_EXT_GPIO_P44 gpio5 31
 #define PICO_EXT_GPIO_P48 gpio6 1
 
-
+#define PICO_EXT_GPIOLED_IOMUX_HOBBIT &pinctrl_ext_gpioled_hobbit
 
 /* audio codec */
 #define PICO_AUD_I2S_CHANNEL ssi1
@@ -50,8 +50,13 @@
 
 /* FT5606 Touch */
 #define PICO_EXT_FT5X06_IOMUX_DWARF &pinctrl_ext_gpio_ft5606_touch_irq_dwarf
-#define PICO_EXT_FT5X06_IOMUX_HOBBIT &pinctrl_ext_gpio_ft5606_touch_irq_hobbit &pinctrl_ext_gpio_ft5606_touch_reset_hobiit
+#define PICO_EXT_FT5X06_IOMUX_HOBBIT &pinctrl_ext_gpio_ft5606_touch_irq_hobbit &pinctrl_ext_gpio_ft5606_touch_reset_hobbit
 
+#define PICO_HOBBIT_I2C1 i2c1
+#define PICO_HOBBIT_I2C2 i2c2
+#define PICO_HOBBIT_I2C3 i2c3
+
+#define PICO_HOBBIT_CSPI2 ecspi2
 
 / {
 	aliases {
@@ -271,18 +276,20 @@
 		reg = <0x50>;
 	};
 
-	fusion7: fusion7@10 {
-		compatible = "touchrev,fusion7";
-		reg = <0x10>; /* The reg property describes the address of the device's resources within the address space defined by its parent bus.  */
-		pinctrl-0 = <&pinctrl_gpio>;
-		pinctrl-names = "default";
-		interrupt-parent = <&gpio4>;
-		interrupts = <5 0>;
-		reset-gpios=<&gpio7 8 0>; /*pin264  SD3_RST GPIO(7, 8)   gpio200   Touchscreen Reset  Output*/
-		touch_xmax=<1499>;
-		touch_ymax=<899>;
-		flip_x=<0>;
-		flip_y=<0>;
+	ov5640_mipi: ov5640_mipi@3c {
+		compatible = "ovti,ov564x_mipi";
+		reg = <0x3c>;
+		clocks = <&clks 200>;
+		clock-names = "csi_mclk";
+		DOVDD-supply = <&reg_1p8v>;
+		AVDD-supply = <&reg_2p5v>;
+		DVDD-supply = <&reg_1p8v>;
+		pwn-gpios = <&gpio1 6 1>;
+		rst-gpios = <&gpio1 8 0>;
+		ipu_id = <0>;
+		csi_id = <0>;
+		mclk = <24000000>;
+		mclk_source = <0>;
 	};
 };
 
@@ -329,7 +336,7 @@
 		pinctrl_ext_gpio_ads7846_touch_irq_dwarf: ext-gpio-ads7846-touch-irq-dwarf {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x80000000	/* resistive touch irq for Dwarf baseboard */
-		>;
+			>;
 		};
 
 		pinctrl_ext_gpio_ads7846_touch_irq_hobbit: ext-gpio-ads7846-touch-irq-hobbit {
@@ -350,7 +357,7 @@
 			>;
 		};
 
-		pinctrl_ext_gpio_ft5606_touch_reset_hobiit: ext-gpio-ft5606-touch-reset-hobbit {
+		pinctrl_ext_gpio_ft5606_touch_reset_hobbit: ext-gpio-ft5606-touch-reset-hobbit {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27  0x4001b0b5 /* capacitive touch reset for hobbit baseboard */
 			>;
@@ -616,6 +623,12 @@
 				MX6QDL_PAD_KEY_ROW4__FLEXCAN2_RX 0x80000000
 			>;
 		};
+
+		pinctrl_ext_gpioled_hobbit: gpioledgrp {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31 0x130b0
+			>;
+		};
 	};
 };
 
@@ -783,7 +796,7 @@
 };
 
 &ecspi2 {
-	fsl,spi-num-chipselects = <1>;
+	fsl,spi-num-chipselects = <2>;
 	cs-gpios = <&gpio2 27 0>; /* CS0 */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi2>;
