@@ -671,6 +671,7 @@
 	pinctrl-0 = <&pinctrl_usdhc2>;
 	bus-width = <4>;
 	no-1-8-v;	/* force 3.3V VIO */
+	keep-power-in-suspend;
 	non-removable;
 	cd-post;
 	pm-ignore-notify;
