@@ -17,9 +17,9 @@
 	gpio-edm {
 		compatible = "gpio-edm";
 /* custom GPIO may be from GPIO expander on CPU module */
-#ifdef PICO_EXT_GPIO_IOMUX_HOBBIT
+#ifdef PICO_EXT_GPIO_IOMUX_NYMPH
 		pinctrl-names = "default";
-		pinctrl-0 = <PICO_EXT_GPIO_IOMUX_HOBBIT>;
+		pinctrl-0 = <PICO_EXT_GPIO_IOMUX_NYMPH>;
 #endif
 
 		/* Mikrobus */
@@ -74,7 +74,7 @@
 	};
 };
 
-&i2c1 {
+&PICO_NYMPH_I2C1 {
 	status = "okay";
 
 	codec: sgtl5000@0a {
@@ -86,7 +86,7 @@
 	};
 };
 
-&i2c2 {
+&PICO_NYMPH_I2C2 {
 	status = "okay";
 
 #ifdef PICO_EXT_MIPI_CSI_OV5640_IOMUX
@@ -110,7 +110,7 @@
 #endif
 };
 
-&i2c3 {
+&PICO_NYMPH_I2C3 {
 	status = "okay";
 
 	adc: adc081c {
@@ -133,7 +133,7 @@
 	status = "okay";
 };
 
-&ecspi2 {
+&PICO_NYMPH_CSPI2 {
 	status = "okay";
 
 	spidev@0 {
