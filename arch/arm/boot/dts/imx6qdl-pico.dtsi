@@ -44,7 +44,10 @@
 #define PICO_AUD_MUX_EXT 3
 #define PICO_AUD_CLK_SRC clks 201
 
+/* External GPIOs */
 #define PICO_EXT_GPIO_IOMUX_HOBBIT &pinctrl_ext_gpio_hobbit
+#define PICO_EXT_GPIO_IOMUX_NYMPH &pinctrl_ext_gpio_nymph
+#define PICO_EXT_GPIO_IOMUX_DWARF &pinctrl_ext_gpio_dwarf
 
 #define PICO_EXT_MIPI_CSI_OV5640_IOMUX &pinctrl_ext_ov5640
 
@@ -56,11 +59,23 @@
 #define PICO_EXT_FT5X06_IOMUX_DWARF &pinctrl_ext_gpio_ft5606_touch_irq_dwarf
 #define PICO_EXT_FT5X06_IOMUX_HOBBIT &pinctrl_ext_gpio_ft5606_touch_irq_hobbit &pinctrl_ext_gpio_ft5606_touch_reset_hobbit
 
+/*Hobbit Baseboard Contrast Define*/
 #define PICO_HOBBIT_I2C1 i2c1
 #define PICO_HOBBIT_I2C2 i2c2
 #define PICO_HOBBIT_I2C3 i2c3
-
 #define PICO_HOBBIT_CSPI2 ecspi2
+
+/*Nymph Baseboard Contrast Define*/
+#define PICO_NYMPH_I2C1 i2c1
+#define PICO_NYMPH_I2C2 i2c2
+#define PICO_NYMPH_I2C3 i2c3
+#define PICO_NYMPH_CSPI2 ecspi2
+
+/*Dwarf Baseboard Contrast Define*/
+#define PICO_DWARF_I2C1 i2c1
+#define PICO_DWARF_I2C2 i2c2
+#define PICO_DWARF_I2C3 i2c3
+#define PICO_DWARF_CSPI2 ecspi2
 
 / {
 	aliases {
@@ -317,6 +332,26 @@
 			>;
 		};
 
+                pinctrl_ext_gpio_nymph: ext-gpio-grp-nymph {
+                        fsl,pins = <
+                                MX6QDL_PAD_CSI0_MCLK__GPIO5_IO19        0x4001b0b5 /* GPIO5_19 pico pin 24 */
+                                MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21       0x4001b0b5 /* GPIO5_21 pico pin 26 */
+                                MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20     0x4001b0b5 /* GPIO5_20 pico pin 28 */
+                                MX6QDL_PAD_CSI0_DAT8__GPIO5_IO26        0x4001b0b5 /* GPIO5_26 pico pin 30 */
+                                MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00       0x4001b0b5 /* GPIO6_00 pico pin 34 */
+                        >;
+                };
+
+		pinctrl_ext_gpio_dwarf: ext-gpio-grp-dwarf {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_MCLK__GPIO5_IO19        0x4001b0b5 /* GPIO5_19 pico pin 24 */
+				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21       0x4001b0b5 /* GPIO5_21 pico pin 26 */
+				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20     0x4001b0b5 /* GPIO5_20 pico pin 28 */
+				MX6QDL_PAD_CSI0_DAT8__GPIO5_IO26        0x4001b0b5 /* GPIO5_26 pico pin 30 */
+				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00       0x4001b0b5 /* GPIO6_00 pico pin 34 */
+			>;
+		};
+
 		pinctrl_ext_gpio_ads7846_touch_irq_dwarf: ext-gpio-ads7846-touch-irq-dwarf {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x80000000	/* resistive touch irq for Dwarf baseboard */
@@ -344,20 +379,6 @@
 		pinctrl_ext_gpio_ft5606_touch_reset_hobbit: ext-gpio-ft5606-touch-reset-hobbit {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27  0x4001b0b5 /* capacitive touch reset for hobbit baseboard */
-			>;
-		};
-
-		pinctrl_ext_gpio_nymph: ext-gpio-grp-nymph {
-			fsl,pins = <
-				MX6QDL_PAD_CSI0_MCLK__GPIO5_IO19	0x4001b0b5 /* GPIO5_19 pico pin 24 */
-				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x4001b0b5 /* GPIO5_21 pico pin 26 */
-				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x4001b0b5 /* GPIO5_20 pico pin 28 */
-				MX6QDL_PAD_CSI0_DAT8__GPIO5_IO26	0x4001b0b5 /* GPIO5_26 pico pin 30 */
-				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x4001b0b5 /* GPIO5_27 pico pin xx */
-				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x4001b0b5 /* GPIO5_30 pico pin xx */
-				MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x4001b0b5 /* GPIO5_31 pico pin 34 */
-				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00	0x4001b0b5 /* GPIO6_00 pico pin xx */
-				MX6QDL_PAD_CSI0_DAT15__GPIO6_IO01	0x4001b0b5 /* GPIO6_01 pico pin xx */
 			>;
 		};
 
