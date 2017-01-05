@@ -17,10 +17,12 @@
 	gpio-edm {
 		compatible = "gpio-edm";
 /* custom GPIO may be from GPIO expander on CPU module */
-#ifdef PICO_EXT_GPIO_IOMUX_HOBBIT
+
+#ifdef PICO_EXT_GPIO_IOMUX_DWARF
 		pinctrl-names = "default";
-		pinctrl-0 = <PICO_EXT_GPIO_IOMUX_HOBBIT>;
+		pinctrl-0 = <PICO_EXT_GPIO_IOMUX_DWARF>;
 #endif
+
 		gpio_exp0 {
 			label = "GPIO_EXP0";
 			gpios = <&PICO_EXT_GPIO_EXP0 1>;
@@ -63,7 +65,7 @@
 	};
 };
 
-&i2c1 {
+&PICO_DWARF_I2C1 {
 	status = "okay";
 
 	codec: sgtl5000@0a {
@@ -90,7 +92,7 @@
 	};
 };
 
-&i2c2 {
+&PICO_DWARF_I2C2 {
 	status = "okay";
 
 #ifdef PICO_EXT_MIPI_CSI_OV5640_IOMUX
@@ -120,7 +122,6 @@
 		#interrupt-cells = <2>;
 		reg = <0x25>;
 	};
-
 	polytouch: edt-ft5x06@38 {
 		compatible = "edt,edt-ft5x06";
 		reg = <0x38>;
@@ -136,7 +137,7 @@
 	};
 };
 
-&i2c3 {
+&PICO_DWARF_I2C3 {
 	status = "okay";
 };
 
@@ -148,15 +149,15 @@
 	status = "okay";
 };
 
-&ecspi2 {
+&PICO_DWARF_CSPI2 {
 	status = "okay";
 
 	ads7846@0 {
 		reg = <0>;  /* CS0 */
 		compatible = "ti,ads7846";
-#ifdef PICO_EXT_ADS7846_IOMUX
+#ifdef PICO_EXT_ADS7846_IOMUX_DWARF
 		pinctrl-names = "default";
-		pinctrl-0 = <PICO_EXT_ADS7846_IOMUX>;
+		pinctrl-0 = <PICO_EXT_ADS7846_IOMUX_DWARF>;
 #endif
 		interrupt-parent = <&GPIO_BANK(PICO_EXT_GPIO_EXP7)>; /* GPIO_P263 J1B-263 */
 		interrupts = <GPIO_NO(PICO_EXT_GPIO_EXP7) 0>;
@@ -179,4 +180,3 @@
 		linux,wakeup;
 	};
 };
-
