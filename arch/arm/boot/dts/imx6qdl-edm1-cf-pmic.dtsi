@@ -95,13 +95,26 @@
 			regulator-always-on;
 		};
 
-		reg_1p8v: 1p8v {
+		reg_1p8v: 1p8v@2 {
 			compatible = "regulator-fixed";
 			reg = <2>;
 			regulator-name = "1P8V";
 			regulator-min-microvolt = <1800000>;
 			regulator-max-microvolt = <1800000>;
 			regulator-always-on;
+		};
+
+		reg_3v3_phy: regulator@3 {
+			compatible = "regulator-fixed";
+			reg = <0>;
+			regulator-name = "3V3_ETN";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_enet_3v3>;
+			gpio = <&gpio7 13 GPIO_ACTIVE_LOW>;
+			enable-active-low;
+			regulator-boot-on;
 		};
 
 		reg_usb_otg_vbus: usb_otg_vbus {
@@ -680,9 +693,9 @@
 
 &fec {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_enet &pinctrl_enet_3v3>;
+	pinctrl-0 = <&pinctrl_enet>;
 	phy-reset-gpios = <&gpio3 29 GPIO_ACTIVE_LOW>;
-	pinctrl-assert-gpios = <&gpio7 13 GPIO_ACTIVE_LOW>; /* enet 3v3 power control - active low */
+	phy-supply = <&reg_3v3_phy>;
 	phy-mode = "rgmii";
 	status = "okay";
 };
