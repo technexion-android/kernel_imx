@@ -179,4 +179,9 @@
 
 		linux,wakeup;
 	};
+        spidev@1 {
+                compatible = "rohm,dh2228fv";
+                spi-max-frequency = <60000000>;
+                reg = <1>;
+        };
 };
