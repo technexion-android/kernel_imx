@@ -136,10 +136,10 @@
 &PICO_NYMPH_CSPI2 {
 	status = "okay";
 
-	spidev@0 {
+	spidev@1 {
 		compatible = "rohm,dh2228fv";
 		spi-max-frequency = <60000000>;
-		reg = <0>;
+		reg = <1>;
 	};
 };
 
