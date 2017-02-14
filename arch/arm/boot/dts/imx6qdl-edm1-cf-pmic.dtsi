@@ -683,6 +683,12 @@
 				MX6QDL_PAD_GPIO_18__GPIO7_IO13		0x80000000
 			>;
 		};
+
+		pinctrl_hdmi_cec: hdmicecgrp {
+			fsl,pins = <
+			MX6QDL_PAD_EIM_A25__HDMI_TX_CEC_LINE 0x1f8b0
+			>;
+		};
 	};
 };
 
@@ -701,6 +707,12 @@
 };
 
 &hdmi_audio {
+	status = "okay";
+};
+
+&hdmi_cec {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_hdmi_cec>;
 	status = "okay";
 };
 
