@@ -327,6 +327,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6qp-sabresd-ldo.dtb \
 	imx6qp-edm1-cf-pmic_fairy.dtb \
 	imx6qp-edm1-cf-pmic_tc0700.dtb \
+	imx6qp-wandboard-revd1.dtb \
 	imx6q-sabrelite.dtb \
 	imx6q-sabresd.dtb \
 	imx6q-sabresd-btwifi.dtb \
