@@ -51,6 +51,7 @@
 #define TN_SPLIT_gpio6 TN_LPAREN gpio6 TN_COMMA
 #define TN_SPLIT_gpio7 TN_LPAREN gpio7 TN_COMMA
 #define TN_SPLIT_pca9554 TN_LPAREN pca9554 TN_COMMA
+#define TN_SPLIT_pca9555 TN_LPAREN pca9555 TN_COMMA
 
 #define TN_FIRST(a, b) a
 #define TN_SECOND(a, b) b
