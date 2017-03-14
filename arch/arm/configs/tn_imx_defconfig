@@ -279,9 +279,14 @@ CONFIG_MXC_IPU_DEVICE_QUEUE_SDC=m
 CONFIG_VIDEO_MXC_IPU_OUTPUT=y
 CONFIG_VIDEO_MXC_PXP_V4L2=y
 CONFIG_VIDEO_MXC_CSI_CAMERA=m
+<<<<<<< HEAD
 CONFIG_MXC_VADC=m
 CONFIG_MXC_MIPI_CSI=m
 CONFIG_MXC_CAMERA_OV5647_MIPI=m
+=======
+CONFIG_MXC_VADC=y
+CONFIG_MXC_MIPI_CSI=y
+>>>>>>> 3aa8fcc3fef2... ARM: tn_imx_defconfig: configure mx6s_capture as module to ensure it's initialized after CSI/PxP driver. Or it may not be initialized properly.
 CONFIG_SOC_CAMERA=y
 CONFIG_V4L_MEM2MEM_DRIVERS=y
 CONFIG_VIDEO_CODA=y
