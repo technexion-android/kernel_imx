@@ -33,8 +33,6 @@
 #define PICO_EXT_GPIO_P42 gpio5 30
 #define PICO_EXT_GPIO_P44 gpio5 31
 #define PICO_EXT_GPIO_P48 gpio6 1
-#define PICO_EXT_GPIO_P65 gpio1 8
-#define PICO_EXT_GPIO_P67 gpio1 6
 
 #define PICO_EXT_GPIOLED_IOMUX_HOBBIT &pinctrl_ext_gpioled_hobbit
 
@@ -48,8 +46,6 @@
 #define PICO_EXT_GPIO_IOMUX_HOBBIT &pinctrl_ext_gpio_hobbit
 #define PICO_EXT_GPIO_IOMUX_NYMPH &pinctrl_ext_gpio_nymph
 #define PICO_EXT_GPIO_IOMUX_DWARF &pinctrl_ext_gpio_dwarf
-
-#define PICO_EXT_MIPI_CSI_OV5640_IOMUX &pinctrl_ext_ov5640
 
 /* ADS7846 Touch */
 #define PICO_EXT_ADS7846_IOMUX_DWARF &pinctrl_ext_gpio_ads7846_touch_irq_dwarf
@@ -293,6 +289,24 @@
 	hdmi: edid@50 {
 		compatible = "fsl,imx6-hdmi-i2c";
 		reg = <0x50>;
+	};
+
+	ov5640_mipi: ov5640_mipi@3c {
+		compatible = "ovti,ov564x_mipi";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_mipi_csi>; /* GPIO_P69:mipi clock, GPIO_P67:power on, GPIO_P65:reset */
+		reg = <0x3c>;
+		clocks = <&clks 200>;
+		clock-names = "csi_mclk";
+		DOVDD-supply = <&reg_1p8v>;
+		AVDD-supply = <&reg_2p5v>;
+		DVDD-supply = <&reg_1p8v>;
+		pwn-gpios = <&gpio1 6 1>;
+		rst-gpios = <&gpio1 8 0>;
+		ipu_id = <0>;
+		csi_id = <0>;
+		mclk = <24000000>;
+		mclk_source = <0>;
 	};
 };
 
@@ -635,7 +649,7 @@
 			>;
 		};
 
-		pinctrl_ext_ov5640: ov5640grp {
+		pinctrl_mipi_csi: mipicsigrp {
 			fsl,pins = <
 				MX6QDL_PAD_GPIO_6__GPIO1_IO06		0x0b0b0		/* ov5640 mipi powerdown */
 				MX6QDL_PAD_GPIO_8__GPIO1_IO08		0x0b0b0		/* ov5640 mipi reset */
