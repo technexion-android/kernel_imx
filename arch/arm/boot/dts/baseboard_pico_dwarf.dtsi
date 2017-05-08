@@ -95,26 +95,6 @@
 &PICO_DWARF_I2C2 {
 	status = "okay";
 
-#ifdef PICO_EXT_MIPI_CSI_OV5640_IOMUX
-	ov5640_mipi: ov5640_mipi@3c {
-		compatible = "ovti,ov564x_mipi";
-		pinctrl-names = "default";
-		pinctrl-0 = <PICO_EXT_MIPI_CSI_OV5640_IOMUX>; /* GPIO_P69:mipi clock, GPIO_P67:power on, GPIO_P65:reset */
-		reg = <0x3c>;
-		clocks = <&clks 200>;
-		clock-names = "csi_mclk";
-		DOVDD-supply = <&reg_1p8v>;
-		AVDD-supply = <&reg_2p5v>;
-		DVDD-supply = <&reg_1p8v>;
-		pwn-gpios = <&PICO_EXT_GPIO_P67 1>; /* GPIO_P67 */
-		rst-gpios = <&PICO_EXT_GPIO_P65 0>; /* GPIO_P65 */
-		ipu_id = <0>;
-		csi_id = <0>;
-		mclk = <24000000>;
-		mclk_source = <0>;
-	};
-#endif
-
 	pca9554: pca9554@25 {
 		compatible = "nxp,pca9554";
 		gpio-controller;
