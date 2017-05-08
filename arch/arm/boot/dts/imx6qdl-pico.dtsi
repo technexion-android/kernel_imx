@@ -55,19 +55,19 @@
 #define PICO_EXT_FT5X06_IOMUX_DWARF &pinctrl_ext_gpio_ft5606_touch_irq_dwarf
 #define PICO_EXT_FT5X06_IOMUX_HOBBIT &pinctrl_ext_gpio_ft5606_touch_irq_hobbit &pinctrl_ext_gpio_ft5606_touch_reset_hobbit
 
-/*Hobbit Baseboard Contrast Define*/
+/* hobbit baseboard bus definitions */
 #define PICO_HOBBIT_I2C1 i2c1
 #define PICO_HOBBIT_I2C2 i2c2
 #define PICO_HOBBIT_I2C3 i2c3
 #define PICO_HOBBIT_CSPI2 ecspi2
 
-/*Nymph Baseboard Contrast Define*/
+/* nymph baseboard bus definitions */
 #define PICO_NYMPH_I2C1 i2c1
 #define PICO_NYMPH_I2C2 i2c2
 #define PICO_NYMPH_I2C3 i2c3
 #define PICO_NYMPH_CSPI2 ecspi2
 
-/*Dwarf Baseboard Contrast Define*/
+/* dwarf baseboard bus definitions */
 #define PICO_DWARF_I2C1 i2c1
 #define PICO_DWARF_I2C2 i2c2
 #define PICO_DWARF_I2C3 i2c3
