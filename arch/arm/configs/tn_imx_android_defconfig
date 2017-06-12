@@ -277,8 +277,8 @@ CONFIG_ATH6KL=m
 CONFIG_ATH6KL_SDIO=m
 CONFIG_BCMDHD=m
 CONFIG_BCMDHD_SDIO=y
-CONFIG_BCMDHD_FW_PATH="/system/etc/firmware/brcm/fw_bcmdhd.bin"
-CONFIG_BCMDHD_NVRAM_PATH="/system/etc/firmware/brcm/bcmdhd.cal"
+#CONFIG_BCMDHD_FW_PATH="/system/etc/firmware/brcm/fw_bcmdhd.bin"
+#CONFIG_BCMDHD_NVRAM_PATH="/system/etc/firmware/brcm/bcmdhd.cal"
 # CONFIG_RTL_CARDS is not set
 # CONFIG_INPUT_MOUSEDEV_PSAUX is not set
 CONFIG_INPUT_EVDEV=y
