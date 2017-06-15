@@ -112,6 +112,15 @@
 		wlreg_on-supply = <&wlreg_on>;
 	};
 
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
+		name = "bt_rfkill";
+		type = <2>;     /* bluetooth */
+		bt-power-gpios = <&gpio4 18 0>;
+	};
+
 	pxp_v4l2_out {
 		compatible = "fsl,imx7d-pxp-v4l2", "fsl,imx6sx-pxp-v4l2", "fsl,imx6sl-pxp-v4l2";
 		status = "okay";
@@ -177,16 +186,6 @@
 			regulator-name = "wlreg_on";
 			gpio = <&gpio4 16 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
-		};
-
-		bt_on: bt_on {
-			compatible = "regulator-fixed";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			regulator-name = "bt_on";
-			gpio = <&gpio4 18 GPIO_ACTIVE_LOW>;
-			enable-active-low;
-			regulator-boot-on;
 		};
 
 		lcd_on: lcd_on {
