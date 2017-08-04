@@ -63,11 +63,11 @@
 	};
 };
 
-&i2c1 {
+&EDM1_FAIRY_I2C1 {
 	status = "okay";
 };
 
-&i2c2 {
+&EDM1_FAIRY_I2C2 {
 	status = "okay";
 
 	codec: sgtl5000@0a {
@@ -93,7 +93,7 @@
 	};
 };
 
-&i2c3 {
+&EDM1_FAIRY_I2C3 {
 	status = "okay";
 
 	mag3110@0e {

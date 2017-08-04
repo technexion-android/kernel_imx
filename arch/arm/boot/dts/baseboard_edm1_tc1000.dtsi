@@ -19,6 +19,11 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <EDM1_EXT_GPIO_IOMUX_TC1000>;
 #endif
+		gpio_p255 {
+			label = "GPIO_P255";
+			gpios = <&EDM1_EXT_GPIO_P255 1>;
+			dir   = "out";
+		};
 		gpio_p256 {
 			label = "GPIO_P256";
 			gpios = <&EDM1_EXT_GPIO_P256 1>;
@@ -49,6 +54,67 @@
 			gpios = <&EDM1_EXT_GPIO_P262 0>;
 			dir   = "out";
 		};
+		gpio_exp0 {
+			label = "GPIO_EXP0";
+			gpios = <&EDM1_EXT_GPIO_EXP0 0>;
+			dir   = "out";
+		};
+		gpio_exp1 {
+			label = "GPIO_EXP1";
+			gpios = <&EDM1_EXT_GPIO_EXP1 0>;
+			dir   = "out";
+		};
+		gpio_exp2 {
+			label = "GPIO_EXP2";
+			gpios = <&EDM1_EXT_GPIO_EXP2 0>;
+			dir   = "in";
+		};
+		gpio_exp3 {
+			label = "GPIO_EXP3";
+			gpios = <&EDM1_EXT_GPIO_EXP3 0>;
+			dir   = "in";
+		};
+		gpio_exp4 {
+			label = "GPIO_EXP4";
+			gpios = <&EDM1_EXT_GPIO_EXP4 0>;
+			dir   = "out";
+		};
+		gpio_exp5 {
+			label = "GPIO_EXP5";
+			gpios = <&EDM1_EXT_GPIO_EXP5 0>;
+			dir   = "out";
+		};
+		gpio_exp6 {
+			label = "GPIO_EXP6";
+			gpios = <&EDM1_EXT_GPIO_EXP6 0>;
+			dir   = "in";
+		};
+		gpio_exp7 {
+			label = "GPIO_EXP7";
+			gpios = <&EDM1_EXT_GPIO_EXP7 0>;
+			dir   = "in";
+		};
+		gpio_exp8 {
+			label = "GPIO_EXP8";
+			gpios = <&EDM1_EXT_GPIO_EXP8 0>;
+			dir   = "out";
+		};
+		gpio_exp9 {
+			label = "GPIO_EXP9";
+			gpios = <&EDM1_EXT_GPIO_EXP9 0>;
+			dir   = "out";
+		};
+		gpio_exp10 {
+			label = "GPIO_EXP10";
+			gpios = <&EDM1_EXT_GPIO_EXP10 0>;
+			dir   = "in";
+		};
+		gpio_exp11 {
+			label = "GPIO_EXP11";
+			gpios = <&EDM1_EXT_GPIO_EXP11 0>;
+			dir   = "in";
+		};
+
 	};
 
 	sound {
@@ -82,7 +148,7 @@
 #ifdef EDM1_EXT_PCA9555_IOMUX_TC1000
 		pinctrl-0 = <EDM1_EXT_PCA9555_IOMUX_TC1000>;
 #endif
-		interrupt-parent = <&gpio1>;
+		interrupt-parent = <&gpio7>;
 		interrupts = <8 IRQ_TYPE_EDGE_FALLING>;
 		gpio-controller;
 		#gpio-cells = <2>;
