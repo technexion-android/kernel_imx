@@ -286,7 +286,11 @@ CONFIG_MXC_CAMERA_OV5647_MIPI=m
 =======
 CONFIG_MXC_VADC=y
 CONFIG_MXC_MIPI_CSI=y
+<<<<<<< HEAD
 >>>>>>> 3aa8fcc3fef2... ARM: tn_imx_defconfig: configure mx6s_capture as module to ensure it's initialized after CSI/PxP driver. Or it may not be initialized properly.
+=======
+CONFIG_MXC_CAMERA_OV5645_MIPI=m
+>>>>>>> 7b829963fc60... ARM: tn_imx_defconfig: enable ov5645 mipi-csi2 camera support
 CONFIG_SOC_CAMERA=y
 CONFIG_V4L_MEM2MEM_DRIVERS=y
 CONFIG_VIDEO_CODA=y
