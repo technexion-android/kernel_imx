@@ -343,7 +343,14 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-nit6xlite.dtb \
 	imx6dl-nitrogen6x.dtb \
 	imx6dl-phytec-pbab01.dtb \
+<<<<<<< HEAD
 	imx6dl-pico-pi.dtb \
+=======
+	imx6dl-pico_dwarf.dtb \
+	imx6dl-pico_hobbit.dtb \
+	imx6dl-pico_nymph.dtb \
+	imx6dl-pico_pi.dtb \
+>>>>>>> 7522ab6149eb... ARM: dts: add support for TechNexion PICO-IMX6 boards
 	imx6dl-rex-basic.dtb \
 	imx6dl-riotboard.dtb \
 	imx6dl-sabreauto.dtb \
@@ -412,6 +419,10 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-nitrogen6_max.dtb \
 	imx6q-novena.dtb \
 	imx6q-phytec-pbab01.dtb \
+	imx6q-pico_dwarf.dtb \
+	imx6q-pico_hobbit.dtb \
+	imx6q-pico_nymph.dtb \
+	imx6q-pico_pi.dtb \
 	imx6q-rex-pro.dtb \
 	imx6q-sabreauto.dtb \
 	imx6q-sabreauto-ecspi.dtb \
