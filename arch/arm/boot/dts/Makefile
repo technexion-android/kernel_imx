@@ -511,9 +511,16 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
 	imx6ul-14x14-evk-optee.dtb \
 	imx6ul-geam-kit.dtb \
 <<<<<<< HEAD
+<<<<<<< HEAD
 	imx6ul-picosom-pi.dtb \
 =======
 >>>>>>> 2461168da54c... ARM: dts: PICO-IMX6UL: remove HOBBIT device tree support added by NXP
+=======
+	imx6ul-pico_dwarf.dtb \
+	imx6ul-pico_hobbit.dtb \
+	imx6ul-pico_nymph.dtb \
+	imx6ul-pico_pi.dtb \
+>>>>>>> 647984cb9585... ARM: dts: add support for TechNexion PICO-IMX6UL boards
 	imx6ul-tx6ul-0010.dtb \
 	imx6ul-tx6ul-0011.dtb \
 	imx6ul-tx6ul-mainboard.dtb \
