@@ -1,0 +1,83 @@
+/*
+ * Copyright 2013-2017 Freescale Semiconductor, Inc.
+ * Copyright 2017 Wandboard, Org.
+ *
+ * Author: Fabio Estevam <fabio.estevam@freescale.com>
+ *         Richard Hu <richard.hu@technexion.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
+/dts-v1/;
+#include "imx6qp.dtsi"
+#include "imx6qdl-wandboard-revd1.dtsi"
+
+/ {
+	model = "Wandboard i.MX6QuadPlus rev D1";
+	compatible = "wand,imx6qp-sabreauto", "fsl,imx6qp";
+};
+
+&ldb {
+	lvds-channel@0 {
+		crtc = "ipu2-di0";
+	};
+};
+
+&mxcfb1 {
+	prefetch;
+	status = "okay";
+};
+
+&mxcfb2 {
+	prefetch;
+	status = "okay";
+};
+
+#if 0
+&mxcfb3 {
+	prefetch;
+	status = "okay";
+};
+
+&mxcfb4 {
+	prefetch;
+	status = "okay";
+};
+#endif
+
+&pre1 {
+	status = "okay";
+};
+
+&pre2 {
+	status = "okay";
+};
+
+&pre3 {
+	status = "okay";
+};
+
+&pre4 {
+	status = "okay";
+};
+
+&prg1 {
+	memory-region = <&memory>;
+	status = "okay";
+};
+
+&prg2 {
+	memory-region = <&memory>;
+	status = "okay";
+};
+
+&sata {
+	status = "okay";
+};
+
+&fec {
+    /delete-property/ phy-reset-gpios;
+};
