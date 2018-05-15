@@ -580,7 +580,7 @@
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
-	uart-has-rtscts;
+	fsl,uart-has-rtscts;
 	status = "okay";
 };
 
@@ -611,7 +611,9 @@
 	no-1-8-v;
 	keep-power-in-suspend;
 	non-removable;
+/*
 	cd-post;
+*/
 	pm-ignore-notify;
 	wifi-host;
 	status = "okay";

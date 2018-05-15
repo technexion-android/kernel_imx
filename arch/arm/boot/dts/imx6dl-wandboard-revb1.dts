@@ -15,6 +15,46 @@
 / {
 	model = "Wandboard i.MX6DL/SOLO rev B1";
 	compatible = "wand,imx6dl-wandboard", "fsl,imx6dl";
+	firmware {
+		android {
+			compatible = "android,firmware";
+			vbmeta {
+				compatible = "android,vbmeta";
+				parts = "system,vendor,data,cache";
+			};
+			fstab {
+				compatible = "android,fstab";
+					system {
+						compatible = "android,system";
+						dev = "/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/system";
+						type = "ext4";
+						mnt_flags = "ro,barrier=1";
+						fsmgr_flags = "wait,verify=/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/metadata";
+					};
+					vendor {
+						compatible = "android,vendor";
+						dev = "/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/vendor";
+						type = "ext4";
+						mnt_flags = "ro,barrier=1";
+						fsmgr_flags = "wait";
+					};
+					data {
+						compatible = "android,data";
+						dev = "/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/userdata";
+						type = "ext4";
+						mnt_flags = "nosuid,nodev,nodiratime,noatime,nomblk_io_submit,noauto_da_alloc,errors=panic";
+						fsmgr_flags = "wait,formattable,encryptable=/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/datafooter,quota";
+					};
+					cache {
+						compatible = "android,cache";
+						dev = "/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/cache";
+						type = "ext4";
+						mnt_flags = "noatime,nosuid,nodev,nomblk_io_submit";
+						fsmgr_flags = "wait";
+					};
+			};
+		};
+	};
 
 	bcmdhd_wlan_0: bcmdhd_wlan@0 {
 		compatible = "android,bcmdhd_wlan";
@@ -35,6 +75,7 @@
 			regulator-name = "wlreg_on";
 			gpio = <&gpio5 2 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
+			regulator-always-on;
 		};
 	};
 

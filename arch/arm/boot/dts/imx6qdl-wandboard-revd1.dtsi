@@ -106,6 +106,7 @@
 			regulator-name = "wlreg_on";
 			gpio = <&gpio1 26 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
+			regulator-always-on;
 		};
 	};
 
@@ -819,7 +820,9 @@
 	no-1-8-v;
 	keep-power-in-suspend;
 	non-removable;
+/*
 	cd-post;
+*/
 	pm-ignore-notify;
 	wifi-host;
 	status = "okay";
