@@ -8,7 +8,8 @@
  * published by the Free Software Foundation.
  *
  */
-
+ 
+#include <tnmacro.h>
 #include <dt-bindings/gpio/gpio.h>
 
 / {
@@ -283,20 +284,6 @@
 		VDDIO-supply = <&reg_3p3v>;
 	};
 
-	fusion7: fusion7@10 {
-		compatible = "touchrev,fusion7";
-		reg = <0x10>; /* The reg property describes the address of the device's resources within the address space defined by its parent bus.  */
-		pinctrl-0 = <&pinctrl_gpio>;
-		pinctrl-names = "default";
-		interrupt-parent = <&gpio4>;
-		interrupts = <5 0>;
-		reset-gpios=<&gpio7 8 0>; /*pin264  SD3_RST GPIO(7, 8)   gpio200   Touchscreen Reset  Output*/
-		touch_xmax=<1499>;
-		touch_ymax=<899>;
-		flip_x=<0>;
-		flip_y=<0>;
-	};
-
 };
 
 &iomuxc {
@@ -444,7 +431,9 @@
 				MX6QDL_PAD_EIM_D24__UART3_TX_DATA	0x1b0b1
 				MX6QDL_PAD_EIM_D25__UART3_RX_DATA	0x1b0b1
 				MX6QDL_PAD_EIM_D23__UART3_CTS_B		0x1b0b1
-				MX6QDL_PAD_EIM_EB3__UART3_RTS_B		0x1b0b1
+				MX6QDL_PAD_EIM_EB3__UART3_RTS_B		0x1f0b1	/* EIM_EB3 is also used in boot config.
+										Decrease internal pull-up resistor to 22K ohm
+										to ensure it can be pulled high */
 			>;
 		};
 

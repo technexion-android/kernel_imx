@@ -58,9 +58,20 @@
 
 	bcmdhd_wlan_0: bcmdhd_wlan@0 {
 		compatible = "android,bcmdhd_wlan";
+		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_wifi_ctrl>;
 		gpios = <&gpio1 29 0>;    /* WL_HOST_WAKE */
+		status = "okay";
 		wlreg_on-supply = <&wlreg_on>;
+	};
+
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
+		bt-power-gpios = <&gpio5 21 0>;
+		bt-reset-gpios = <&gpio5 30 0>;
+		status ="okay";
 	};
 
 	regulators {
@@ -76,40 +87,6 @@
 			gpio = <&gpio5 2 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
 			regulator-always-on;
-		};
-	};
-
-	gpio-edm {
-		compatible = "gpio-edm";
-
-		wl_on {
-			label = "wl_on";
-			gpios = <&gpio2 29 1>;
-			dir   = "out";
-		};
-
-		wl_reg {
-			label = "wl_reg";
-			gpios = <&gpio1 26 1>;
-			dir   = "out";
-		};
-
-		bluetooth-on {
-			label = "bluetooth-on";
-			gpios = <&gpio3 13 1>;
-			dir   = "out";
-		};
-
-		bluetooth-wake {
-			label = "bluetooth-wake";
-			gpios = <&gpio3 14 1>;
-			dir   = "in";
-		};
-
-		bluetooth-host-wake {
-			label = "bluetooth-host-wake";
-			gpios = <&gpio3 15 1>;
-			dir   = "in";
 		};
 	};
 

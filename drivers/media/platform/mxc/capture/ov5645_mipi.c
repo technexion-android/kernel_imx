@@ -1962,7 +1962,7 @@ static struct v4l2_int_slave ov5645_slave = {
 
 static struct v4l2_int_device ov5645_int_device = {
 	.module = THIS_MODULE,
-	.name = "ov564x",
+	.name = "ov5645_mipi",
 	.type = v4l2_int_type_slave,
 	.u = {
 		.slave = &ov5645_slave,

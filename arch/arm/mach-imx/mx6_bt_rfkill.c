@@ -39,10 +39,12 @@
 #include <linux/gpio.h>
 #include <linux/slab.h>
 
-static int system_in_suspend;
+static int system_in_suspend = 0;
+static int last_power_status = 0;
 
 struct mxc_bt_rfkill_data {
 	int bt_power_gpio;
+	int bt_reset_gpio;
 };
 
 struct mxc_bt_rfkill_pdata {
@@ -52,17 +54,35 @@ static void mxc_bt_rfkill_reset(void *rfkdata)
 {
 	struct mxc_bt_rfkill_data *data = rfkdata;
 	printk(KERN_INFO "mxc_bt_rfkill_reset\n");
-	if (gpio_is_valid(data->bt_power_gpio)) {
-		gpio_set_value(data->bt_power_gpio, 0);
-		msleep(500);
-		gpio_set_value(data->bt_power_gpio, 1);
+	if (gpio_is_valid(data->bt_reset_gpio)) {
+		gpio_set_value(data->bt_reset_gpio, 0);
+		mdelay(500);
+		gpio_set_value(data->bt_reset_gpio, 1);
+		mdelay(500);
 	}
 }
 
+static void mxc_bt_power_set(void *rfkdata, int status)
+{
+	struct mxc_bt_rfkill_data *data = rfkdata;
+	
+	printk(KERN_INFO "mxc_bt_power_set = %d\n", status);
+	if (gpio_is_valid(data->bt_reset_gpio))
+		gpio_set_value(data->bt_reset_gpio, status);
+}
+
+
+
+
 static int mxc_bt_rfkill_power_change(void *rfkdata, int status)
 {
-	if (status)
-		mxc_bt_rfkill_reset(rfkdata);
+	mxc_bt_power_set(rfkdata, status);
+	
+	if (status)	{
+		if(last_power_status == 0)
+			mxc_bt_rfkill_reset(rfkdata);
+	}
+	
 	return 0;
 }
 static int mxc_bt_set_block(void *rfkdata, bool blocked)
@@ -79,6 +99,8 @@ static int mxc_bt_set_block(void *rfkdata, bool blocked)
 		ret = mxc_bt_rfkill_power_change(rfkdata, 1);
 	else
 		ret = mxc_bt_rfkill_power_change(rfkdata, 0);
+
+	last_power_status = blocked;
 
 	return ret;
 }
@@ -141,6 +163,12 @@ static int mxc_bt_rfkill_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct mxc_bt_rfkill_pdata *pdata = pdev->dev.platform_data;
 	struct device_node *np = pdev->dev.of_node;
+	struct pinctrl *pinctrl;
+
+	/* Bluetooth pinctrl */
+	pinctrl = devm_pinctrl_get_select_default(dev);
+	if (IS_ERR(pinctrl))
+		dev_warn(dev, "no pin available\n");
 
 	data = devm_kzalloc(dev, sizeof(struct mxc_bt_rfkill_data), GFP_KERNEL);
 	if (!data)
@@ -154,10 +182,6 @@ static int mxc_bt_rfkill_probe(struct platform_device *pdev)
 	}
 
 	data->bt_power_gpio = of_get_named_gpio(np, "bt-power-gpios", 0);
-	if (data->bt_power_gpio == -EPROBE_DEFER) {
-		printk(KERN_INFO "mxc_bt_rfkill: gpio not ready, need defer\n");
-		return -EPROBE_DEFER;
-	}
 	if (gpio_is_valid(data->bt_power_gpio)) {
 		printk(KERN_INFO "bt power gpio is:%d\n", data->bt_power_gpio);
 		rc = devm_gpio_request_one(&pdev->dev,
@@ -168,8 +192,19 @@ static int mxc_bt_rfkill_probe(struct platform_device *pdev)
 			dev_err(&pdev->dev, "unable to get bt-power-gpios\n");
 			goto error_request_gpio;
 		}
-	} else {
-		printk("bt power gpio not valid (%d)!\n", data->bt_power_gpio);
+	}
+
+	data->bt_reset_gpio = of_get_named_gpio(np, "bt-reset-gpios", 0);
+	if (gpio_is_valid(data->bt_reset_gpio)) {
+		printk(KERN_INFO "bt reset gpio is:%d\n", data->bt_reset_gpio);
+		rc = devm_gpio_request_one(&pdev->dev,
+								data->bt_reset_gpio,
+								GPIOF_OUT_INIT_HIGH,
+								"BT reset enable");
+		if (rc) {
+			dev_err(&pdev->dev, "unable to get bt-reset-gpios\n");
+			goto error_request_gpio;
+		}
 	}
 
 	rc = register_pm_notifier(&mxc_bt_power_notifier);

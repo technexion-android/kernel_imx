@@ -11,7 +11,23 @@
  *
  */
 
+#include <tnmacro.h>
 #include <dt-bindings/gpio/gpio.h>
+
+/* FT5606 Touch */
+#define EDM1_EXT_FT5X06_IOMUX_FAIRY &pinctrl_ext_gpio_ft5606_touch_irq_fairy &pinctrl_ext_gpio_ft5606_touch_reset_fairy
+
+/* external GPIO */
+#define EDM_EXT_GPIO_P255 gpio6 5
+#define EDM_EXT_GPIO_P256 gpio6 2
+#define EDM_EXT_GPIO_P257 gpio6 4
+#define EDM_EXT_GPIO_P258 gpio3 27
+#define EDM_EXT_GPIO_P259 gpio3 26
+#define EDM_EXT_GPIO_P260 gpio6 31
+#define EDM_EXT_GPIO_P261 gpio6 3
+#define EDM_EXT_GPIO_P262 gpio1 24
+#define EDM_EXT_GPIO_P263 gpio1 4
+#define EDM_EXT_GPIO_P264 gpio7 8
 
 / {
 	aliases {
@@ -24,12 +40,12 @@
 	chosen {
 		stdout-path = &uart1;
 	};
-
+/*
 	bcmdhd_wlan_0: bcmdhd_wlan@0 {
 		compatible = "android,bcmdhd_wlan";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_wifi_ctrl>;
-		gpios = <&gpio1 29 0>;    /* WL_HOST_WAKE */
+		gpios = <&gpio1 29 0>;
 		wlreg_on-supply = <&wlreg_on>;
 	};
 
@@ -38,8 +54,27 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_bt_ctrl>;
 		name = "bt_rfkill";
-		type = <2>;     /* bluetooth */
+		type = <2>;
 		bt_rfkill_reset-gpios = <&gpio5 30 0>;
+	};
+*/
+
+	bcmdhd_wlan_0: bcmdhd_wlan@0 {
+		compatible = "android,bcmdhd_wlan";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wifi_ctrl>;
+		gpios = <&gpio1 29 0>;    /* WL_HOST_WAKE */
+		status = "okay";
+		wlreg_on-supply = <&wlreg_on>;
+	};
+
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
+		bt-power-gpios = <&gpio5 21 0>;
+		bt-reset-gpios = <&gpio5 30 0>;
+		status ="okay";
 	};
 
 	memory: memory {
@@ -114,12 +149,6 @@
 		compatible = "gpio-edm";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ext_gpio>;
-
-		wifi_on {
-			label = "wifi_on";
-			gpios = <&gpio6 0 1>;
-			dir   = "out";
-		};
 
 		gpio_p256 {
 			label = "GPIO_P256";
@@ -200,7 +229,7 @@
 	mxcfb3: fb@2 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "lcd";
-		interface_pix_fmt = "RGB565";
+		interface_pix_fmt = "RGB24";
 		mode_str ="CLAA-WVGA";
 		default_bpp = <16>;
 		int_clk = <0>;
@@ -222,7 +251,7 @@
 		compatible = "fsl,lcd";
 		ipu_id = <0>;
 		disp_id = <0>;
-		default_ifmt = "RGB565";
+		default_ifmt = "RGB24";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ipu1>;
 		status = "okay";
@@ -230,18 +259,12 @@
 
 	backlight_lcd {
 		compatible = "pwm-backlight";
-		pwms = <&pwm4 0 5000000>; /* LCD_BKLEN J1A-82 */
-		brightness-levels = <0 4 8 16 32 64 128 255>;
-		default-brightness-level = <7>;
+		pwms = <&pwm4 0 50000 0>;
+		brightness-levels = <0 36 72 108 144 180 216 255>;
+		default-brightness-level = <6>;
+		status = "okay";
 	};
-
-	backlight_lvds {
-		compatible = "pwm-backlight";
-		pwms = <&pwm3 0 5000000>; /* LVDS_ABL_CTRL J1A-27 */
-		brightness-levels = <0 4 8 16 32 64 128 255>;
-		default-brightness-level = <7>;
-	};
-
+	
 	v4l2_cap_0 {
 		compatible = "fsl,imx6q-v4l2-capture";
 		ipu_id = <0>;
@@ -304,19 +327,19 @@
 		VDDA-supply = <&reg_2p5v>;
 		VDDIO-supply = <&reg_3p3v>;
 	};
-
-	fusion7: fusion7@10 {
-		compatible = "touchrev,fusion7";
-		reg = <0x10>; /* The reg property describes the address of the device's resources within the address space defined by its parent bus.  */
-		pinctrl-0 = <&pinctrl_touch_fusion_irq &pinctrl_touch_fusion_reset>;
+	
+	polytouch: edt-ft5x06@38 {
+		compatible = "edt,edt-ft5x06";
+		reg = <0x38>;
+#ifdef EDM1_EXT_FT5X06_IOMUX_FAIRY
 		pinctrl-names = "default";
-		interrupt-parent = <&gpio1>; /* GPIO_P263 */
-		interrupts = <4 0>;
-		reset-gpios=<&gpio7 8 0>; /* GPIO_P264 */
-		touch_xmax=<1499>;
-		touch_ymax=<899>;
-		flip_x=<0>;
-		flip_y=<0>;
+		pinctrl-0 = <EDM1_EXT_FT5X06_IOMUX_FAIRY>; /* Touch IRQ and Touch Reset */        
+#endif
+		interrupt-parent = <&GPIO_BANK(EDM_EXT_GPIO_P261)>; /* GPIO_P261 J1B-261 */
+		reset-gpios = <&EDM_EXT_GPIO_P264 GPIO_ACTIVE_LOW>; /* GPIO_P264 J1B-264 */
+		interrupts = <GPIO_NO(EDM_EXT_GPIO_P261) 0>;
+		touchscreen-size-x = <800>;
+		touchscreen-size-y = <480>;
 	};
 
 };
@@ -475,6 +498,18 @@
 				MX6QDL_PAD_SD3_RST__GPIO7_IO08     0x4001b0b5 /* GPIO7_08 EDM pin 264, touch reset */
 			>;
 		};
+		
+		pinctrl_ext_gpio_ft5606_touch_irq_fairy: ext-gpio-ft5606-touch-irq-fairy {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03  0x4001b0b5 /* GPIO6_03 EDM pin 261, touch irq */
+			>;
+		};
+
+		pinctrl_ext_gpio_ft5606_touch_reset_fairy: ext-gpio-ft5606-touch-reset-fairy {
+			fsl,pins = <
+				MX6QDL_PAD_SD3_RST__GPIO7_IO08     0x4001b0b5 /* GPIO7_08 EDM pin 264, touch reset */
+			>;
+		};		
 
 		pinctrl_wifi_ctrl: wifi_ctrlgrp {
 			fsl,pins = <
@@ -789,7 +824,7 @@
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
-	uart-has-rtscts;
+	fsl,uart-has-rtscts;
 	status = "okay";
 };
 
