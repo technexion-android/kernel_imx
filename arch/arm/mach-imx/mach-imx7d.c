@@ -15,6 +15,8 @@
 #include <linux/regmap.h>
 #include <linux/mfd/syscon.h>
 #include <linux/mfd/syscon/imx7-iomuxc-gpr.h>
+#include <linux/memblock.h>
+#include <asm/setup.h>
 
 #include "common.h"
 #include "cpuidle.h"
@@ -61,12 +63,49 @@ static int bcm54220_phy_fixup(struct phy_device *dev)
 	return 0;
 }
 
+static int ar8035_phy_fixup(struct phy_device *dev)
+{
+	u16 val;
+
+	/* Ar803x phy SmartEEE feature cause link status generates glitch,
+	* which cause ethernet link down/up issue, so disable SmartEEE
+	*/
+	phy_write(dev, 0xd, 0x3);
+	phy_write(dev, 0xe, 0x805d);
+	phy_write(dev, 0xd, 0x4003);
+
+	val = phy_read(dev, 0xe);
+	phy_write(dev, 0xe, val & ~(1 << 8));
+
+	/*
+	* Enable 125MHz clock from CLK_25M on the AR8031.  This
+	* is fed in to the IMX6 on the ENET_REF_CLK (V22) pad.
+	* Also, introduce a tx clock delay.
+	*
+	* This is the same as is the AR8031 fixup.
+	*/
+
+	ar8031_phy_fixup(dev);
+
+	/*check phy power*/
+	val = phy_read(dev, 0x0);
+	if (val & BMCR_PDOWN)
+		phy_write(dev, 0x0, val & ~BMCR_PDOWN);
+
+	 return 0;
+}
+
+
+
+#define PHY_ID_AR8035   0x004dd072
 #define PHY_ID_AR8031   0x004dd074
 #define PHY_ID_BCM54220	0x600d8589
 #define PHY_ID_BCM5422x	0x600d8599
 static void __init imx7d_enet_phy_init(void)
 {
 	if (IS_BUILTIN(CONFIG_PHYLIB)) {
+		phy_register_fixup_for_uid(PHY_ID_AR8035, 0xffffffef,
+					   ar8035_phy_fixup);
 		phy_register_fixup_for_uid(PHY_ID_AR8031, 0xffffffff,
 					   ar8031_phy_fixup);
 		phy_register_fixup_for_uid(PHY_ID_BCM54220, 0xffffffff,
@@ -170,6 +209,33 @@ static void __init imx7d_map_io(void)
 	imx_busfreq_map_io();
 }
 
+extern unsigned long int ramoops_phys_addr;
+extern unsigned long int ramoops_mem_size;
+static void imx7d_reserve(void)
+{
+	phys_addr_t phys;
+	phys_addr_t max_phys;
+	struct meminfo *mi;
+	struct membank *bank;
+
+#ifdef CONFIG_PSTORE_RAM
+	max_phys = memblock_end_of_DRAM();
+	/* reserve 64M for uboot avoid ram console data is cleaned by uboot */
+	phys = memblock_alloc_base(SZ_1M, SZ_4K, max_phys - SZ_64M);
+	if (phys) {
+		memblock_remove(phys, SZ_1M);
+		memblock_reserve(phys, SZ_1M);
+		ramoops_phys_addr = phys;
+		ramoops_mem_size = SZ_1M;
+	} else {
+		ramoops_phys_addr = 0;
+		ramoops_mem_size = 0;
+		pr_err("no memory reserve for ramoops.\n");
+	}
+#endif
+	return;
+}
+
 DT_MACHINE_START(IMX7D, "Freescale i.MX7 Dual (Device Tree)")
 	.map_io		= imx7d_map_io,
 	.smp            = smp_ops(imx_smp_ops),
@@ -177,4 +243,5 @@ DT_MACHINE_START(IMX7D, "Freescale i.MX7 Dual (Device Tree)")
 	.init_machine	= imx7d_init_machine,
 	.init_late	= imx7d_init_late,
 	.dt_compat	= imx7d_dt_compat,
+	.reserve        = imx7d_reserve,
 MACHINE_END

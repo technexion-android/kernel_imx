@@ -1463,8 +1463,16 @@ static int sgtl5000_i2c_probe(struct i2c_client *client,
 
 	/* read chip information */
 	ret = regmap_read(sgtl5000->regmap, SGTL5000_CHIP_ID, &reg);
+	
+#ifdef CONFIG_SND_SOC_IMX_SGTL5000_DUMMY
+		//Hank dummy
+		ret = 0x0;
+		reg = 0xa001;
+#endif
+	
 	if (ret)
 		goto disable_clk;
+
 
 	if (((reg & SGTL5000_PARTID_MASK) >> SGTL5000_PARTID_SHIFT) !=
 	    SGTL5000_PARTID_PART_ID) {
@@ -1523,6 +1531,12 @@ static int sgtl5000_i2c_probe(struct i2c_client *client,
 
 	/* Ensure sgtl5000 will start with sane register values */
 	ret = sgtl5000_fill_defaults(sgtl5000);
+
+#ifdef CONFIG_SND_SOC_IMX_SGTL5000_DUMMY
+	//Hank dummy
+	ret = 0x0;
+#endif
+
 	if (ret)
 		goto disable_clk;
 

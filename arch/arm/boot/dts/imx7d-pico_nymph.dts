@@ -1,0 +1,67 @@
+/*
+ * Copyright 2016 Technexion Ltd.
+ *
+ * Author: Tapani Utriainen <tapani@technexion.com>
+ *	   Richard Hu <richard.hu@technexion.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+/dts-v1/;
+
+#include <dt-bindings/interrupt-controller/irq.h>
+#include "imx7d.dtsi"
+#include "imx7d-pico.dtsi"
+#include "baseboard_pico_nymph.dtsi"
+/ {
+	model = "TechNexion PICO-IMX7D and NYMPH baseboard";
+	compatible = "fsl,pico-cf-imx7d", "fsl,imx7d";
+
+	backlight_lcd {
+		compatible = "pwm-backlight";
+		pwms = <&pwm4 0 5000000>;
+		brightness-levels = <0 4 8 16 32 64 128 255>;
+		default-brightness-level = <7>;
+	};
+};
+
+&lcdif {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lcdif_dat
+		     &pinctrl_lcdif_ctrl>;
+	lcd-supply = <&lcd_on>;
+	display = <&display0>;
+	status = "okay";
+
+	display0: display {
+		bits-per-pixel = <16>;
+		bus-width = <24>;
+
+		display-timings {
+			native-mode = <&timing0>;
+			timing0: timing0 {
+				clock-frequency = <25175000>;
+				hactive = <640>;
+				hfront-porch = <16>;
+				hsync-len = <96>;
+				hback-porch = <48>;
+				vactive = <480>;
+				vfront-porch = <10>;
+				vsync-len = <2>;
+				vback-porch = <33>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				de-active = <1>;
+				pixelclk-active = <1>;
+				interlaced =  <0>;
+			};
+		};
+	};
+};
+
+
+&epdc {
+	status = "disabled";
+};

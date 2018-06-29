@@ -1,0 +1,22 @@
+/*
+ * Copyright 2016 Technexion Ltd.
+ *
+ * Author: Alvin Chen <alvin.chen@technexion.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
+/dts-v1/;
+#define EDM1_FAIRY_ENABLE_SPDIF
+#include <dt-bindings/input/input.h>
+#include "imx6ul.dtsi"
+#include "imx6ul-edm1-nand.dtsi"
+#include "baseboard_edm1_gnome.dtsi"
+
+/ {
+	model = "Technexion Edm1 i.MX6 UltraLite Board with NAND";
+	compatible = "fsl,imx6ul-edm1", "fsl,imx6ul";
+};

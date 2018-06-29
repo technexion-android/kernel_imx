@@ -1,0 +1,24 @@
+/*
+ * Copyright 2016 Technexion Ltd.
+ *
+ * Author: Wig Cheng <wig.cheng@technexion.com>
+ *	   Richard Hu <richard.hu@technexion.com>
+ *	   Tapani Utriainen <tapani@technexion.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+/dts-v1/;
+
+#include <dt-bindings/interrupt-controller/irq.h>
+#include "imx6dl.dtsi"
+#include "imx6qdl-pico_edison.dtsi"
+#include "baseboard_intel_edison.dtsi"
+
+/ {
+	model = "TechNexion PICO-IMX6 DualLite/Solo and Intel Edison baseboard";
+	compatible = "fsl,pico-cf-imx6dl", "fsl,imx6dl";
+};
+

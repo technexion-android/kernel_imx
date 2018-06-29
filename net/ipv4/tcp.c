@@ -269,6 +269,7 @@
 #include <linux/crypto.h>
 #include <linux/time.h>
 #include <linux/slab.h>
+#include <linux/uid_stat.h>
 
 #include <net/icmp.h>
 #include <net/inet_common.h>
@@ -1258,6 +1259,10 @@ out:
 		tcp_push(sk, flags, mss_now, tp->nonagle, size_goal);
 out_nopush:
 	release_sock(sk);
+
+	if (copied + copied_syn)
+		uid_stat_tcp_snd(from_kuid(&init_user_ns, current_uid()),
+				 copied + copied_syn);
 	return copied + copied_syn;
 
 do_fault:
@@ -1529,6 +1534,8 @@ int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
 	if (copied > 0) {
 		tcp_recv_skb(sk, seq, &offset);
 		tcp_cleanup_rbuf(sk, copied);
+		uid_stat_tcp_rcv(from_kuid(&init_user_ns, current_uid()),
+				 copied);
 	}
 	return copied;
 }
@@ -1857,6 +1864,10 @@ skip_copy:
 	tcp_cleanup_rbuf(sk, copied);
 
 	release_sock(sk);
+
+	if (copied > 0)
+		uid_stat_tcp_rcv(from_kuid(&init_user_ns, current_uid()),
+				 copied);
 	return copied;
 
 out:
@@ -1865,6 +1876,9 @@ out:
 
 recv_urg:
 	err = tcp_recv_urg(sk, msg, len, flags);
+	if (err > 0)
+		uid_stat_tcp_rcv(from_kuid(&init_user_ns, current_uid()),
+				 err);
 	goto out;
 
 recv_sndq:
@@ -3007,6 +3021,43 @@ void tcp_done(struct sock *sk)
 		inet_csk_destroy_sock(sk);
 }
 EXPORT_SYMBOL_GPL(tcp_done);
+
+int tcp_abort(struct sock *sk, int err)
+{
+	if (!sk_fullsock(sk)) {
+		sock_gen_put(sk);
+		return -EOPNOTSUPP;
+	}
+
+	/* Don't race with userspace socket closes such as tcp_close. */
+	lock_sock(sk);
+
+	if (sk->sk_state == TCP_LISTEN) {
+		tcp_set_state(sk, TCP_CLOSE);
+		inet_csk_listen_stop(sk);
+	}
+
+	/* Don't race with BH socket closes such as inet_csk_listen_stop. */
+	local_bh_disable();
+	bh_lock_sock(sk);
+
+	if (!sock_flag(sk, SOCK_DEAD)) {
+		sk->sk_err = err;
+		/* This barrier is coupled with smp_rmb() in tcp_poll() */
+		smp_wmb();
+		sk->sk_error_report(sk);
+		if (tcp_need_reset(sk->sk_state))
+			tcp_send_active_reset(sk, GFP_ATOMIC);
+		tcp_done(sk);
+	}
+
+	bh_unlock_sock(sk);
+	local_bh_enable();
+	release_sock(sk);
+	sock_put(sk);
+	return 0;
+}
+EXPORT_SYMBOL_GPL(tcp_abort);
 
 extern struct tcp_congestion_ops tcp_reno;
 

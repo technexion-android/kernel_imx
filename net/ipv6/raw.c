@@ -766,6 +766,7 @@ static int rawv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
 	memset(&fl6, 0, sizeof(fl6));
 
 	fl6.flowi6_mark = sk->sk_mark;
+	fl6.flowi6_uid = sock_i_uid(sk);
 
 	if (sin6) {
 		if (addr_len < SIN6_LEN_RFC2133)
@@ -841,7 +842,7 @@ static int rawv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
 	if (!opt) {
 		opt = txopt_get(np);
 		opt_to_free = opt;
-		}
+	}
 	if (flowlabel)
 		opt = fl6_merge_options(&opt_space, flowlabel, opt);
 	opt = ipv6_fixup_options(&opt_space, opt);

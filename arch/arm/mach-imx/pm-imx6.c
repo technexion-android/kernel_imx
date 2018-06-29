@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 Freescale Semiconductor, Inc.
+ * Copyright 2011-2016 Freescale Semiconductor, Inc.
  * Copyright 2011 Linaro Ltd.
  *
  * The code contained herein is licensed under the GNU General Public
@@ -24,6 +24,7 @@
 #include <linux/regmap.h>
 #include <linux/slab.h>
 #include <linux/suspend.h>
+#include <linux/wakeup_reason.h>
 #include <asm/cacheflush.h>
 #include <asm/fncpy.h>
 #include <asm/mach/map.h>
@@ -126,6 +127,9 @@ extern unsigned long iram_tlb_phys_addr;
 #define QSPI_LUTKEY_VALUE	0x5AF05AF0
 #define QSPI_LCKER_LOCK		0x1
 #define QSPI_LCKER_UNLOCK	0x2
+
+#define IMX6_GPC_IMR1_OFFSET  0x8
+#define IMX6_GPC_ISR1_OFFSET  0x18
 
 enum qspi_regs_valuetype {
 	QSPI_PREDEFINED,
@@ -268,6 +272,7 @@ static void __iomem *qspi_base;
 static unsigned int ocram_size;
 static void __iomem *ccm_base;
 static void __iomem *suspend_ocram_base;
+static void __iomem *gpc_mem_base;
 static void (*imx6_suspend_in_ocram_fn)(void __iomem *ocram_vbase);
 struct regmap *romcp;
 
@@ -646,7 +651,7 @@ int imx6q_set_lpm(enum mxc_cpu_pwr_mode mode)
 		if (cpu_is_imx6sl() || cpu_is_imx6sx())
 			val |= BM_CLPCR_BYPASS_PMIC_READY;
 		if (cpu_is_imx6sl() || cpu_is_imx6sx() ||
-		    cpu_is_imx6ul())
+		    cpu_is_imx6ul() || cpu_is_imx6ull())
 			val |= BM_CLPCR_BYP_MMDC_CH0_LPM_HS;
 		else
 			val |= BM_CLPCR_BYP_MMDC_CH1_LPM_HS;
@@ -664,7 +669,7 @@ int imx6q_set_lpm(enum mxc_cpu_pwr_mode mode)
 		if (cpu_is_imx6sl() || cpu_is_imx6sx())
 			val |= BM_CLPCR_BYPASS_PMIC_READY;
 		if (cpu_is_imx6sl() || cpu_is_imx6sx() ||
-		    cpu_is_imx6ul())
+		    cpu_is_imx6ul() || cpu_is_imx6ull())
 			val |= BM_CLPCR_BYP_MMDC_CH0_LPM_HS;
 		else
 			val |= BM_CLPCR_BYP_MMDC_CH1_LPM_HS;
@@ -687,9 +692,11 @@ int imx6q_set_lpm(enum mxc_cpu_pwr_mode mode)
 	 *
 	 * Note that IRQ #32 is GIC SPI #0.
 	 */
-	imx_gpc_hwirq_unmask(0);
+	if (mode != WAIT_CLOCKED)
+		imx_gpc_hwirq_unmask(0);
 	writel_relaxed(val, ccm_base + CLPCR);
-	imx_gpc_hwirq_mask(0);
+	if (mode != WAIT_CLOCKED)
+		imx_gpc_hwirq_mask(0);
 
 	return 0;
 }
@@ -724,8 +731,7 @@ static void imx6_console_save(unsigned int *regs)
 	regs[6] = readl_relaxed(console_base + UART_UTIM);
 	regs[7] = readl_relaxed(console_base + UART_UBIR);
 	regs[8] = readl_relaxed(console_base + UART_UBMR);
-	regs[9] = readl_relaxed(console_base + UART_UBRC);
-	regs[10] = readl_relaxed(console_base + UART_UTS);
+	regs[9] = readl_relaxed(console_base + UART_UTS);
 }
 
 static void imx6_console_restore(unsigned int *regs)
@@ -738,8 +744,7 @@ static void imx6_console_restore(unsigned int *regs)
 	writel_relaxed(regs[6], console_base + UART_UTIM);
 	writel_relaxed(regs[7], console_base + UART_UBIR);
 	writel_relaxed(regs[8], console_base + UART_UBMR);
-	writel_relaxed(regs[9], console_base + UART_UBRC);
-	writel_relaxed(regs[10], console_base + UART_UTS);
+	writel_relaxed(regs[9], console_base + UART_UTS);
 	writel_relaxed(regs[0], console_base + UART_UCR1);
 	writel_relaxed(regs[1] | 0x1, console_base + UART_UCR2);
 	writel_relaxed(regs[2], console_base + UART_UCR3);
@@ -773,8 +778,12 @@ static void imx6_qspi_restore(struct qspi_regs *pregs, int reg_num)
 
 static int imx6q_pm_enter(suspend_state_t state)
 {
-	unsigned int console_saved_reg[11] = {0};
+	unsigned int console_saved_reg[10] = {0};
 	static unsigned int ccm_ccgr4, ccm_ccgr6;
+#ifdef CONFIG_SUSPEND
+	u32 imr[4], isr[4], i, irq_num, gpc_isr;
+#endif
+
 
 #ifdef CONFIG_SOC_IMX6SX
 	if (imx_src_is_m4_enabled()) {
@@ -795,7 +804,6 @@ static int imx6q_pm_enter(suspend_state_t state)
 		}
 	}
 #endif
-
 	switch (state) {
 	case PM_SUSPEND_STANDBY:
 		imx6q_set_lpm(STOP_POWER_ON);
@@ -826,6 +834,8 @@ static int imx6q_pm_enter(suspend_state_t state)
 			imx6_enable_rbc(true);
 		imx_gpc_pre_suspend(true);
 		imx_anatop_pre_suspend();
+		if (cpu_is_imx6ull() && imx_gpc_is_mf_mix_off())
+			imx6_console_save(console_saved_reg);
 		if (cpu_is_imx6sx() && imx_gpc_is_mf_mix_off()) {
 			ccm_ccgr4 = readl_relaxed(ccm_base + CCGR4);
 			ccm_ccgr6 = readl_relaxed(ccm_base + CCGR6);
@@ -864,6 +874,8 @@ static int imx6q_pm_enter(suspend_state_t state)
 					sizeof(qspi_regs_imx6sx) /
 					sizeof(struct qspi_regs));
 		}
+		if (cpu_is_imx6ull() && imx_gpc_is_mf_mix_off())
+			imx6_console_restore(console_saved_reg);
 		if (cpu_is_imx6q() || cpu_is_imx6dl())
 			imx_smp_prepare();
 		imx_anatop_post_resume();
@@ -876,6 +888,25 @@ static int imx6q_pm_enter(suspend_state_t state)
 	default:
 		return -EINVAL;
 	}
+
+#ifdef CONFIG_SUSPEND
+	for (i = 0; i < 4; i++) {
+		imr[i] = readl_relaxed(gpc_mem_base +
+					IMX6_GPC_IMR1_OFFSET + i * 4);
+		isr[i] = readl_relaxed(gpc_mem_base +
+				IMX6_GPC_ISR1_OFFSET + i * 4);
+		irq_num = (i + 1)*32;
+		if ((~imr[i]) & isr[i]) {
+			gpc_isr = (~imr[i]) & isr[i];
+			while (gpc_isr) {
+			if (gpc_isr & 0x1)
+				log_wakeup_reason(irq_num);
+				irq_num++;
+				gpc_isr /= 2;
+			}
+		}
+	}
+#endif
 
 #ifdef CONFIG_SOC_IMX6SX
 	if (imx_src_is_m4_enabled()) {
@@ -1076,6 +1107,7 @@ static int __init imx6q_suspend_init(const struct imx6_pm_socdata *socdata)
 	pm_info->mmdc_num = socdata->mmdc_num;
 	mmdc_offset_array = socdata->mmdc_offset;
 
+	gpc_mem_base = pm_info->gpc_base.vbase;
 	for (i = 0; i < pm_info->mmdc_io_num; i++) {
 		pm_info->mmdc_io_val[i][0] =
 			mmdc_io_offset_array[i];
@@ -1094,7 +1126,7 @@ static int __init imx6q_suspend_init(const struct imx6_pm_socdata *socdata)
 	}
 
 	/* need to overwrite the value for some mmdc registers */
-	if ((cpu_is_imx6sx() || cpu_is_imx6ul()) &&
+	if ((cpu_is_imx6sx() || cpu_is_imx6ul() || cpu_is_imx6ull()) &&
 		pm_info->ddr_type != IMX_DDR_TYPE_LPDDR2) {
 		pm_info->mmdc_val[20][1] = (pm_info->mmdc_val[20][1]
 			& 0xffff0000) | 0x0202;
@@ -1113,7 +1145,7 @@ static int __init imx6q_suspend_init(const struct imx6_pm_socdata *socdata)
 		pm_info->mmdc_val[32][1] = 0xa1310003;
 	}
 
-	if (cpu_is_imx6ul() &&
+	if ((cpu_is_imx6ul() || cpu_is_imx6ull()) &&
 		pm_info->ddr_type == IMX_DDR_TYPE_LPDDR2) {
 		pm_info->mmdc_val[0][1] = 0x8000;
 		pm_info->mmdc_val[2][1] = 0xa1390003;
@@ -1244,8 +1276,17 @@ void __init imx6sx_pm_init(void)
 
 void __init imx6ul_pm_init(void)
 {
+	struct device_node *np;
+
 	if (imx_mmdc_get_ddr_type() == IMX_DDR_TYPE_LPDDR2)
 		imx6_pm_common_init(&imx6ul_lpddr2_pm_data);
 	else
 		imx6_pm_common_init(&imx6ul_pm_data);
+
+	if (cpu_is_imx6ull()) {
+		np = of_find_node_by_path(
+			"/soc/aips-bus@02000000/spba-bus@02000000/serial@02020000");
+		if (np)
+			console_base = of_iomap(np, 0);
+	}
 }

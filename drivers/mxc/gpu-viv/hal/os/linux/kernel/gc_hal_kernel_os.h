@@ -56,45 +56,28 @@
 #ifndef __gc_hal_kernel_os_h_
 #define __gc_hal_kernel_os_h_
 
-typedef struct _LINUX_MDL_MAP
+typedef struct _LINUX_MDL     LINUX_MDL,     *PLINUX_MDL;
+typedef struct _LINUX_MDL_MAP LINUX_MDL_MAP, *PLINUX_MDL_MAP;
+
+struct _LINUX_MDL_MAP
 {
     gctINT                  pid;
     gctPOINTER              vmaAddr;
-    atomic_t                count;
-    struct vm_area_struct * vma;
-    struct _LINUX_MDL_MAP * next;
-}
-LINUX_MDL_MAP;
+    gctUINT32               count;
 
-typedef struct _LINUX_MDL_MAP * PLINUX_MDL_MAP;
+    struct list_head        link;
+};
 
-typedef struct _LINUX_MDL
+struct _LINUX_MDL
 {
     char *                  addr;
 
-    union _pages
-    {
-        /* Pointer to a array of pages. */
-        struct page *       contiguousPages;
-        /* Pointer to a array of pointers to page. */
-        struct page **      nonContiguousPages;
-    }
-    u;
-
-#ifdef NO_DMA_COHERENT
-    gctPOINTER              kaddr;
-#endif /* NO_DMA_COHERENT */
-
     gctINT                  numPages;
-    gctINT                  pagedMem;
     gctBOOL                 contiguous;
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 27)
-    gctBOOL                 exact;
-#endif
     dma_addr_t              dmaHandle;
-    PLINUX_MDL_MAP          maps;
-    struct _LINUX_MDL *     prev;
-    struct _LINUX_MDL *     next;
+
+    struct mutex            mapsMutex;
+    struct list_head        mapsHead;
 
     /* Pointer to allocator which allocates memory for this mdl. */
     void *                  allocator;
@@ -103,8 +86,9 @@ typedef struct _LINUX_MDL
     void *                  priv;
 
     uint                    gid;
-}
-LINUX_MDL, *PLINUX_MDL;
+
+    struct list_head        link;
+};
 
 extern PLINUX_MDL_MAP
 FindMdlMap(

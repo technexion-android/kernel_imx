@@ -291,13 +291,13 @@ static struct mem_type mem_types[] = {
 		.prot_pte  = L_PTE_PRESENT | L_PTE_YOUNG | L_PTE_DIRTY |
 				L_PTE_RDONLY,
 		.prot_l1   = PMD_TYPE_TABLE,
-		.domain    = DOMAIN_USER,
+		.domain    = DOMAIN_VECTORS,
 	},
 	[MT_HIGH_VECTORS] = {
 		.prot_pte  = L_PTE_PRESENT | L_PTE_YOUNG | L_PTE_DIRTY |
 				L_PTE_USER | L_PTE_RDONLY,
 		.prot_l1   = PMD_TYPE_TABLE,
-		.domain    = DOMAIN_USER,
+		.domain    = DOMAIN_VECTORS,
 	},
 	[MT_MEMORY_RWX] = {
 		.prot_pte  = L_PTE_PRESENT | L_PTE_YOUNG | L_PTE_DIRTY,
@@ -530,7 +530,7 @@ static void __init build_mem_type_table(void)
 	 * in the Short-descriptor translation table format descriptors.
 	 */
 	if (cpu_arch == CPU_ARCH_ARMv7 &&
-		(read_cpuid_ext(CPUID_EXT_MMFR0) & 0xF) == 4) {
+		(read_cpuid_ext(CPUID_EXT_MMFR0) & 0xF) >= 4) {
 		user_pmd_table |= PMD_PXNTABLE;
 	}
 #endif

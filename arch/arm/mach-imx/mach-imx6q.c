@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 Freescale Semiconductor, Inc.
+ * Copyright 2011-2016 Freescale Semiconductor, Inc.
  * Copyright 2011 Linaro Ltd.
  *
  * The code contained herein is licensed under the GNU General Public
@@ -22,6 +22,7 @@
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/of_irq.h>
+#include <linux/of_gpio.h>
 #include <linux/of_platform.h>
 #include <linux/pm_opp.h>
 #include <linux/pci.h>
@@ -35,6 +36,8 @@
 #include <asm/mach/arch.h>
 #include <asm/mach/map.h>
 #include <asm/system_misc.h>
+#include <linux/memblock.h>
+#include <asm/setup.h>
 
 #include "common.h"
 #include "cpuidle.h"
@@ -291,6 +294,28 @@ static void __init imx6q_axi_init(void)
 	}
 }
 
+/*
+ * Init GPIO PCIE_PWR_EN to keep power supply to miniPCIE 3G modem
+ *
+*/
+static void __init imx6q_mini_pcie_init(void)
+{
+	struct device_node *np = NULL;
+	int ret, power_on_gpio;
+	np = of_find_node_by_name(NULL, "minipcie_ctrl");
+	if (!np)
+		return;
+
+	power_on_gpio = of_get_named_gpio(np, "power-on-gpio", 0);
+	if (gpio_is_valid(power_on_gpio)) {
+		ret = gpio_request_one(power_on_gpio, GPIOF_OUT_INIT_HIGH,
+			"miniPCIE Power On");
+		pr_warn("!!request miniPCIE Power On gpio\n");
+		if (ret)
+			pr_warn("failed to request miniPCIE Power On gpio\n");
+	}
+}
+
 static void __init imx6q_enet_clk_sel(void)
 {
 	struct regmap *gpr;
@@ -333,6 +358,7 @@ static void __init imx6q_init_machine(void)
 	imx6q_csi_mux_init();
 	cpu_is_imx6q() ?  imx6q_pm_init() : imx6dl_pm_init();
 	imx6q_axi_init();
+	imx6q_mini_pcie_init();
 }
 
 #define OCOTP_CFG3			0x440
@@ -464,6 +490,33 @@ static const char * const imx6q_dt_compat[] __initconst = {
 	NULL,
 };
 
+extern unsigned long int ramoops_phys_addr;
+extern unsigned long int ramoops_mem_size;
+static void imx6q_reserve(void)
+{
+	phys_addr_t phys;
+	phys_addr_t max_phys;
+	struct meminfo *mi;
+	struct membank *bank;
+
+#ifdef CONFIG_PSTORE_RAM
+	max_phys = memblock_end_of_DRAM();
+	/* reserve 64M for uboot avoid ram console data is cleaned by uboot */
+	phys = memblock_alloc_base(SZ_1M, SZ_4K, max_phys - SZ_64M);
+	if (phys) {
+		memblock_remove(phys, SZ_1M);
+		memblock_reserve(phys, SZ_1M);
+		ramoops_phys_addr = phys;
+		ramoops_mem_size = SZ_1M;
+	} else {
+		ramoops_phys_addr = 0;
+		ramoops_mem_size = 0;
+		pr_err("no memory reserve for ramoops.\n");
+	}
+#endif
+	return;
+}
+
 DT_MACHINE_START(IMX6Q, "Freescale i.MX6 Quad/DualLite (Device Tree)")
 	.smp		= smp_ops(imx_smp_ops),
 	.map_io		= imx6q_map_io,
@@ -471,4 +524,5 @@ DT_MACHINE_START(IMX6Q, "Freescale i.MX6 Quad/DualLite (Device Tree)")
 	.init_machine	= imx6q_init_machine,
 	.init_late      = imx6q_init_late,
 	.dt_compat	= imx6q_dt_compat,
+	.reserve        = imx6q_reserve,
 MACHINE_END

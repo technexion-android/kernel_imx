@@ -145,6 +145,7 @@ typedef struct _gcsPARSER
     gctUINT32           skipCount;
 
     gctBOOL             allow;
+    gctBOOL             stop;
 
     /* Callback used by parser to handle a command. */
     gckPARSER_HANDLER   commandHandler;
@@ -156,7 +157,7 @@ typedef struct _gcsMIRROR
     gctUINT32_PTR       logical[gcdNUM_RECORDS];
     gctUINT32           bytes;
     gcsSTATE_MAP_PTR    map;
-    gctUINT32           maxState;
+    gctSIZE_T           maxState;
 }
 gcsMIRROR;
 
@@ -241,14 +242,14 @@ _GetCommand(
     Parser->hi = buffer[0];
     Parser->lo = buffer[1];
 
-    Parser->cmdOpcode = (((((gctUINT32) (Parser->hi)) >> (0 ? 31:27)) & ((gctUINT32) ((((1 ? 31:27) - (0 ? 31:27) + 1) == 32) ? ~0 : (~(~0 << ((1 ? 31:27) - (0 ? 31:27) + 1)))))) );
+    Parser->cmdOpcode = (((((gctUINT32) (Parser->hi)) >> (0 ? 31:27)) & ((gctUINT32) ((((1 ? 31:27) - (0 ? 31:27) + 1) == 32) ? ~0U : (~(~0U << ((1 ? 31:27) - (0 ? 31:27) + 1)))))) );
     Parser->cmdRectCount = 1;
 
     switch (Parser->cmdOpcode)
     {
     case 0x01:
         /* Extract count. */
-        Parser->cmdSize = (((((gctUINT32) (Parser->hi)) >> (0 ? 25:16)) & ((gctUINT32) ((((1 ? 25:16) - (0 ? 25:16) + 1) == 32) ? ~0 : (~(~0 << ((1 ? 25:16) - (0 ? 25:16) + 1)))))) );
+        Parser->cmdSize = (((((gctUINT32) (Parser->hi)) >> (0 ? 25:16)) & ((gctUINT32) ((((1 ? 25:16) - (0 ? 25:16) + 1) == 32) ? ~0U : (~(~0U << ((1 ? 25:16) - (0 ? 25:16) + 1)))))) );
         if (Parser->cmdSize == 0)
         {
             /* 0 means 1024. */
@@ -257,7 +258,7 @@ _GetCommand(
         Parser->skip = (Parser->cmdSize & 0x1) ? 0 : 1;
 
         /* Extract address. */
-        Parser->cmdAddr = (((((gctUINT32) (Parser->hi)) >> (0 ? 15:0)) & ((gctUINT32) ((((1 ? 15:0) - (0 ? 15:0) + 1) == 32) ? ~0 : (~(~0 << ((1 ? 15:0) - (0 ? 15:0) + 1)))))) );
+        Parser->cmdAddr = (((((gctUINT32) (Parser->hi)) >> (0 ? 15:0)) & ((gctUINT32) ((((1 ? 15:0) - (0 ? 15:0) + 1) == 32) ? ~0U : (~(~0U << ((1 ? 15:0) - (0 ? 15:0) + 1)))))) );
 
         Parser->currentCmdBufferAddr = Parser->currentCmdBufferAddr + 4;
         Parser->skipCount = Parser->cmdSize + Parser->skip;
@@ -288,8 +289,8 @@ _GetCommand(
         Parser->cmdSize = 1;
         Parser->cmdAddr = 0x0F06;
 
-        cmdRectCount = (((((gctUINT32) (Parser->hi)) >> (0 ? 15:8)) & ((gctUINT32) ((((1 ? 15:8) - (0 ? 15:8) + 1) == 32) ? ~0 : (~(~0 << ((1 ? 15:8) - (0 ? 15:8) + 1)))))) );
-        cmdDataCount = (((((gctUINT32) (Parser->hi)) >> (0 ? 26:16)) & ((gctUINT32) ((((1 ? 26:16) - (0 ? 26:16) + 1) == 32) ? ~0 : (~(~0 << ((1 ? 26:16) - (0 ? 26:16) + 1)))))) );
+        cmdRectCount = (((((gctUINT32) (Parser->hi)) >> (0 ? 15:8)) & ((gctUINT32) ((((1 ? 15:8) - (0 ? 15:8) + 1) == 32) ? ~0U : (~(~0U << ((1 ? 15:8) - (0 ? 15:8) + 1)))))) );
+        cmdDataCount = (((((gctUINT32) (Parser->hi)) >> (0 ? 26:16)) & ((gctUINT32) ((((1 ? 26:16) - (0 ? 26:16) + 1) == 32) ? ~0U : (~(~0U << ((1 ? 26:16) - (0 ? 26:16) + 1)))))) );
 
         Parser->skipCount = gcmALIGN(Parser->cmdSize, 2)
                           + cmdRectCount * 2
@@ -306,6 +307,16 @@ _GetCommand(
     case 0x02:
         Parser->currentCmdBufferAddr = Parser->currentCmdBufferAddr + 8;
         Parser->skipCount = 0;
+        break;
+
+    case 0x07:
+        Parser->currentCmdBufferAddr = Parser->currentCmdBufferAddr + 8;
+        Parser->skipCount = 0;
+        break;
+
+    case 0x08:
+        /* Commands after LINK isn't executed, skip them. */
+        Parser->stop = gcvTRUE;
         break;
 
     default:
@@ -354,6 +365,7 @@ gckPARSER_Parse(
     parser->currentCmdBufferAddr = (gctUINT8_PTR)Buffer;
     parser->skip = 0;
     parser->allow = gcvTRUE;
+    parser->stop  = gcvFALSE;
 
     /* Go through command buffer until reaching the end
     ** or meeting an error. */
@@ -363,7 +375,10 @@ gckPARSER_Parse(
 
         _ParseCommand(parser);
     }
-    while ((parser->currentCmdBufferAddr < end) && (parser->allow == gcvTRUE));
+    while ((parser->currentCmdBufferAddr < end)
+        && (parser->allow == gcvTRUE)
+        && (parser->stop == gcvFALSE)
+        );
 
     if (parser->allow == gcvFALSE)
     {
@@ -469,7 +484,7 @@ gckRECORDER_Construct(
     gceSTATUS status;
     gckCONTEXT context = gcvNULL;
     gckRECORDER recorder = gcvNULL;
-    gctUINT32 mapSize;
+    gctSIZE_T mapSize;
     gctUINT i;
     gctBOOL virtualCommandBuffer = Hardware->kernel->virtualCommandBuffer;
 

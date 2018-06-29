@@ -925,11 +925,10 @@ static int crypt_convert(struct crypt_config *cc,
 
 		switch (r) {
 		/* async */
+		case -EINPROGRESS:
 		case -EBUSY:
 			wait_for_completion(&ctx->restart);
 			reinit_completion(&ctx->restart);
-			/* fall through*/
-		case -EINPROGRESS:
 			ctx->req = NULL;
 			ctx->cc_sector++;
 			continue;
@@ -1347,10 +1346,8 @@ static void kcryptd_async_done(struct crypto_async_request *async_req,
 	struct dm_crypt_io *io = container_of(ctx, struct dm_crypt_io, ctx);
 	struct crypt_config *cc = io->cc;
 
-	if (error == -EINPROGRESS) {
-		complete(&ctx->restart);
+	if (error == -EINPROGRESS)
 		return;
-	}
 
 	if (!error && cc->iv_gen_ops && cc->iv_gen_ops->post)
 		error = cc->iv_gen_ops->post(cc, iv_of_dmreq(cc, dmreq), dmreq);
@@ -1361,12 +1358,15 @@ static void kcryptd_async_done(struct crypto_async_request *async_req,
 	crypt_free_req(cc, req_of_dmreq(cc, dmreq), io->base_bio);
 
 	if (!atomic_dec_and_test(&ctx->cc_pending))
-		return;
+		goto done;
 
 	if (bio_data_dir(io->base_bio) == READ)
 		kcryptd_crypt_read_done(io);
 	else
 		kcryptd_crypt_write_io_submit(io, 1);
+done:
+	if (!completion_done(&ctx->restart))
+		complete(&ctx->restart);
 }
 
 static void kcryptd_crypt(struct work_struct *work)
@@ -1842,16 +1842,24 @@ static int crypt_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	}
 
 	ret = -ENOMEM;
-	cc->io_queue = alloc_workqueue("kcryptd_io", WQ_MEM_RECLAIM, 1);
+	cc->io_queue = alloc_workqueue("kcryptd_io",
+				       WQ_HIGHPRI |
+				       WQ_MEM_RECLAIM,
+				       1);
 	if (!cc->io_queue) {
 		ti->error = "Couldn't create kcryptd io queue";
 		goto bad;
 	}
 
 	if (test_bit(DM_CRYPT_SAME_CPU, &cc->flags))
-		cc->crypt_queue = alloc_workqueue("kcryptd", WQ_CPU_INTENSIVE | WQ_MEM_RECLAIM, 1);
+		cc->crypt_queue = alloc_workqueue("kcryptd",
+						  WQ_HIGHPRI |
+						  WQ_MEM_RECLAIM, 1);
 	else
-		cc->crypt_queue = alloc_workqueue("kcryptd", WQ_CPU_INTENSIVE | WQ_MEM_RECLAIM | WQ_UNBOUND,
+		cc->crypt_queue = alloc_workqueue("kcryptd",
+						  WQ_HIGHPRI |
+						  WQ_MEM_RECLAIM |
+						  WQ_UNBOUND,
 						  num_online_cpus());
 	if (!cc->crypt_queue) {
 		ti->error = "Couldn't create kcryptd queue";

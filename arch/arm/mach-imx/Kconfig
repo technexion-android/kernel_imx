@@ -620,6 +620,13 @@ config SOC_IMX6UL
 	help
 	  This enables support for Freescale i.MX6 UltraLite processor.
 
+config SOC_IMX6ULL
+	bool "i.MX6 ULL support"
+	select SOC_IMX6UL
+
+	help
+	  This enables support for Freescale i.MX6 ULL processor.
+
 config SOC_IMX7
 	bool
 	select CPU_V7
@@ -687,6 +694,22 @@ config SOC_LS1021A
 
 endif
 
+config MACH_IMX_BLUETOOTH_RFKILL
+    tristate "i.MX Bluetooth rfkill interface support"
+    depends on RFKILL
+
+  help
+     Say Y to get the standard rfkill interface of Bluetooth
+
+config MXC_REBOOT_ANDROID_CMD
+	bool "Android reboot setting"
+
+config MX6_RAMOOPS
+	bool "MX6 ramoops Support"
+	depends on PSTORE_RAM
+	default n
+	help
+	  This config is for MX6 ramoop support
 source "arch/arm/mach-imx/devices/Kconfig"
 
 endif

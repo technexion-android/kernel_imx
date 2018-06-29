@@ -3,6 +3,7 @@
  * drivers/staging/android/ion/ion.c
  *
  * Copyright (C) 2011 Google, Inc.
+ * Copyright (C) 2014-2016 Freescale Semiconductor, Inc.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -399,6 +400,12 @@ static int ion_handle_put(struct ion_handle *handle)
 	return ret;
 }
 
+/* for used in mxc_ion.c */
+int ion_handle_put_wrap(struct ion_handle *handle)
+{
+	return ion_handle_put(handle);
+}
+
 static struct ion_handle *ion_handle_lookup(struct ion_client *client,
 					    struct ion_buffer *buffer)
 {
@@ -417,7 +424,7 @@ static struct ion_handle *ion_handle_lookup(struct ion_client *client,
 	return ERR_PTR(-EINVAL);
 }
 
-static struct ion_handle *ion_handle_get_by_id(struct ion_client *client,
+struct ion_handle *ion_handle_get_by_id(struct ion_client *client,
 						int id)
 {
 	struct ion_handle *handle;
@@ -1087,6 +1094,22 @@ static void ion_dma_buf_end_cpu_access(struct dma_buf *dmabuf, size_t start,
 	mutex_unlock(&buffer->lock);
 }
 
+static void* ion_dma_buf_vmap(struct dma_buf *dmabuf)
+{
+	struct ion_buffer *buffer = dmabuf->priv;
+
+	if (ion_dma_buf_begin_cpu_access(dmabuf, 0, 0, DMA_NONE) != 0) {
+		return NULL;
+	}
+
+	return buffer->vaddr;
+}
+
+static void ion_dma_buf_vunmap(struct dma_buf *dmabuf, void* vaddr)
+{
+	return ion_dma_buf_end_cpu_access(dmabuf, 0, 0, DMA_NONE);
+}
+
 static struct dma_buf_ops dma_buf_ops = {
 	.map_dma_buf = ion_map_dma_buf,
 	.unmap_dma_buf = ion_unmap_dma_buf,
@@ -1098,6 +1121,8 @@ static struct dma_buf_ops dma_buf_ops = {
 	.kunmap_atomic = ion_dma_buf_kunmap,
 	.kmap = ion_dma_buf_kmap,
 	.kunmap = ion_dma_buf_kunmap,
+	.vmap = ion_dma_buf_vmap,
+	.vunmap = ion_dma_buf_vunmap,
 };
 
 struct dma_buf *ion_share_dma_buf(struct ion_client *client,
@@ -1466,7 +1491,6 @@ static const struct file_operations debug_heap_fops = {
 	.release = single_release,
 };
 
-#ifdef DEBUG_HEAP_SHRINKER
 static int debug_shrink_set(void *data, u64 val)
 {
 	struct ion_heap *heap = data;
@@ -1474,15 +1498,14 @@ static int debug_shrink_set(void *data, u64 val)
 	int objs;
 
 	sc.gfp_mask = -1;
-	sc.nr_to_scan = 0;
+	sc.nr_to_scan = val;
 
-	if (!val)
-		return 0;
+	if (!val) {
+		objs = heap->shrinker.count_objects(&heap->shrinker, &sc);
+		sc.nr_to_scan = objs;
+	}
 
-	objs = heap->shrinker.shrink(&heap->shrinker, &sc);
-	sc.nr_to_scan = objs;
-
-	heap->shrinker.shrink(&heap->shrinker, &sc);
+	heap->shrinker.scan_objects(&heap->shrinker, &sc);
 	return 0;
 }
 
@@ -1495,14 +1518,13 @@ static int debug_shrink_get(void *data, u64 *val)
 	sc.gfp_mask = -1;
 	sc.nr_to_scan = 0;
 
-	objs = heap->shrinker.shrink(&heap->shrinker, &sc);
+	objs = heap->shrinker.count_objects(&heap->shrinker, &sc);
 	*val = objs;
 	return 0;
 }
 
 DEFINE_SIMPLE_ATTRIBUTE(debug_shrink_fops, debug_shrink_get,
 			debug_shrink_set, "%llu\n");
-#endif
 
 void ion_device_add_heap(struct ion_device *dev, struct ion_heap *heap)
 {
@@ -1540,8 +1562,7 @@ void ion_device_add_heap(struct ion_device *dev, struct ion_heap *heap)
 			path, heap->name);
 	}
 
-#ifdef DEBUG_HEAP_SHRINKER
-	if (heap->shrinker.shrink) {
+	if (heap->shrinker.count_objects && heap->shrinker.scan_objects) {
 		char debug_name[64];
 
 		snprintf(debug_name, 64, "%s_shrink", heap->name);
@@ -1556,7 +1577,7 @@ void ion_device_add_heap(struct ion_device *dev, struct ion_heap *heap)
 				path, debug_name);
 		}
 	}
-#endif
+
 	up_write(&dev->lock);
 }
 

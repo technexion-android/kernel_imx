@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Freescale Semiconductor, Inc.
+ * Copyright (C) 2013-2016 Freescale Semiconductor, Inc.
  *
  * Based on imx-sgtl5000.c
  * Copyright (C) 2012 Freescale Semiconductor, Inc.
@@ -20,6 +20,7 @@
 #include <linux/slab.h>
 #include <linux/gpio.h>
 #include <linux/clk.h>
+#include <linux/switch.h>
 #include <sound/soc.h>
 #include <sound/jack.h>
 #include <sound/control.h>
@@ -38,6 +39,7 @@ struct imx_wm8962_data {
 	char codec_dai_name[DAI_NAME_SIZE];
 	char platform_name[DAI_NAME_SIZE];
 	unsigned int clk_frequency;
+	bool is_codec_master;
 };
 
 struct imx_priv {
@@ -56,6 +58,7 @@ struct imx_priv {
 	struct platform_device *asrc_pdev;
 	u32 asrc_rate;
 	u32 asrc_format;
+	struct switch_dev sdev;
 };
 static struct imx_priv card_priv;
 
@@ -112,11 +115,13 @@ static int hpjack_status_check(void *data)
 
 	if (hp_status != priv->hp_active_low) {
 		snprintf(buf, 32, "STATE=%d", 2);
+		switch_set_state(&priv->sdev, 2);
 		snd_soc_dapm_disable_pin(&priv->codec->dapm, "Ext Spk");
 		ret = imx_hp_jack_gpio.report;
 		snd_kctl_jack_report(priv->snd_card, priv->headphone_kctl, 1);
 	} else {
 		snprintf(buf, 32, "STATE=%d", 0);
+		switch_set_state(&priv->sdev, 0);
 		snd_soc_dapm_enable_pin(&priv->codec->dapm, "Ext Spk");
 		ret = 0;
 		snd_kctl_jack_report(priv->snd_card, priv->headphone_kctl, 0);
@@ -184,6 +189,31 @@ static const struct snd_soc_dapm_widget imx_wm8962_dapm_widgets[] = {
 	SND_SOC_DAPM_MIC("DMIC", NULL),
 };
 
+static u32 imx_wm8962_rates[] = {32000, 48000, 96000};
+static struct snd_pcm_hw_constraint_list imx_wm8962_rate_constraints = {
+	.count = ARRAY_SIZE(imx_wm8962_rates),
+	.list = imx_wm8962_rates,
+};
+
+static int imx_hifi_startup(struct snd_pcm_substream *substream)
+{
+	struct snd_pcm_runtime *runtime = substream->runtime;
+	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+	struct snd_soc_card *card = rtd->card;
+	struct imx_wm8962_data *data = snd_soc_card_get_drvdata(card);
+	int ret;
+
+	if (!data->is_codec_master) {
+		ret = snd_pcm_hw_constraint_list(runtime, 0,
+				SNDRV_PCM_HW_PARAM_RATE,
+				&imx_wm8962_rate_constraints);
+		if (ret)
+			return ret;
+	}
+
+	return 0;
+}
+
 #ifdef CONFIG_SND_SOC_IMX_WM8962_ANDROID
 static int imx_hifi_hw_params(struct snd_pcm_substream *substream,
 			struct snd_pcm_hw_params *params)
@@ -198,8 +228,12 @@ static int imx_hifi_hw_params(struct snd_pcm_substream *substream,
 	sample_rate = params_rate(params);
 	sample_format = params_format(params);
 
-	dai_format = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
-		SND_SOC_DAIFMT_CBM_CFM;
+	if (data->is_codec_master)
+		dai_format = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
+			SND_SOC_DAIFMT_CBM_CFM;
+	else
+		dai_format = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
+			SND_SOC_DAIFMT_CBS_CFS;
 
 	/* set codec DAI configuration */
 	ret = snd_soc_dai_set_fmt(codec_dai, dai_format);
@@ -212,6 +246,7 @@ static int imx_hifi_hw_params(struct snd_pcm_substream *substream,
 }
 
 static struct snd_soc_ops imx_hifi_ops = {
+	.startup = imx_hifi_startup,
 	.hw_params = imx_hifi_hw_params,
 };
 
@@ -308,8 +343,12 @@ static int imx_hifi_hw_params(struct snd_pcm_substream *substream,
 		return 0;
 	}
 
-	dai_format = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
-		SND_SOC_DAIFMT_CBM_CFM;
+	if (data->is_codec_master)
+		dai_format = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
+			SND_SOC_DAIFMT_CBM_CFM;
+	else
+		dai_format = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
+			SND_SOC_DAIFMT_CBS_CFS;
 
 	/* set codec DAI configuration */
 	ret = snd_soc_dai_set_fmt(codec_dai, dai_format);
@@ -388,6 +427,7 @@ static int imx_hifi_hw_free(struct snd_pcm_substream *substream)
 }
 
 static struct snd_soc_ops imx_hifi_ops = {
+	.startup = imx_hifi_startup,
 	.hw_params = imx_hifi_hw_params,
 	.hw_free = imx_hifi_hw_free,
 };
@@ -523,7 +563,7 @@ static int imx_wm8962_probe(struct platform_device *pdev)
 	struct i2c_client *codec_dev;
 	struct imx_wm8962_data *data;
 	struct clk *codec_clk = NULL;
-	int int_port, ext_port;
+	int int_port, ext_port, tmp_port;
 	int ret;
 	struct platform_device *asrc_pdev = NULL;
 	struct device_node *asrc_np;
@@ -531,6 +571,15 @@ static int imx_wm8962_probe(struct platform_device *pdev)
 
 	priv->pdev = pdev;
 	priv->asrc_pdev = NULL;
+
+	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+	if (!data) {
+		ret = -ENOMEM;
+		goto fail;
+	}
+
+	if (of_property_read_bool(pdev->dev.of_node, "codec-master"))
+		data->is_codec_master = true;
 
 	cpu_np = of_parse_phandle(pdev->dev.of_node, "cpu-dai", 0);
 	if (!cpu_np) {
@@ -559,20 +608,26 @@ static int imx_wm8962_probe(struct platform_device *pdev)
 	 */
 	int_port--;
 	ext_port--;
-	ret = imx_audmux_v2_configure_port(int_port,
+	if (data->is_codec_master) {
+		tmp_port = int_port;
+		int_port = ext_port;
+		ext_port = tmp_port;
+	}
+
+	ret = imx_audmux_v2_configure_port(ext_port,
 			IMX_AUDMUX_V2_PTCR_SYN |
-			IMX_AUDMUX_V2_PTCR_TFSEL(ext_port) |
-			IMX_AUDMUX_V2_PTCR_TCSEL(ext_port) |
+			IMX_AUDMUX_V2_PTCR_TFSEL(int_port) |
+			IMX_AUDMUX_V2_PTCR_TCSEL(int_port) |
 			IMX_AUDMUX_V2_PTCR_TFSDIR |
 			IMX_AUDMUX_V2_PTCR_TCLKDIR,
-			IMX_AUDMUX_V2_PDCR_RXDSEL(ext_port));
+			IMX_AUDMUX_V2_PDCR_RXDSEL(int_port));
 	if (ret) {
 		dev_err(&pdev->dev, "audmux internal port setup failed\n");
 		goto fail;
 	}
-	ret = imx_audmux_v2_configure_port(ext_port,
+	ret = imx_audmux_v2_configure_port(int_port,
 			IMX_AUDMUX_V2_PTCR_SYN,
-			IMX_AUDMUX_V2_PDCR_RXDSEL(int_port));
+			IMX_AUDMUX_V2_PDCR_RXDSEL(ext_port));
 	if (ret) {
 		dev_err(&pdev->dev, "audmux external port setup failed\n");
 		goto fail;
@@ -608,12 +663,6 @@ audmux_bypass:
 	priv->first_stream = NULL;
 	priv->second_stream = NULL;
 
-	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-	if (!data) {
-		ret = -ENOMEM;
-		goto fail;
-	}
-
 	codec_clk = devm_clk_get(&codec_dev->dev, NULL);
 	if (IS_ERR(codec_clk)) {
 		ret = PTR_ERR(codec_clk);
@@ -638,8 +687,11 @@ audmux_bypass:
 	data->dai[0].cpu_dai_name = dev_name(&cpu_pdev->dev);
 	data->dai[0].platform_of_node = cpu_np;
 	data->dai[0].ops = &imx_hifi_ops;
-	data->dai[0].dai_fmt = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
-			    SND_SOC_DAIFMT_CBM_CFM;
+	data->dai[0].dai_fmt = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF;
+	if (data->is_codec_master)
+		data->dai[0].dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
+	else
+		data->dai[0].dai_fmt |= SND_SOC_DAIFMT_CBS_CFS;
 
 	data->card.num_links = 1;
 
@@ -711,6 +763,13 @@ audmux_bypass:
 	platform_set_drvdata(pdev, &data->card);
 	snd_soc_card_set_drvdata(&data->card, data);
 
+	priv->sdev.name = "h2w";
+	ret = switch_dev_register(&priv->sdev);
+	if (ret < 0) {
+		ret = -EINVAL;
+		goto fail;
+	}
+
 	ret = devm_snd_soc_register_card(&pdev->dev, &data->card);
 	if (ret) {
 		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
@@ -755,9 +814,13 @@ fail:
 
 static int imx_wm8962_remove(struct platform_device *pdev)
 {
+	struct snd_soc_card *card = platform_get_drvdata(pdev);
+	struct imx_priv *priv = &card_priv;
+
 	driver_remove_file(pdev->dev.driver, &driver_attr_microphone);
 	driver_remove_file(pdev->dev.driver, &driver_attr_headphone);
 
+	switch_dev_unregister(&priv->sdev);
 	return 0;
 }
 

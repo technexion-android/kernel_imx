@@ -1,0 +1,127 @@
+/*
+ * Copyright 2017 Technexion Ltd.
+ *
+ * Author: Alvin Chen <alvin.chen@technexion.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
+#include <tnmacro.h>
+
+/*
+ * Difference between hobbit baseboard FL and GL version
+ *
+ *			  FL                GL
+ * ethernet PHY       10_100m LAN        Giga LAN
+ * ethernet Reset     PICO_PIN_P42       PICO_PIN_P37
+ */
+
+/ {
+	gpio-edm {
+		compatible = "gpio-edm";
+#ifdef PICO_EXT_GPIO_IOMUX_EDISON
+		pinctrl-names = "default";
+		pinctrl-0 = <PICO_EXT_GPIO_IOMUX_EDISON>;
+#endif
+		gpio_p24 {
+			label = "GPIO_P44";
+			gpios = <&GPIO_P24 1>;
+			dir   = "out";
+		};
+		gpio_p25 {
+			label = "GPIO_P165";
+			gpios = <&GPIO_P25 1>;
+			dir   = "out";
+		};
+		gpio_p26 {
+			label = "GPIO_P45";
+			gpios = <&GPIO_P26 1>;
+			dir   = "out";
+		};
+		gpio_p28 {
+			label = "GPIO_P46";
+			gpios = <&GPIO_P28 1>;
+			dir   = "out";
+		};
+		gpio_p30 {
+			label = "GPIO_P47";
+			gpios = <&GPIO_P30 1>;
+			dir   = "out";
+		};
+		gpio_p48 {
+			label = "GPIO_P14";
+			gpios = <&GPIO_P48 1>;
+			dir   = "out";
+		};
+	};
+};
+
+&I2C1 {
+	status = "okay";
+/*
+	pca9535b: pca9535b@20 {
+		compatible = "nxp,pca9535";
+		pinctrl-names = "default";
+		pinctrl-0 = <PCA9535_INTERRUPT>;
+		interrupt-parent = <&GPIO_BANK(PCA9535_INT_GPIO)>;
+		interrupts = <GPIO_NO(PCA9535_INT_GPIO) IRQ_TYPE_EDGE_FALLING>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		interrupt-controller;
+		#interrupt-cells = <2>;
+		reg = <0x20>;
+	};
+*/
+
+	pca9535b: pca9535b@20 {
+		compatible = "nxp,pca9535";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_pca9535_interrupt>;
+		interrupt-parent = <&gpio2>;
+		interrupts = <12 2>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		interrupt-controller;
+		#interrupt-cells = <2>;
+		reg = <0x20>;
+	};
+	pca9535a: pca9535a@21 {
+		compatible = "nxp,pca9535";
+		gpio-controller;
+		#gpio-cells = <2>;
+		#interrupt-cells = <2>;
+		reg = <0x21>;
+	};
+
+	pca9555a: pca9555a@22 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		#interrupt-cells = <2>;
+		reg = <0x22>;
+	};
+
+	pca9555b: pca9555b@23 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		#interrupt-cells = <2>;
+		reg = <0x23>;
+	};
+};
+
+&I2C2 {
+	status = "okay";
+};
+
+&I2C3 {
+	status = "okay";
+};
+
+&ECSPI {
+	status = "okay";
+};
+

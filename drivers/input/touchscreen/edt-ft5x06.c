@@ -1038,6 +1038,8 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client,
 	__set_bit(EV_KEY, input->evbit);
 	__set_bit(EV_ABS, input->evbit);
 	__set_bit(BTN_TOUCH, input->keybit);
+	__set_bit(INPUT_PROP_DIRECT, input->propbit);
+
 	input_set_abs_params(input, ABS_X, 0, tsdata->num_x * 64 - 1, 0, 0);
 	input_set_abs_params(input, ABS_Y, 0, tsdata->num_y * 64 - 1, 0, 0);
 	input_set_abs_params(input, ABS_MT_POSITION_X,

@@ -1,5 +1,6 @@
 obj-y := time.o cpu.o system.o irq-common.o common.o
 
+obj-$(CONFIG_MXC_REBOOT_ANDROID_CMD) += reboot.o
 obj-$(CONFIG_SOC_IMX1) += clk-imx1.o mm-imx1.o
 obj-$(CONFIG_SOC_IMX21) += clk-imx21.o mm-imx21.o
 
@@ -37,6 +38,8 @@ AFLAGS_imx6sx_low_power_idle.o :=-Wa,-march=armv7-a
 obj-$(CONFIG_SOC_IMX6SX) += cpuidle-imx6sx.o imx6sx_low_power_idle.o
 AFLAGS_imx6ul_low_power_idle.o :=-Wa,-march=armv7-a
 obj-$(CONFIG_SOC_IMX6UL) += cpuidle-imx6ul.o imx6ul_low_power_idle.o
+AFLAGS_imx6ull_low_power_idle.o :=-Wa,-march=armv7-a
+obj-$(CONFIG_SOC_IMX6ULL) += imx6ull_low_power_idle.o
 AFLAGS_imx7d_low_power_idle.o :=-Wa,-march=armv7-a
 obj-$(CONFIG_SOC_IMX7D) += cpuidle-imx7d.o imx7d_low_power_idle.o
 endif
@@ -129,7 +132,10 @@ obj-$(CONFIG_SOC_IMX50) += mach-imx50.o
 obj-$(CONFIG_SOC_IMX51) += mach-imx51.o
 obj-$(CONFIG_SOC_IMX53) += mach-imx53.o
 
+obj-$(CONFIG_MX6_RAMOOPS) += mx6_ramoops.o
+
 obj-$(CONFIG_SOC_VF610) += clk-vf610.o mach-vf610.o
+obj-$(CONFIG_MACH_IMX_BLUETOOTH_RFKILL) += mx6_bt_rfkill.o
 
 obj-$(CONFIG_SOC_LS1021A) += mach-ls1021a.o
 
