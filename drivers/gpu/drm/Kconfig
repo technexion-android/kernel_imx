@@ -35,11 +35,6 @@ config DRM_MIPI_DSI
 	bool
 	depends on DRM
 
-config DRM_DP_AUX_BUS
-	tristate
-	depends on DRM
-	depends on OF
-
 config DRM_DP_AUX_CHARDEV
 	bool "DRM DP AUX Interface"
 	depends on DRM
@@ -290,6 +285,16 @@ config DRM_VKMS
 	  a VKMS.
 
 	  If M is selected the module will be called vkms.
+
+config DRM_ATI_PCIGART
+        bool
+
+config DRM_VIVANTE
+	tristate "Vivante GCCore"
+	depends on DRM
+	help
+	  Choose this option if you have a Vivante graphics card.
+	  If M is selected, the module will be called vivante.
 
 source "drivers/gpu/drm/exynos/Kconfig"
 
