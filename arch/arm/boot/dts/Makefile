@@ -293,6 +293,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-edm1-cf-pmic_tc1000.dtb \
 	imx6dl-edm2-cf-pmic_gremlin.dtb \
 	imx6dl-pico_dwarf.dtb \
+	imx6dl-pico_dwarf_lvds.dtb \
 	imx6dl-pico_hobbit.dtb \
 	imx6dl-pico_nymph.dtb \
 	imx6dl-pico_pi.dtb \
@@ -359,6 +360,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-edm1-cf-pmic_tc1000.dtb \
 	imx6q-edm2-cf-pmic_gremlin.dtb \
 	imx6q-pico_dwarf.dtb \
+	imx6q-pico_dwarf_lvds.dtb \
 	imx6q-pico_hobbit.dtb \
 	imx6q-pico_nymph.dtb \
 	imx6q-pico_pi.dtb \
