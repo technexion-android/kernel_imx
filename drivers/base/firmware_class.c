@@ -291,6 +291,7 @@ static void fw_free_buf(struct firmware_buf *buf)
 static char fw_path_para[256];
 static const char * const fw_path[] = {
 	fw_path_para,
+	"/vendor/lib/firmware",
 	"/lib/firmware/updates/" UTS_RELEASE,
 	"/lib/firmware/updates",
 	"/lib/firmware/" UTS_RELEASE,
@@ -341,14 +342,18 @@ fw_get_filesystem_firmware(struct device *device, struct firmware_buf *buf)
 
 		len = snprintf(path, PATH_MAX, "%s/%s",
 			       fw_path[i], buf->fw_id);
+
+		//Hank Add debug message
+		dev_err(device, "fw_path = %s , fw_id = %s\n", fw_path[i], buf->fw_id);
+
 		if (len >= PATH_MAX) {
 			rc = -ENAMETOOLONG;
 			break;
 		}
 
 		buf->size = 0;
-		rc = kernel_read_file_from_path(path, &buf->data, &size, msize,
-						id);
+		rc = kernel_read_file_from_path(path, &buf->data, &size, msize,	id);
+
 		if (rc) {
 			if (rc == -ENOENT)
 				dev_dbg(device, "loading %s failed with error %d\n",
@@ -1173,7 +1178,7 @@ _request_firmware(const struct firmware **firmware_p, const char *name,
 	ret = fw_get_filesystem_firmware(device, fw->priv);
 	if (ret) {
 		if (!(opt_flags & FW_OPT_NO_WARN))
-			dev_dbg(device,
+			dev_warn(device,
 				 "Direct firmware load for %s failed with error %d\n",
 				 name, ret);
 		if (opt_flags & FW_OPT_USERHELPER) {

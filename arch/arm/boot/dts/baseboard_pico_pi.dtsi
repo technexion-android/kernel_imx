@@ -1,17 +1,10 @@
 /*
-<<<<<<< HEAD
  * Copyright 2016 Technexion Ltd.
  * Copyright 2017 NXP
  *
  * Author: Wig Cheng <wig.cheng@technexion.com>
  *	   Richard Hu <richard.hu@technexion.com>
  *	   Tapani Utriainen <tapani@technexion.com>
-=======
- * Copyright 2018 Technexion Ltd.
- *
- * Author: Tapani Utriainen <tapani@technexion.com>
- *         Richard Hu <richard.hu@technexion.com>
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -24,7 +17,6 @@
 / {
 	gpio-edm {
 		compatible = "gpio-edm";
-<<<<<<< HEAD
 /* custom GPIO may be from GPIO expander on CPU module */
 #ifdef PICO_EXT_GPIO_IOMUX_HOBBIT
 		pinctrl-names = "default";
@@ -44,23 +36,13 @@
 		gpio_p25 {
 			label = "GPIO_P25";
 			gpios = <&PICO_EXT_GPIO_P25 1>;
-=======
-
-		gpio_p24 {
-			label = "GPIO_P24";
-			gpios = <&PICO_EXT_GPIO_P24 GPIO_ACTIVE_HIGH>;
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
 			dir   = "out";
 		};
 
 		/* Mikrobus */
 		gpio_p26 {
 			label = "GPIO_P26";
-<<<<<<< HEAD
 			gpios = <&PICO_EXT_GPIO_P26 1>;
-=======
-			gpios = <&PICO_EXT_GPIO_P26 GPIO_ACTIVE_HIGH>;
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
 			dir   = "out";
 		};
 		gpio_p28 {
@@ -78,19 +60,11 @@
 			gpios = <&PICO_EXT_GPIO_P34 GPIO_ACTIVE_HIGH>;
 			dir   = "in";
 		};
-<<<<<<< HEAD
-=======
-#ifdef PICO_EXT_GPIO_P42
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
 		gpio_p42 {
 			label = "GPIO_P42";
 			gpios = <&PICO_EXT_GPIO_P42 GPIO_ACTIVE_HIGH>;
 			dir   = "out";
 		};
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
 		gpio_p48 {
 			label = "GPIO_P48";
 			gpios = <&PICO_EXT_GPIO_P48 GPIO_ACTIVE_HIGH>;
@@ -102,17 +76,12 @@
 		compatible = "fsl,imx-sgtl5000",
 			     "fsl,imx-audio-sgtl5000";
 		model = "audio-sgtl5000";
-<<<<<<< HEAD
 		ssi-controller = <&PICO_AUD_I2S_CHANNEL>;
-=======
-		ssi-controller = <&PICO_AUDA_I2S_CHANNEL>;
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
 		audio-codec = <&codec>;
 		audio-routing =
 			"MIC_IN", "Mic Jack",
 			"Mic Jack", "Mic Bias",
 			"Headphone Jack", "HP_OUT";
-<<<<<<< HEAD
 		mux-int-port = <PICO_AUD_MUX_INT>;
 		mux-ext-port = <PICO_AUD_MUX_EXT>;
 	};
@@ -148,51 +117,17 @@
 };
 
 &i2c1 {
-=======
-#if defined(PICO_AUDA_MUX_INT) && defined(PICO_AUDA_MUX_EXT)
-		mux-int-port = <PICO_AUDA_MUX_INT>;
-		mux-ext-port = <PICO_AUDA_MUX_EXT>;
-#else
-		fsl,no-audmux = "true";
-#endif
-	};
-
-	gpio-leds {
-		compatible = "gpio-leds";
-
-		led {
-			label = "gpio-led";
-			gpios = <&PICO_EXT_GPIO_P25 GPIO_ACTIVE_HIGH>; /* PICO_P25 */
-		};
-	};
-
-	clocks {
-		codec_osc: aud_mclk {
-			compatible = "fixed-clock";
-			#clock-cells = <0>;
-			clock-frequency = <24576000>;
-		};
-	};
-};
-
-&PICO_I2CA {
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
 	status = "okay";
 
 	codec: sgtl5000@0a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
-<<<<<<< HEAD
 		clocks = <&PICO_AUD_CLK_SRC>;
-=======
-		clocks = <&codec_osc>;
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
 		VDDA-supply = <&reg_2p5v>;
 		VDDIO-supply = <&reg_3p3v>;
 	};
 };
 
-<<<<<<< HEAD
 &i2c4 {
 	status = "okay";
 
@@ -229,22 +164,11 @@
 		interrupt-parent = <&GPIO_BANK(PICO_EXT_GPIO_P44)>;
 		interrupts = <GPIO_NO(PICO_EXT_GPIO_P44) 0>;
 		reset-gpios = <&PICO_EXT_GPIO_P32 GPIO_ACTIVE_LOW>;
-=======
-&PICO_I2CB {
-	polytouch: edt-ft5x06@38 {
-		compatible = "edt,edt-ft5x06";
-
-		reg = <0x38>;
-		interrupt-parent = <&GPIO_BANK(PICO_EXT_GPIO_P44)>; /* PICO_P44 */
-		interrupts = <GPIO_NO(PICO_EXT_GPIO_P44) 0>;
-		reset-gpios = <&PICO_EXT_GPIO_P32 GPIO_ACTIVE_LOW>; /* PICO_P32 */
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
 		touchscreen-size-x = <800>;
 		touchscreen-size-y = <480>;
 	};
 };
 
-<<<<<<< HEAD
 &can1 {
 	status = "okay";
 };
@@ -257,31 +181,8 @@
 	status = "okay";
 
 	spidev@0 {
-=======
-&PICO_I2CC {
-	status = "okay";
-
-};
-
-&PICO_CANA {
-	status = "okay";
-};
-
-&PICO_CANB {
-	status = "okay";
-};
-
-&PICO_SPIA {
-	status = "okay";
-
-	spidev@1 {
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards
 		compatible = "rohm,dh2228fv";
 		spi-max-frequency = <60000000>;
 		reg = <0>;
 	};
 };
-<<<<<<< HEAD
-=======
-
->>>>>>> 8cf9f1ec591e... ARM: dts: add support for TechNexion PICO baseboards

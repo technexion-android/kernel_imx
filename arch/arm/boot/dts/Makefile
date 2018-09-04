@@ -331,8 +331,6 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-aristainetos2_4.dtb \
 	imx6dl-aristainetos2_7.dtb \
 	imx6dl-cubox-i.dtb \
-	imx6dl-edm1_fairy.dtb \
-	imx6dl-edm2_gremlin.dtb \
 	imx6dl-dfi-fs700-m60.dtb \
 	imx6dl-gw51xx.dtb \
 	imx6dl-gw52xx.dtb \
@@ -345,14 +343,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-nit6xlite.dtb \
 	imx6dl-nitrogen6x.dtb \
 	imx6dl-phytec-pbab01.dtb \
-<<<<<<< HEAD
 	imx6dl-pico-pi.dtb \
-=======
-	imx6dl-pico_dwarf.dtb \
-	imx6dl-pico_hobbit.dtb \
-	imx6dl-pico_nymph.dtb \
-	imx6dl-pico_pi.dtb \
->>>>>>> 7522ab6149eb... ARM: dts: add support for TechNexion PICO-IMX6 boards
 	imx6dl-rex-basic.dtb \
 	imx6dl-riotboard.dtb \
 	imx6dl-sabreauto.dtb \
@@ -404,8 +395,6 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-dfi-fs700-m60.dtb \
 	imx6q-dmo-edmqmx6.dtb \
 	imx6q-evi.dtb \
-	imx6q-edm1_fairy.dtb \
-	imx6q-edm2_gremlin.dtb \
 	imx6q-gk802.dtb \
 	imx6q-gw51xx.dtb \
 	imx6q-gw52xx.dtb \
@@ -423,10 +412,6 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-nitrogen6_max.dtb \
 	imx6q-novena.dtb \
 	imx6q-phytec-pbab01.dtb \
-	imx6q-pico_dwarf.dtb \
-	imx6q-pico_hobbit.dtb \
-	imx6q-pico_nymph.dtb \
-	imx6q-pico_pi.dtb \
 	imx6q-rex-pro.dtb \
 	imx6q-sabreauto.dtb \
 	imx6q-sabreauto-ecspi.dtb \
@@ -455,7 +440,6 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-utilite-pro.dtb \
 	imx6q-wandboard.dtb \
 	imx6q-wandboard-revb1.dtb \
-	imx6qp-edm1_fairy.dtb \
 	imx6qp-nitrogen6_max.dtb \
 	imx6qp-sabreauto.dtb \
 	imx6qp-sabreauto-ecspi.dtb \
@@ -515,17 +499,7 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
 	imx6ul-14x14-evk-usb-certi.dtb \
 	imx6ul-14x14-evk-optee.dtb \
 	imx6ul-geam-kit.dtb \
-<<<<<<< HEAD
-<<<<<<< HEAD
 	imx6ul-picosom-pi.dtb \
-=======
->>>>>>> 2461168da54c... ARM: dts: PICO-IMX6UL: remove HOBBIT device tree support added by NXP
-=======
-	imx6ul-pico_dwarf.dtb \
-	imx6ul-pico_hobbit.dtb \
-	imx6ul-pico_nymph.dtb \
-	imx6ul-pico_pi.dtb \
->>>>>>> 647984cb9585... ARM: dts: add support for TechNexion PICO-IMX6UL boards
 	imx6ul-tx6ul-0010.dtb \
 	imx6ul-tx6ul-0011.dtb \
 	imx6ul-tx6ul-mainboard.dtb \
@@ -603,11 +577,6 @@ dtb-$(CONFIG_SOC_IMX7D) += \
 	imx7d-12x12-lpddr3-arm2-mqs.dtb \
 	imx7d-12x12-lpddr3-arm2-pcie.dtb \
 	imx7d-19x19-lpddr2-arm2.dtb \
-	imx7d-pico_dwarf.dtb \
-	imx7d-pico_nymph.dtb \
-	imx7d-pico_hobbit.dtb \
-	imx7d-pico_pi.dtb \
-	imx7d-pico_pi-m4.dtb \
 	imx7d-sdb.dtb \
 	imx7d-sdb-epdc.dtb \
 	imx7d-sdb-gpmi-weim.dtb \

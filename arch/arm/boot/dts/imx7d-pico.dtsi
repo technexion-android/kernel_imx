@@ -1,15 +1,8 @@
 /*
-<<<<<<< HEAD
  * Copyright 2016 Technexion Ltd.
  * Copyright 2017 NXP
  *
  * Author: Tapani Utriainen <tapani@technexion.com>
-=======
- * Copyright 2018 Technexion Ltd.
- *
- * Author: Tapani Utriainen <tapani@technexion.com>
- *         Richard Hu <richard.hu@technexion.com>
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -20,7 +13,6 @@
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/gpio/gpio.h>
 
-<<<<<<< HEAD
 /* audio codec */
 #define PICO_AUD_I2S_CHANNEL sai1
 #define PICO_AUD_MUX_INT 3
@@ -29,17 +21,11 @@
 
 /* GPIOs on PICO connector */
 #define PICO_EXT_GPIO_P24 gpio2 0
-=======
-/* external pins on PICO connector */
-#define PICO_EXT_GPIO_P24 gpio2 0
-#define PICO_EXT_GPIO_P25 gpio2 6
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 #define PICO_EXT_GPIO_P26 gpio2 1
 #define PICO_EXT_GPIO_P28 gpio2 2
 #define PICO_EXT_GPIO_P30 gpio2 3
 #define PICO_EXT_GPIO_P32 gpio2 4
 #define PICO_EXT_GPIO_P34 gpio2 5
-<<<<<<< HEAD
 #define PICO_EXT_GPIO_P25 gpio2 6
 #define PICO_EXT_GPIO_P48 gpio2 7
 #define PICO_EXT_GPIO_P42 gpio2 12
@@ -62,28 +48,6 @@
 #define PICO_EXT_MIPI_CSI_OV5645_IOMUX &pinctrl_mipi_csi
 #define PICO_EXT_GPIO_P65 gpio1 5
 #define PICO_EXT_GPIO_P67 gpio1 4
-=======
-#define PICO_EXT_GPIO_P42 gpio2 12
-#define PICO_EXT_GPIO_P44 gpio2 13
-#define PICO_EXT_GPIO_P48 gpio2 7
-
-#define PICO_PCIE pcie
-
-/* audio codec */
-#define PICO_AUDA_I2S_CHANNEL sai1
-#define PICO_AUDA_MUX_INT 3
-#define PICO_AUDA_MUX_EXT 3
-
-/* I2C bus */
-#define PICO_I2CA i2c1
-#define PICO_I2CB i2c4
-#define PICO_I2CC i2c2
-
-#define PICO_SPIA ecspi3
-
-#define PICO_CANA flexcan1
-#define PICO_CANB flexcan2
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 
 / {
 	aliases {
@@ -98,13 +62,8 @@
 		compatible = "pwm-backlight";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_backlight>;
-<<<<<<< HEAD
 		pwms = <&pwm4 0 5000000 0>;
 		brightness-levels = <0 4 8 16 32 64 128 255>;
-=======
-		pwms = <&pwm4 0 50000 0>;
-		brightness-levels = <0 36 72 108 144 180 216 255>;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 		default-brightness-level = <6>;
 		status = "okay";
 	};
@@ -112,7 +71,6 @@
 	bcmdhd_wlan_0: bcmdhd_wlan@0 {
 		compatible = "android,bcmdhd_wlan";
 		pinctrl-names = "default";
-<<<<<<< HEAD
 		pinctrl-0 = <&pinctrl_wifi_ctrl &pinctrl_bt_ctrl>;
 		status = "okay";
 		wlreg_on-supply = <&wlreg_on>;
@@ -123,21 +81,6 @@
 		compatible = "fsl,mxc_bt_rfkill";
 		bt-power-gpios = <&gpio4 18 0>;
 		status ="okay";
-=======
-		pinctrl-0 = <&pinctrl_wifi_ctrl>;
-		gpios = <&gpio4 19 0>;    /* WL_HOST_WAKE */
-		wlreg_on-supply = <&wlreg_on>;
-		status = "okay";
-	};
-
-	bt_rfkill {
-		compatible = "net,rfkill-bcm43xx";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_bt_ctrl>;
-		name = "bt_rfkill";
-		type = <2>;     /* bluetooth */
-		bt_rfkill_reset-gpios = <&gpio4 18 0>;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 	};
 
 	pxp_v4l2_out {
@@ -213,17 +156,12 @@
 			reg = <0>;
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
-<<<<<<< HEAD
 			gpio = <&gpio3 4 GPIO_ACTIVE_HIGH>;
-=======
-			gpio = <&gpio1 6 GPIO_ACTIVE_HIGH>;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 			enable-active-high;
 			regulator-boot-on;
 		};
 	};
 
-<<<<<<< HEAD
 	clocks {
 		sys_mclk: clock {
 			compatible = "fixed-clock";
@@ -237,12 +175,6 @@
 		model = "xtor-audio";
 		cpu-dai = <&sai3>;
 		cpu-master = <1>;
-=======
-	sound {
-		compatible = "fsl,pico-imx7-sgtl5000",
-				"fsl,imx-audio-sgtl5000";
-		fsl,no-audmux;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 	};
 
 	mxcfb1: fb@0 {
@@ -257,7 +189,6 @@
 
 &iomuxc {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&pinctrl_hog_1 &pinctrl_gpio>;
 
 	imx7d-pico {
@@ -268,24 +199,6 @@
 				MX7D_PAD_GPIO1_IO03__CCM_CLKO2		0x7d /* wifi LPO 32K Hz clock */
 				MX7D_PAD_GPIO1_IO07__GPIO1_IO7		0x59 /* pmic sd_vel pin*/
 				MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B	0x74
-=======
-	pinctrl-0 = <&pinctrl_hog_1>;
-
-	imx7d-pico {
-
-		pinctrl_hog_1: hoggrp-1 {
-			fsl,pins = <
-				MX7D_PAD_EPDC_DATA00__GPIO2_IO0		0x59 /* PICO_P24 */
-				MX7D_PAD_EPDC_DATA06__GPIO2_IO6		0x59 /* PICO_P25 */
-				MX7D_PAD_EPDC_DATA01__GPIO2_IO1		0x59 /* PICO_P26 */
-				MX7D_PAD_EPDC_DATA02__GPIO2_IO2		0x59 /* PICO_P28 */
-				MX7D_PAD_EPDC_DATA03__GPIO2_IO3		0x59 /* PICO_P30 */
-				MX7D_PAD_EPDC_DATA04__GPIO2_IO4		0x59 /* PICO_P32 */
-				MX7D_PAD_EPDC_DATA05__GPIO2_IO5		0x59 /* PICO_P34 */
-				MX7D_PAD_EPDC_DATA12__GPIO2_IO12	0x59 /* PICO_P42 */
-				MX7D_PAD_EPDC_DATA13__GPIO2_IO13	0x59 /* PICO_P44 */
-				MX7D_PAD_EPDC_DATA07__GPIO2_IO7		0x59 /* PICO_P48 */
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 			>;
 		};
 
@@ -300,10 +213,7 @@
 		pinctrl_ecspi3_cs: ecspi3_cs_grp {
 			fsl,pins = <
 				MX7D_PAD_I2C2_SDA__GPIO4_IO11	0x80000000
-<<<<<<< HEAD
 				MX7D_PAD_UART3_CTS_B__GPIO4_IO7 0x80000000
-=======
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 			>;
 		};
 
@@ -382,24 +292,16 @@
 		pinctrl_lcdif_ctrl: lcdifctrlgrp {
 			fsl,pins = <
 				MX7D_PAD_LCD_CLK__LCD_CLK	0x79
-<<<<<<< HEAD
 				MX7D_PAD_LCD_ENABLE__LCD_ENABLE	0x79
 				MX7D_PAD_LCD_VSYNC__LCD_VSYNC	0x79
 				MX7D_PAD_LCD_HSYNC__LCD_HSYNC	0x79
 				MX7D_PAD_LCD_RESET__GPIO3_IO4	0x14
 				//MX7D_PAD_LCD_RESET__LCD_RESET	0x79
-=======
-				MX7D_PAD_LCD_ENABLE__LCD_ENABLE	0x78
-				MX7D_PAD_LCD_VSYNC__LCD_VSYNC	0x78
-				MX7D_PAD_LCD_HSYNC__LCD_HSYNC	0x78
-				MX7D_PAD_LCD_RESET__GPIO3_IO4	0x14
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 			>;
 		};
 
 		pinctrl_sai1: sai1grp {
 			fsl,pins = <
-<<<<<<< HEAD
 				MX7D_PAD_ENET1_RX_CLK__SAI1_TX_BCLK	0x1f
 				MX7D_PAD_ENET1_CRS__SAI1_TX_SYNC	0x1f
 				MX7D_PAD_ENET1_COL__SAI1_TX_DATA0	0x30
@@ -413,21 +315,6 @@
 				MX7D_PAD_SD1_DATA2__SAI3_TX_SYNC   0x1f
 				MX7D_PAD_SD1_DATA3__SAI3_TX_DATA0  0x30
 				MX7D_PAD_SD1_DATA0__SAI3_RX_DATA0  0x1f
-=======
-				MX7D_PAD_ENET1_RX_CLK__SAI1_TX_BCLK   0x1f
-				MX7D_PAD_ENET1_CRS__SAI1_TX_SYNC   0x1f
-				MX7D_PAD_ENET1_COL__SAI1_TX_DATA0   0x30
-				MX7D_PAD_ENET1_TX_CLK__SAI1_RX_DATA0   0x1f
-			>;
-		};
-
-		pinctrl_sai2: sai2grp {
-			fsl,pins = <
-				MX7D_PAD_SAI2_TX_BCLK__SAI2_TX_BCLK   0x1f
-				MX7D_PAD_SAI2_TX_SYNC__SAI2_TX_SYNC   0x1f
-				MX7D_PAD_SAI2_TX_DATA__SAI2_TX_DATA0   0x30
-				MX7D_PAD_SAI2_RX_DATA__SAI2_RX_DATA0   0x1f
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 			>;
 		};
 
@@ -451,11 +338,7 @@
 			fsl,pins = <
 				MX7D_PAD_ECSPI2_MOSI__UART7_DCE_TX  0x79
 				MX7D_PAD_ECSPI2_SCLK__UART7_DCE_RX  0x79
-<<<<<<< HEAD
 				MX7D_PAD_ECSPI2_SS0__UART7_DCE_CTS  0x79
-=======
-				MX7D_PAD_ECSPI2_SS0__UART7_DCE_CTS 0x79
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 				MX7D_PAD_ECSPI2_MISO__UART7_DCE_RTS 0x79
 			>;
 		};
@@ -488,11 +371,7 @@
 				MX7D_PAD_SD1_DATA1__SD1_DATA1		0x59
 				MX7D_PAD_SD1_DATA2__SD1_DATA2		0x59
 				MX7D_PAD_SD1_DATA3__SD1_DATA3		0x59
-<<<<<<< HEAD
 				MX7D_PAD_SD1_CD_B__GPIO5_IO0		0x15
-=======
-				MX7D_PAD_SD1_CD_B__GPIO5_IO0		0x15 /* baseboard sd cd pin */
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 			>;
 		};
 
@@ -555,7 +434,6 @@
 
 		pinctrl_usdhc3: usdhc3grp {
 			fsl,pins = <
-<<<<<<< HEAD
 				MX7D_PAD_SD3_CMD__SD3_CMD		0x59
 				MX7D_PAD_SD3_CLK__SD3_CLK		0x19
 				MX7D_PAD_SD3_DATA0__SD3_DATA0		0x59
@@ -571,8 +449,6 @@
 
 		pinctrl_usdhc3_100mhz: usdhc3grp_100mhz {
 			fsl,pins = <
-=======
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 				MX7D_PAD_SD3_CMD__SD3_CMD		0x5a
 				MX7D_PAD_SD3_CLK__SD3_CLK		0x1a
 				MX7D_PAD_SD3_DATA0__SD3_DATA0		0x5a
@@ -582,7 +458,6 @@
 				MX7D_PAD_SD3_DATA4__SD3_DATA4		0x5a
 				MX7D_PAD_SD3_DATA5__SD3_DATA5		0x5a
 				MX7D_PAD_SD3_DATA6__SD3_DATA6		0x5a
-<<<<<<< HEAD
 				MX7D_PAD_SD3_DATA7__GPIO6_IO9		0x15 /* cpu module sd cd pin */
 			>;
 		};
@@ -599,10 +474,6 @@
 				MX7D_PAD_SD3_DATA5__SD3_DATA5		0x5b
 				MX7D_PAD_SD3_DATA6__SD3_DATA6		0x5b
 				MX7D_PAD_SD3_DATA7__GPIO6_IO9		0x15 /* cpu module sd cd pin */
-=======
-				MX7D_PAD_SD3_DATA7__SD3_DATA7		0x5a
-				MX7D_PAD_GPIO1_IO14__GPIO1_IO14		0x15 /* cpu module sd cd pin */
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 			>;
 		};
 
@@ -630,7 +501,6 @@
 			>;
 		};
 
-<<<<<<< HEAD
 
 		pinctrl_wdog: wdoggrp {
 			fsl,pins = <
@@ -638,8 +508,6 @@
 			>;
 		};
 
-=======
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 		pinctrl_wifi_ctrl: wifi_ctrlgrp {
 			fsl,pins = <
 				MX7D_PAD_ECSPI1_SCLK__GPIO4_IO16       0x59 /* wifi-reg-on */
@@ -654,7 +522,6 @@
 				MX7D_PAD_SD2_RESET_B__GPIO5_IO11       0x55 /* bluetooth-host-wake */
 			>;
 		};
-<<<<<<< HEAD
 
 		pinctrl_pcie: pcie_ctrlgrp {
 			fsl,pins = <
@@ -680,8 +547,6 @@
 				MX7D_PAD_SAI1_TX_SYNC__GPIO6_IO14	0x15 /* CAN2_RX */
 			>;
 		};
-=======
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 	};
 };
 
@@ -694,11 +559,7 @@
 	status = "okay";
 
 	display0: display {
-<<<<<<< HEAD
 		bits-per-pixel = <16>;
-=======
-		bits-per-pixel = <32>;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 		bus-width = <24>;
 
 		display-timings {
@@ -735,14 +596,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
-&pwm3 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pwm3>;
-	status = "okay";
-};
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 
 &pwm4 { /* Backlight */
 	status = "okay";
@@ -758,7 +611,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &sai3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_sai3>;
@@ -766,15 +618,6 @@
 			  <&clks IMX7D_SAI3_ROOT_CLK>;
 	assigned-clock-parents = <&clks IMX7D_PLL_AUDIO_POST_DIV>;
 	assigned-clock-rates = <0>, <36864000>;
-=======
-&sai2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_sai2>;
-	assigned-clocks = <&clks IMX7D_SAI2_ROOT_SRC>,
-			  <&clks IMX7D_SAI2_ROOT_CLK>;
-	assigned-clock-parents = <&clks IMX7D_PLL_AUDIO_POST_DIV>;
-	assigned-clock-rates = <0>, <24576000>;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 	status = "okay";
 };
 
@@ -801,11 +644,7 @@
 
 &uart7 { /* Bluetooth */
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&pinctrl_uart7 &pinctrl_bt_ctrl>;
-=======
-	pinctrl-0 = <&pinctrl_uart7>;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 	assigned-clocks = <&clks IMX7D_UART7_ROOT_SRC>;
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	fsl,uart-has-rtscts;
@@ -844,11 +683,6 @@
 &usdhc2 {
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc2>;
-<<<<<<< HEAD
-=======
-	pinctrl-1 = <&pinctrl_usdhc2>;
-	pinctrl-2 = <&pinctrl_usdhc2>;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 	bus-width = <4>;
 	vmmc-supply = <&reg_3p3v>;
 	no-1-8-v;
@@ -860,7 +694,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &usdhc3 {
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc3>;
@@ -875,30 +708,13 @@
 	enable-sdio-wakeup;
 	no-1-8-v;
 	keep-power-in-suspend;
-=======
-&usdhc3 { /* Module eMMC or SD card */
-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-	pinctrl-0 = <&pinctrl_usdhc3>;
-	pinctrl-1 = <&pinctrl_usdhc3>;
-	pinctrl-2 = <&pinctrl_usdhc3>;
-	cd-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
-	assigned-clocks = <&clks IMX7D_USDHC3_ROOT_CLK>;
-	assigned-clock-rates = <400000000>;
-	non-removable;
-	bus-width = <8>;
-	no-1-8-v;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 	status = "okay";
 };
 
 &wdog1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_wdog>;
-<<<<<<< HEAD
 	fsl,wdog_b;
-=======
-	fsl,ext-reset-output;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 };
 
 &i2c1 {
@@ -1007,7 +823,6 @@
 			};
 		};
 	};
-<<<<<<< HEAD
 };
 
 &ecspi3 {
@@ -1030,50 +845,6 @@
                 reg = <1>;
         };
 
-=======
-
-	ov5645_mipi: ov5645_mipi@3c {
-		compatible = "ovti,ov5645_mipisubdev";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_mipi_csi>; /* GPIO_P69:mipi clock, GPIO_P67:power on, GPIO_P65:reset */
-		reg = <0x3c>;
-		clocks = <&clks IMX7D_CLKO1_ROOT_CG>;
-		clock-names = "csi_mclk";
-		csi_id = <0>;
-		pwn-gpios = <&gpio1 4 1>;
-		rst-gpios = <&gpio1 5 0>;
-		DOVDD-supply = <&reg_2p5v>;
-		AVDD-supply = <&reg_2p5v>;
-		DVDD-supply = <&reg_vref_1v8>;
-		mclk = <24000000>;
-		mclk_source = <0>;
-		port {
-			ov5645_mipi_ep: endpoint {
-				remote-endpoint = <&mipi_sensor_ep>;
-			};
-		};
-	};
-};
-
-&ecspi3 {
-	fsl,spi-num-chipselects = <1>;
-	cs-gpios = <&gpio4 11 GPIO_ACTIVE_LOW>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_ecspi3 &pinctrl_ecspi3_cs>;
-	status = "okay";
-};
-
-&flexcan1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_can_1>;
-	status = "okay";
-};
-
-&flexcan2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_can_2>;
-	status = "okay";
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 };
 
 &cpu0 {
@@ -1082,7 +853,6 @@
 
 &iomuxc_lpsr {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&pinctrl_lcd_vdden>;
 
 	imx7d-pico-miscpins {
@@ -1091,30 +861,11 @@
 				MX7D_PAD_GPIO1_IO01__CCM_ENET_REF_CLK3		0x1
 			>;
 		};
-=======
-	pinctrl-0 = <&pinctrl_hog_2 &pinctrl_lcd_vdden>;
-
-	imx7d-pi {
-		pinctrl_hog_2: hoggrp-2 {
-			fsl,pins = <
-				MX7D_PAD_GPIO1_IO07__GPIO1_IO7		0x59 /* pmic sd_vel pin*/
-				MX7D_PAD_GPIO1_IO03__CCM_CLKO2		0x7d /* WIFI/BT LPO 32K Hz clock */
-			>;
-		};
-
-		pinctrl_enet_refclk: enet_refclk {
-			fsl,pins = <
-				MX7D_PAD_GPIO1_IO01__CCM_ENET_REF_CLK3		0x1  
-			>;
-		};
-
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 		pinctrl_lcd_vdden: lcd_vdden {
 			fsl,pins = <
 				MX7D_PAD_GPIO1_IO06__GPIO1_IO6		0x14
 			>;
 		};
-<<<<<<< HEAD
 		pinctrl_mipi_csi: mipicsigrp-1 {
 			fsl,pins = <
 				MX7D_PAD_GPIO1_IO04__GPIO1_IO4 0x15 /*mipi csi power*/
@@ -1125,20 +876,6 @@
 		pinctrl_sai1_mclk: sai1_mclk {
 			 fsl,pins = <
 				MX7D_PAD_GPIO1_IO01__SAI1_MCLK  0x1f
-=======
-
-		pinctrl_wdog: wdoggrp {
-			fsl,pins = <
-				MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B 0x74
-			>;
-		};
-
-		pinctrl_mipi_csi: mipicsigrp-1 {
-			fsl,pins = <
-				MX7D_PAD_GPIO1_IO04__GPIO1_IO4 0x15 /* mipi csi powerdown */
-				MX7D_PAD_GPIO1_IO05__GPIO1_IO5 0x15 /* mipi csi reset */
-				MX7D_PAD_GPIO1_IO02__CCM_CLKO1	 0x7d /* mipi csi main clock */
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 			>;
 		};
 	};
@@ -1146,19 +883,11 @@
 
 &fec1 {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&pinctrl_enet1>;
-=======
-	pinctrl-0 = <&pinctrl_enet1 &pinctrl_enet_refclk>;
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 	phy-mode = "rgmii";
 	phy-handle = <&ethphy0>;
 	phy-reset-gpios = <&gpio6 11 0>;
 	status = "okay";
-<<<<<<< HEAD
-=======
-
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 	mdio {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -1171,7 +900,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &fec2 {
 	status = "disabled";
 };
@@ -1182,45 +910,13 @@
 	pinctrl-0 = <&pinctrl_pcie>;
 	reset-gpio = <&gpio2 1 GPIO_ACTIVE_LOW>;
 	status = "okay";
-=======
-&csi1 {
-	csi-mux-mipi = <&gpr 0x14 4>;
-	status = "okay";
-
-	port {
-		csi_ep: endpoint {
-			remote-endpoint = <&csi_mipi_ep>;
-		};
-	};
-};
-
-&mipi_csi {
-	clock-frequency = <24000000>;
-	status = "okay";
-	port {
-		mipi_sensor_ep: endpoint1 {
-			remote-endpoint = <&ov5645_mipi_ep>;
-			data-lanes = <2>;
-			csis-hs-settle = <13>;
-			csis-clk-settle = <2>;
-			csis-wclk;
-		};
-
-		csi_mipi_ep: endpoint2 {
-			remote-endpoint = <&csi_ep>;
-		};
-	};
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM
 };
 
 &epxp {
 	status = "okay";
 };
-<<<<<<< HEAD
 
 &clks {
 	assigned-clocks = <&clks IMX7D_PLL_AUDIO_POST_DIV>;
 	assigned-clock-rates = <884736000>;
 };
-=======
->>>>>>> de156a7ff017... ARM: dts: add support for TechNexion PICO-IMX7D SOM

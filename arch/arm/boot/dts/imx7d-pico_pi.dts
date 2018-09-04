@@ -1,10 +1,6 @@
 /*
-<<<<<<< HEAD
  * Copyright 2016 Technexion Ltd.
  * Copyright 2017 NXP
-=======
- * Copyright 2018 Technexion Ltd.
->>>>>>> 0e02711cc52f... ARM: dts: add support for TechNexion PICO-IMX7D boards
  *
  * Author: Tapani Utriainen <tapani@technexion.com>
  *	   Richard Hu <richard.hu@technexion.com>
@@ -16,7 +12,6 @@
  */
 /dts-v1/;
 
-<<<<<<< HEAD
 #include <dt-bindings/interrupt-controller/irq.h>
 #include "imx7d.dtsi"
 #include "imx7d-pico.dtsi"
@@ -33,12 +28,4 @@
 
 &usdhc1 {
 	status = "disabled";
-=======
-#include "imx7d.dtsi"
-#include "imx7d-pico.dtsi"
-#include "baseboard_pico_pi.dtsi"
-/ {
-	model = "TechNexion PICO-IMX7D and PI baseboard";
-	compatible = "fsl,pico-imx7d", "fsl,imx7d";
->>>>>>> 0e02711cc52f... ARM: dts: add support for TechNexion PICO-IMX7D boards
 };
