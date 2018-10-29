@@ -698,36 +698,51 @@
 			>;
 		};
 
-		pinctrl_usdhc3_100mhz: usdhc3grp_100mhz {
+		pinctrl_usdhc3: usdhc3grp {
 			fsl,pins = <
-				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x17099
-				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x10099
-				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x17099
-				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17099
-				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17099
-				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17099
-				MX6QDL_PAD_SD3_DAT4__SD3_DATA4		0x17099
-				MX6QDL_PAD_SD3_DAT5__SD3_DATA5		0x17099
-				MX6QDL_PAD_SD3_DAT6__SD3_DATA6		0x17099
-				MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17099
+				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x17059
+				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x10059
+				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x17059
+				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17059
+				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17059
+				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
+				MX6QDL_PAD_SD3_DAT4__SD3_DATA4		0x17059
+				MX6QDL_PAD_SD3_DAT5__SD3_DATA5		0x17059
+				MX6QDL_PAD_SD3_DAT6__SD3_DATA6		0x17059
+				MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17059
 			>;
 		};
 
-		pinctrl_usdhc3_200mhz: usdhc3grp_200mhz {
+		pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
 			fsl,pins = <
-				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170e9
-				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100e9
-				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x170e9
-				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x170e9
-				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x170e9
-				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x170e9
-				MX6QDL_PAD_SD3_DAT4__SD3_DATA4		0x170e9
-				MX6QDL_PAD_SD3_DAT5__SD3_DATA5		0x170e9
-				MX6QDL_PAD_SD3_DAT6__SD3_DATA6		0x170e9
-				MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x170e9
+				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
+				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
+				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x170b9
+				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x170b9
+				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x170b9
+				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x170b9
+				MX6QDL_PAD_SD3_DAT4__SD3_DATA4		0x170b9
+				MX6QDL_PAD_SD3_DAT5__SD3_DATA5		0x170b9
+				MX6QDL_PAD_SD3_DAT6__SD3_DATA6		0x170b9
+				MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x170b9
 			>;
 		};
 
+		pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
+			fsl,pins = <
+				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
+				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
+				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x170f9
+				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x170f9
+				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x170f9
+				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x170f9
+				MX6QDL_PAD_SD3_DAT4__SD3_DATA4		0x170f9
+				MX6QDL_PAD_SD3_DAT5__SD3_DATA5		0x170f9
+				MX6QDL_PAD_SD3_DAT6__SD3_DATA6		0x170f9
+				MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x170f9
+			>;
+		};
+		
 		pinctrl_enet_3v3: enet3v3grp {
 			fsl,pins = <
 				MX6QDL_PAD_GPIO_18__GPIO7_IO13		0x80000000
@@ -766,16 +781,10 @@
 	status = "okay";
 };
 
-&hdmi_cec {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_hdmi_cec>;
-	status = "okay";
-};
-
 &hdmi_core {
 	ipu_id = <0>;
-	disp_id = <1>;
-	status = "disabled";
+	disp_id = <0>;
+	status = "okay";
 };
 
 &hdmi_video {
@@ -830,7 +839,6 @@
 };
 
 &pcie {
-	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie_reset>;
 	reset-gpio = <&gpio3 31 0>; /* PCIE_RST J1A-119 */
 	status = "okay";
@@ -916,14 +924,24 @@
 	status = "okay";
 };
 
-&usdhc3 { /* Module i-Nand */
+/*
+&usdhc3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc3>;
+	cd-gpios = <&gpio3 9 GPIO_ACTIVE_LOW>;
+	status = "okay";
+};
+*/
+
+&usdhc3 {
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-	pinctrl-0 = <&pinctrl_usdhc3_100mhz>;
+	pinctrl-0 = <&pinctrl_usdhc3>;
 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
 	bus-width = <8>;
 	cd-gpios = <&gpio3 9 GPIO_ACTIVE_LOW>;
-	fsl,double-clock;
+	keep-power-in-suspend;
+	enable-sdio-wakeup;
 	status = "okay";
 };
 
