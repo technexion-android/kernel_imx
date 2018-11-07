@@ -1965,7 +1965,7 @@ typedef enum
 #define CFG_ANDRIOD_POWER_SAVE_NAME      "isAndroidPsEn"
 #define CFG_ANDRIOD_POWER_SAVE_MIN       ( 0 )
 #define CFG_ANDRIOD_POWER_SAVE_MAX       ( 1 )
-#define CFG_ANDRIOD_POWER_SAVE_DEFAULT   ( 0 )
+#define CFG_ANDRIOD_POWER_SAVE_DEFAULT   ( 1 )
 
 
 /*
@@ -5208,7 +5208,7 @@ FG_BTC_BT_INTERVAL_PAGE_P2P_STA_DEFAULT
 #define CFG_SKIP_MAC_CONFIG         "gSkipMacConfig"
 #define CFG_SKIP_MAC_CONFIG_MIN     (0)
 #define CFG_SKIP_MAC_CONFIG_MAX     (1)
-#define CFG_SKIP_MAC_CONFIG_DEFAULT (0)
+#define CFG_SKIP_MAC_CONFIG_DEFAULT (1)
 
 #ifdef WLAN_FEATURE_DSRC
  /*
