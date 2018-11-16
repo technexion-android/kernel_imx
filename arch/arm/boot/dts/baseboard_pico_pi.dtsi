@@ -106,6 +106,8 @@
 };
 
 &PICO_I2CB {
+	status = "okay";
+	
 	polytouch: edt-ft5x06@38 {
 		compatible = "edt,edt-ft5x06";
 

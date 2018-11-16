@@ -53,20 +53,39 @@
 	chosen {
 		stdout-path = &uart1;
 	};
-
+/*
 	bcmdhd_wlan_0: bcmdhd_wlan@0 {
 		compatible = "android,bcmdhd_wlan";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_wifi_ctrl>;
-		gpios = <&gpio7 11 0>;    /* WL_HOST_WAKE */
+		gpios = <&gpio7 11 0>;
 		wlreg_on-supply = <&wlreg_on>;
 	};
 
 	bt_rfkill {
 		compatible = "net,rfkill-bcm43xx";
 		name = "bt_rfkill";
-		type = <2>;     /* bluetooth */
+		type = <2>;
 		bt_rfkill_reset-gpios = <&gpio7 12 0>;
+	};
+*/
+
+	bcmdhd_wlan_0: bcmdhd_wlan@0 {
+		compatible = "android,bcmdhd_wlan";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wifi_ctrl>;
+		gpios = <&gpio7 11 0>;    /* WL_HOST_WAKE */
+		status = "okay";
+		wlreg_on-supply = <&wlreg_on>;
+	};
+
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
+		bt-power-gpios = <&gpio1 4 0>;
+		bt-reset-gpios = <&gpio7 12 0>;
+		status ="okay";
 	};
 
 	memory: memory {
@@ -121,6 +140,7 @@
 			regulator-name = "wlreg_on";
 			gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
+			regulator-always-on;			
 		};
 	};
 
@@ -153,6 +173,13 @@
 	};
 
 	mxcfb3: fb@2 {
+		compatible = "fsl,mxc_sdc_fb";
+		disp_dev = "lcd";
+		interface_pix_fmt = "RGB24";
+		mode_str ="CLAA-WVGA";
+		default_bpp = <32>;
+		int_clk = <0>;
+		late_init = <0>;
 		status = "disabled";
 	};
 
@@ -172,16 +199,17 @@
 
 	backlight_lcd {
 		compatible = "pwm-backlight";
-		pwms = <&pwm4 0 50000>;
+		pwms = <&pwm4 0 50000 0>;
 		brightness-levels = <0 36 72 108 144 180 216 255>;
 		default-brightness-level = <6>;
+
 	};
 
 	backlight_lvds {
 		compatible = "pwm-backlight";
-		pwms = <&pwm3 0 5000000>;
-		brightness-levels = <0 4 8 16 32 64 128 255>;
-		default-brightness-level = <7>;
+		pwms = <&pwm3 0 50000 0>;
+		brightness-levels = <0 36 72 108 144 180 216 255>;
+		default-brightness-level = <6>;
 	};
 
 	v4l2_cap_0 {
@@ -648,7 +676,9 @@
 	no-1-8-v;
 	keep-power-in-suspend;
 	non-removable;
+/*	
 	cd-post;
+*/	
 	pm-ignore-notify;
 	wifi-host;
 	status = "okay";
