@@ -1,0 +1,76 @@
+/*
+ * Copyright 2016 Technexion Ltd.
+ *
+ * Author: Tapani Utriainen <tapani@technexion.com>
+ *         Richard Hu <richard.hu@technexion.com>
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/dts-v1/;
+#include "imx6qp.dtsi"
+#include "imx6qdl-edm.dtsi"
+#include "baseboard_edm1_tc0700.dtsi"
+
+/ {
+	model = "TechNexion EDM1-IMX6 Quad Plus and TC0700 baseboard";
+	compatible = "fsl,imx6qp-edm", "fsl,imx6qp";
+
+	firmware {
+		android {
+			compatible = "android,firmware";
+			vbmeta {
+				compatible = "android,vbmeta";
+				parts = "system,vendor,data,cache";
+			};
+			fstab {
+				compatible = "android,fstab";
+					system {
+						compatible = "android,system";
+						dev = "/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/system";
+						type = "ext4";
+						mnt_flags = "ro,barrier=1";
+						fsmgr_flags = "wait,verify=/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/metadata";
+					};
+					vendor {
+						compatible = "android,vendor";
+						dev = "/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/vendor";
+						type = "ext4";
+						mnt_flags = "ro,barrier=1";
+						fsmgr_flags = "wait";
+					};
+					data {
+						compatible = "android,data";
+						dev = "/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/userdata";
+						type = "ext4";
+						mnt_flags = "nosuid,nodev,nodiratime,noatime,nomblk_io_submit,noauto_da_alloc,errors=panic";
+						fsmgr_flags = "wait,formattable,encryptable=/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/datafooter,quota";
+					};
+					cache {
+						compatible = "android,cache";
+						dev = "/dev/block/platform/soc0/soc/2100000.aips-bus/2198000.usdhc/by-name/cache";
+						type = "ext4";
+						mnt_flags = "noatime,nosuid,nodev,nomblk_io_submit";
+						fsmgr_flags = "wait";
+					};
+			};
+		};
+	};
+
+};
+
+&ldb {
+	lvds-channel@0 {
+		crtc = "ipu2-di0";
+	};
+};
+
+&sata {
+	status = "okay";
+};
+

@@ -25,6 +25,7 @@
 #define EDM_EXT_GPIO_P263 gpio1 4
 #define EDM_EXT_GPIO_P264 gpio7 8
 
+#define EDM_EXT_GPIO_IOMUX_TC0700 &pinctrl_ext_gpio_tc0700
 #define EDM_PCIE pcie
 
 /* audio codec */
@@ -74,17 +75,16 @@
 	memory: memory {
 		reg = <0x10000000 0x40000000>;
 	};
-*/
 
 	bcmdhd_wlan_0: bcmdhd_wlan@0 {
 		compatible = "android,bcmdhd_wlan";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_wifi_ctrl>;
-		gpios = <&gpio1 29 0>;    /* WL_HOST_WAKE */
+		gpios = <&gpio1 29 0>;
 		status = "okay";
 		wlreg_on-supply = <&wlreg_on>;
 	};
-
+*/
 	bt_rfkill {
 		compatible = "fsl,mxc_bt_rfkill";
 		pinctrl-names = "default";
@@ -194,7 +194,7 @@
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "ldb";
 		interface_pix_fmt = "RGB24";
-		default_bpp = <32>;
+		default_bpp = <24>;
 		int_clk = <0>;
 		late_init = <0>;
 		status = "okay";
@@ -205,7 +205,7 @@
 		disp_dev = "hdmi";
 		interface_pix_fmt = "RGB24";
 		mode_str ="1920x1080M@60";
-		default_bpp = <32>;
+		default_bpp = <24>;
 		int_clk = <0>;
 		late_init = <0>;
 		status = "okay";
@@ -228,7 +228,7 @@
 		pinctrl-0 = <&pinctrl_ipu1>;
 		status = "okay";
 	};
-
+/*
 	backlight_lcd {
 		compatible = "pwm-backlight";
 		pwms = <&pwm4 0 50000 0>;
@@ -243,7 +243,7 @@
 		brightness-levels = <0 36 72 108 144 180 216 255>;
 		default-brightness-level = <6>;
 	};
-
+*/
 	v4l2_cap_0 {
 		compatible = "fsl,imx6q-v4l2-capture";
 		ipu_id = <0>;
@@ -449,6 +449,12 @@
 				MX6QDL_PAD_EIM_D26__GPIO3_IO26     0x4001b0b5 /* GPIO3_26 EDM pin 259 */
 				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31    0x4001b0b5 /* GPIO6_31 EDM pin 260 */
 				MX6QDL_PAD_ENET_RX_ER__GPIO1_IO24  0x4001b0b5 /* GPIO1_24 EDM pin 262 */
+			>;
+		};
+		
+		pinctrl_ext_gpio_tc0700: ext-gpio-grp-tc0700 {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03  0x4001b0b5 /* GPIO6_03 EDM pin 261 */
 			>;
 		};
 
