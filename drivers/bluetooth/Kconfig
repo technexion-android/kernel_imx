@@ -21,7 +21,7 @@ config BT_QCA
 config BT_HCIBTUSB
 	tristate "HCI USB driver"
 	depends on USB
-	select BT_INTEL
+	select BT_QCA
 	help
 	  Bluetooth HCI USB driver.
 	  This driver is required if you want to use Bluetooth devices with
@@ -29,6 +29,17 @@ config BT_HCIBTUSB
 
 	  Say Y here to compile support for Bluetooth USB devices into the
 	  kernel or say M to compile it as module (btusb).
+
+config BT_HCIBTUSB_QCA
+	bool "Qualcomm atheros protocol support"
+	depends on BT_HCIBTUSB
+	select BT_QCA
+	default y
+	help
+	  The Qualcomm atheros protocol support enables firmware and patchram
+	  download support for Qualcomm atheros Bluetooth controllers.
+
+	  Say Y here to compile support for Qualcomm atheros protocol.
 
 config BT_HCIBTUSB_BCM
 	bool "Broadcom protocol support"

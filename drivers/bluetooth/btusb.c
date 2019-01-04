@@ -32,6 +32,7 @@
 #include "btintel.h"
 #include "btbcm.h"
 #include "btrtl.h"
+#include "btqca.h"
 
 #define VERSION "0.8"
 
@@ -2922,8 +2923,16 @@ static int btusb_probe(struct usb_interface *intf,
 	}
 
 	if (id->driver_info & BTUSB_QCA_ROME) {
+		hdev->manufacturer = 29;
 		data->setup_on_usb = btusb_setup_qca;
-		hdev->set_bdaddr = btusb_set_bdaddr_ath3012;
+		//hdev->set_bdaddr = btusb_set_bdaddr_ath3012;
+		hdev->set_bdaddr = qca_set_bdaddr_rome;
+
+		/* QCA Rome devices lose their updated firmware over suspend,
+		 * but the USB hub doesn't notice any status change.
+		 * Explicitly request a device reset on resume.
+		 */
+		set_bit(BTUSB_RESET_RESUME, &data->flags);
 	}
 
 #ifdef CONFIG_BT_HCIBTUSB_RTL
