@@ -96,6 +96,14 @@
 		bt-reset-gpios = <&gpio4 17 0>;
 		status ="okay";
 	};
+	
+	clocks {
+		sys_mclk: clock {
+			compatible = "fixed-clock";
+			#clock-cells = <0>;
+			clock-frequency = <24576000>;
+		};
+	};	
 
 /*	
 	gpio-edm {
@@ -204,7 +212,7 @@
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "lcdif";
 		interface_pix_fmt = "RGB24";
-		default_bpp = <16>;
+		default_bpp = <24>;
 		int_clk = <0>;
 		late_init = <0>;
 		status = "okay";
@@ -526,7 +534,7 @@
 	status = "okay";
 
 	display0: display {
-		bits-per-pixel = <16>;
+		bits-per-pixel = <24>;
 		bus-width = <24>;
 		fbpix = "ABGR32";
 		
