@@ -102,6 +102,11 @@
 		reg = <0x52>;
 		vref-supply = <&reg_2p5v>;
 	};
+	
+	ds1337: rtc@68 {
+		compatible = "mxim,ds1337";
+		reg = <0x68>;
+	};		
 };
 
 &PICO_NYMPH_I2C2 {
