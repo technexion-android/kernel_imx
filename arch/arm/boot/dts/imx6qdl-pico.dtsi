@@ -114,7 +114,7 @@
 	};
 
 	memory: memory {
-		reg = <0x10000000 0x40000000>;
+		reg = <0x10000000 0x80000000>;
 	};
 
 	regulators {
