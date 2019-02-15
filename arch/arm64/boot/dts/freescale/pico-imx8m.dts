@@ -83,6 +83,71 @@
 
 	};
 
+	regulator-virtuals {
+		compatible = "simple-bus";
+
+		virt-buck1 {
+			compatible = "regulator-virtual";
+			virtual-supply = "buck1";
+		};
+		virt-buck2 {
+			compatible = "regulator-virtual";
+			virtual-supply = "buck2";
+		};
+		virt-buck3 {
+			compatible = "regulator-virtual";
+			virtual-supply = "buck3";
+		};
+		virt-buck4 {
+			compatible = "regulator-virtual";
+			virtual-supply = "buck4";
+		};
+		virt-buck5 {
+			compatible = "regulator-virtual";
+			virtual-supply = "buck5";
+		};
+		virt-buck6 {
+			compatible = "regulator-virtual";
+			virtual-supply = "buck6";
+		};
+		virt-buck7 {
+			compatible = "regulator-virtual";
+			virtual-supply = "buck7";
+		};
+		virt-buck8 {
+			compatible = "regulator-virtual";
+			virtual-supply = "buck8";
+		};
+		virt-ldo1 {
+			compatible = "regulator-virtual";
+			virtual-supply = "ldo1";
+		};
+		virt-ldo2 {
+			compatible = "regulator-virtual";
+			virtual-supply = "ldo2";
+		};
+		virt-ldo3 {
+			compatible = "regulator-virtual";
+			virtual-supply = "ldo3";
+		};
+		virt-ldo4 {
+			compatible = "regulator-virtual";
+			virtual-supply = "ldo4";
+		};
+		virt-ldo5 {
+			compatible = "regulator-virtual";
+			virtual-supply = "ldo5";
+		};
+		virt-ldo6 {
+			compatible = "regulator-virtual";
+			virtual-supply = "ldo6";
+		};
+		virt-ldo7 {
+			compatible = "regulator-virtual";
+			virtual-supply = "ldo7";
+		};
+	};
+
 	backlight_mipi {
 		compatible = "pwm-backlight";
 		pwms = <&pwm1 0 50000 0>;
