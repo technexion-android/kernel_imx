@@ -184,6 +184,10 @@
 	};
 };
 
+&crypto {
+       status = "disabled";
+};
+
 &resmem {
 	/delete-node/ linux,cma;
 };
