@@ -121,7 +121,11 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MQ) += fsl-imx8mq-ddr3l-arm2.dtb \
 				 imx8mq-pico-pi.dtb \
 				 imx8mq-pico-pi-dcss-ili9881c.dtb \
 				 imx8mq-pico-pi-voicehat.dtb
-dtb-$(CONFIG_ARCH_FSL_IMX8MM) += fsl-imx8mm-evk.dtb \
+dtb-$(CONFIG_ARCH_FSL_IMX8MM) += imx8mm-pico-pi.dtb \
+				 imx8mm-pico-pi-ili9881c.dtb \
+				 imx8mm-pico-pi-sn65dsi84-hj070na.dtb \
+				 imx8mm-pico-pi-voicehat.dtb \
+				 fsl-imx8mm-evk.dtb \
 				 fsl-imx8mm-evk-drm.dtb \
 				 fsl-imx8mm-evk-ak4497.dtb \
 				 fsl-imx8mm-evk-m4.dtb \
@@ -136,8 +140,7 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += fsl-imx8mm-evk.dtb \
 				 fsl-imx8mm-evk-revb-rm67191.dtb \
 				 fsl-imx8mm-ddr4-evk-rm67191.dtb \
 				 pico-imx8mm.dtb \
-				 pico-imx8mm-ili9881c.dtb \
-				 pico-imx8mm-sn65dsi84-hj070na.dtb
+				 pico-imx8mm-ili9881c.dtb
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)
 clean-files	:= *.dtb
