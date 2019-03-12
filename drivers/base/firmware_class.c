@@ -368,6 +368,7 @@ static void fw_free_buf(struct firmware_buf *buf)
 static char fw_path_para[256];
 static const char * const fw_path[] = {
 	fw_path_para,
+	"/vendor/lib/firmware",
 	"/lib/firmware/updates/" UTS_RELEASE,
 	"/lib/firmware/updates",
 	"/lib/firmware/" UTS_RELEASE,
@@ -409,6 +410,11 @@ fw_get_filesystem_firmware(struct device *device, struct firmware_buf *buf)
 
 		len = snprintf(path, PATH_MAX, "%s/%s",
 			       fw_path[i], buf->fw_id);
+
+		/* To check firmware load status
+		dev_err(device, "fw_path = %s , fw_id = %s\n", fw_path[i], buf->fw_id);
+		*/
+
 		if (len >= PATH_MAX) {
 			rc = -ENAMETOOLONG;
 			break;
