@@ -81,6 +81,26 @@
 			enable-active-high;
 		};
 
+		reg_wifi_vbus: wifi_vbus {
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_wifi_ctrl>;
+			compatible = "regulator-fixed";
+			regulator-name = "wifi_vbus";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio3 24 GPIO_ACTIVE_HIGH>;
+		};
+
+		reg_wifi_sdio_vbus: wifi_sdio_vbus {
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_wifi_sdio_ctrl>;
+			compatible = "regulator-fixed";
+			regulator-name = "wifi_sdio_vbus";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio3 25 GPIO_ACTIVE_HIGH>;
+		};
+
 	};
 
 	regulator-virtuals {
@@ -405,6 +425,12 @@
 		pinctrl_wifi_ctrl: wifi_ctrlgrp {
 			fsl,pins = <
 				MX8MQ_IOMUXC_SAI5_RXD3_GPIO3_IO24		0x19 /* WL_REG_ON */
+			>;
+		};
+
+		pinctrl_wifi_sdio_ctrl: wifi_sdio_ctrlgrp {
+			fsl,pins = <
+				MX8MQ_IOMUXC_SAI5_MCLK_GPIO3_IO25		0x19 /* WL_SDIO_REG_ON */
 			>;
 		};
 
