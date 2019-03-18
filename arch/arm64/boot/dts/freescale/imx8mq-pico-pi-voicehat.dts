@@ -90,7 +90,7 @@
 		pair {
 			gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
 			label = "KEY HOME SCREEN";
-			linux,code = <KEY_HOME>;
+			linux,code = <KEY_HOMEPAGE>;
 		};
 
 		act {
