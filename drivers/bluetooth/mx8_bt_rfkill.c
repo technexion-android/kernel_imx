@@ -63,8 +63,17 @@ static void mxc_bt_rfkill_reset(void *rfkdata)
 
 static int mxc_bt_rfkill_power_change(void *rfkdata, int status)
 {
+	/*
 	if (status)
 		mxc_bt_rfkill_reset(rfkdata);
+	*/
+	struct mxc_bt_rfkill_data *data = rfkdata;
+	
+	if (gpio_is_valid(data->bt_power_gpio)) {
+		pr_info("rfkill: BT power going to : %d\n", status);
+		gpio_set_value_cansleep(data->bt_power_gpio, status);
+	}	
+		
 	return 0;
 }
 static int mxc_bt_set_block(void *rfkdata, bool blocked)
