@@ -55,6 +55,14 @@
 		stdout-path = &uart1;
 	};
 
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
+		bt-power-gpios = <&gpio3 21 0>;
+		status ="okay";
+	};
+
 	regulators {
 		compatible = "simple-bus";
 		#address-cells = <1>;
