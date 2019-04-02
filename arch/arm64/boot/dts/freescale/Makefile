@@ -138,9 +138,7 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += imx8mm-pico-pi.dtb \
 				 fsl-imx8mm-evk-root.dtb \
 				 fsl-imx8mm-evk-revb.dtb \
 				 fsl-imx8mm-evk-revb-rm67191.dtb \
-				 fsl-imx8mm-ddr4-evk-rm67191.dtb \
-				 pico-imx8mm.dtb \
-				 pico-imx8mm-ili9881c.dtb
+				 fsl-imx8mm-ddr4-evk-rm67191.dtb
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)
 clean-files	:= *.dtb
