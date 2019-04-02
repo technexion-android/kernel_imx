@@ -607,6 +607,10 @@
 	status = "okay";
 };
 
+&crypto {
+	status = "disabled";
+};
+
 &usbotg1 {
 	dr_mode = "otg";
 	picophy,pre-emp-curr-control = <3>;
