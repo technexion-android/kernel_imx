@@ -125,6 +125,7 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += imx8mm-pico-pi.dtb \
 				 imx8mm-pico-pi-ili9881c.dtb \
 				 imx8mm-pico-pi-sn65dsi84-hj070na.dtb \
 				 imx8mm-pico-pi-voicehat.dtb \
+				 imx8mm-pico-pi-ili9881c-voicehat.dtb \
 				 fsl-imx8mm-evk.dtb \
 				 fsl-imx8mm-evk-drm.dtb \
 				 fsl-imx8mm-evk-ak4497.dtb \
