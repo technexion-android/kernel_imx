@@ -2474,7 +2474,7 @@ static const struct of_device_id dsi_of_match[] = {
 		.data = &innuolex_hp070ba
 	}, {
 		.compatible = "tn,dsi2lvds-panel",
-		.data = &innolux_hj070na
+		.data = &innuolex_hp070ba
 	}, {
 		/* sentinel */
 	}
