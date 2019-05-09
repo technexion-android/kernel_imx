@@ -179,7 +179,7 @@
 	};
 
 	ov5645_mipi: ov5645_mipi@3c {
-		compatible = "ovti,ov5645_mipi_v2";
+		compatible = "ov5645_mipi";
 		reg = <0x3c>;
 		status = "okay";
 		pinctrl-names = "default";
@@ -206,7 +206,7 @@
 	status = "okay";
 
 	ov5645_mipi2: ov5645_mipi2@3c {
-		compatible = "ovti,ov5645_mipi_v2";
+		compatible = "ov5645_mipi";
 		reg = <0x3c>;
 		status = "okay";
 		pinctrl-names = "default";
