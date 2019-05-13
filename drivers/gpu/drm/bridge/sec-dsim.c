@@ -892,6 +892,11 @@ static void sec_mipi_dsim_set_main_mode(struct sec_mipi_dsim *dsim)
 	uint32_t bpp, hfp_wc, hbp_wc, hsa_wc, wc;
 	uint32_t mdresol = 0, mvporch = 0, mhporch = 0, msync = 0;
 	struct videomode *vmode = &dsim->vmode;
+	uint32_t pixel_clk = vmode->pixelclock;
+	uint32_t bit_clk =  dsim->bit_clk;
+	struct device *dev = dsim->dev;
+
+	dev_dbg(dev, "bit_clk %u, pixelclock %lu\n", bit_clk, vmode->pixelclock);
 
 	mdresol |= MDRESOL_SET_MAINVRESOL(vmode->vactive) |
 		   MDRESOL_SET_MAINHRESOL(vmode->hactive);
@@ -919,8 +924,13 @@ static void sec_mipi_dsim_set_main_mode(struct sec_mipi_dsim *dsim)
 		hbp_wc = dsim->hpar->hbp_wc;
 	}
 
-	mhporch |= MHPORCH_SET_MAINHFP(hfp_wc) |
-		   MHPORCH_SET_MAINHBP(hbp_wc);
+	if (vmode->pixelclock == 149900000) { /* hard-coded for AUO g101uan02 */
+		mhporch |= MHPORCH_SET_MAINHFP(vmode->hfront_porch*(bit_clk/8)/pixel_clk /2) |
+		MHPORCH_SET_MAINHBP(vmode->hback_porch * (bit_clk/8)/pixel_clk);
+	} else {
+		mhporch |= MHPORCH_SET_MAINHFP(hfp_wc) |
+		MHPORCH_SET_MAINHBP(hbp_wc);
+	}
 
 	dsim_write(dsim, mhporch, DSIM_MHPORCH);
 
@@ -933,8 +943,13 @@ static void sec_mipi_dsim_set_main_mode(struct sec_mipi_dsim *dsim)
 	} else
 		hsa_wc = dsim->hpar->hsa_wc;
 
-	msync |= MSYNC_SET_MAINVSA(vmode->vsync_len) |
-		 MSYNC_SET_MAINHSA(hsa_wc);
+	if (vmode->pixelclock == 149900000) { /* hard-coded for AUO g101uan02 */
+		msync |= MSYNC_SET_MAINVSA(vmode->vsync_len) |
+			 MSYNC_SET_MAINHSA(vmode->hsync_len * (bit_clk/8)/pixel_clk);
+	} else {
+		msync |= MSYNC_SET_MAINVSA(vmode->vsync_len) |
+			 MSYNC_SET_MAINHSA(hsa_wc);
+	}
 
 	dsim_write(dsim, msync, DSIM_MSYNC);
 }
