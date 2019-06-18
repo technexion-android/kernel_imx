@@ -77,14 +77,14 @@
 
 		up {
 			gpios = <&gpio3 20 GPIO_ACTIVE_LOW>;
-			label = "KEY UP";
-			linux,code = <KEY_UP>;
+			label = "KEY VOLUME UP";
+			linux,code = <KEY_VOLUMEUP>;
 		};
 
 		down {
 			gpios = <&gpio3 25 GPIO_ACTIVE_LOW>;
-			label = "KEY DOWN";
-			linux,code = <KEY_DOWN>;
+			label = "KEY VOLUME DOWN";
+			linux,code = <KEY_VOLUMEDOWN>;
 		};
 
 		mute {
@@ -95,14 +95,14 @@
 
 		pair {
 			gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
-			label = "KEY PAIR";
-			linux,code = <KEY_SELECT>;
+			label = "KEY HOME SCREEN";
+			linux,code = <KEY_HOMEPAGE>;
 		};
 
 		act {
 			gpios = <&gpio5 3 GPIO_ACTIVE_LOW>;
-			label = "KEY ACT";
-			linux,code = <KEY_OK>;
+			label = "KEY POWER";
+			linux,code = <KEY_POWER>;
 		};
 	};
 };
