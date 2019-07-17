@@ -380,6 +380,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-nit6xlite.dtb \
 	imx6dl-nitrogen6x.dtb \
 	imx6dl-phytec-pbab01.dtb \
+	imx6dl-pico-qca_dwarf.dtb \
 	imx6dl-pico-qca_pi.dtb \
 	imx6dl-rex-basic.dtb \
 	imx6dl-riotboard.dtb \
@@ -428,6 +429,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-b650v3.dtb \
 	imx6q-b850v3.dtb \
 	imx6q-pop-arm2.dtb \
+	imx6q-pico-qca_dwarf.dtb \
 	imx6q-pico-qca_pi.dtb \
 	imx6q-cm-fx6.dtb \
 	imx6q-cubox-i.dtb \
