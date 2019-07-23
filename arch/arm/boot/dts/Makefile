@@ -430,6 +430,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-b850v3.dtb \
 	imx6q-pop-arm2.dtb \
 	imx6q-pico-qca_dwarf.dtb \
+	imx6q-pico-qca_nymph.dtb \
 	imx6q-pico-qca_pi.dtb \
 	imx6q-cm-fx6.dtb \
 	imx6q-cubox-i.dtb \
