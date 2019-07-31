@@ -122,6 +122,7 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MQ) += fsl-imx8mq-ddr3l-arm2.dtb \
 				 fsl-imx8mq-evk-edp.dtb \
 				 fsl-imx8mq-phanbell.dtb \
 				 imx8mq-pico-pi.dtb \
+				 imx8mq-pico-pi-nfc.dtb \
 				 imx8mq-pico-pi-dcss-ili9881c.dtb \
 				 imx8mq-pico-pi-voicehat.dtb \
 				 imx8mq-pico-pi-dcss-ili9881c-voicehat.dtb
