@@ -1,0 +1,68 @@
+/*
+ * Copyright 2016 Technexion Ltd.
+ *
+ * Author: Alvin Chen<alvin.chen@technexion.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+/dts-v1/;
+
+#include <dt-bindings/interrupt-controller/irq.h>
+#include "imx7d.dtsi"
+#include "imx7d-tep1-tvt.dtsi"
+/ {
+	model = "TechNexion TEP1-IMX7D board";
+	compatible = "fsl,tep1-imx7d-tvt", "fsl,imx7d";
+
+	firmware {
+		android {
+			compatible = "android,firmware";
+			vbmeta {
+				parts = "system,vendor,data,cache";
+			};
+			fstab {
+				compatible = "android,fstab";
+					system {
+						compatible = "android,system";
+						dev = "/dev/block/platform/soc0/soc/30800000.aips-bus/30b60000.usdhc/by-name/system";
+						type = "ext4";
+						mnt_flags = "ro,barrier=1";
+						fsmgr_flags = "wait,verify=/dev/block/platform/soc0/soc/30800000.aips-bus/30b60000.usdhc/by-name/metadata";
+					};
+					vendor {
+						compatible = "android,vendor";
+						dev = "/dev/block/platform/soc0/soc/30800000.aips-bus/30b60000.usdhc/by-name/vendor";
+						type = "ext4";
+						mnt_flags = "ro,barrier=1";
+						fsmgr_flags = "wait";
+					};
+					data {
+						compatible = "android,data";
+						dev = "/dev/block/platform/soc0/soc/30800000.aips-bus/30b60000.usdhc/by-name/userdata";
+						type = "ext4";
+						mnt_flags = "nosuid,nodev,nodiratime,noatime,nomblk_io_submit,noauto_da_alloc,errors=panic";
+						fsmgr_flags = "wait,formattable,encryptable=/dev/block/platform/soc0/soc/30800000.aips-bus/30b60000.usdhc/by-name/datafooter,quota";
+					};
+					cache {
+						compatible = "android,cache";
+						dev = "/dev/block/platform/soc0/soc/30800000.aips-bus/30b60000.usdhc/by-name/cache";
+						type = "ext4";
+						mnt_flags = "noatime,nosuid,nodev,nomblk_io_submit";
+						fsmgr_flags = "wait";
+					};
+			};
+		};
+	};
+
+};
+
+&epdc {
+	status = "disabled";
+};
+
+&pcie {
+	status = "okay";
+};
