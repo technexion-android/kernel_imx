@@ -123,6 +123,7 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MQ) += fsl-imx8mq-ddr3l-arm2.dtb \
 				 fsl-imx8mq-phanbell.dtb \
 				 imx8mq-edm-wizard.dtb \
 				 imx8mq-edm-wizard-dcss-ili9881c.dtb \
+				 imx8mq-edm-wizard-dcss-ili9881c-voicehat.dtb \
 				 imx8mq-edm-wizard-dcss-g080uan01.dtb \
 				 imx8mq-edm-wizard-dcss-g101uan02.dtb \
 				 imx8mq-edm-wizard-voicehat.dtb \
