@@ -95,6 +95,11 @@
 
 &resmem {
 	/delete-node/ linux,cma;
+
+	limit3g@0x100000000 {
+		no-map;
+		reg = <1 0x00000000 0 0x40000000>;
+	};
 };
 
 &clk {
