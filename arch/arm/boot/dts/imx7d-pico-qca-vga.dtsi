@@ -534,7 +534,7 @@
 	status = "okay";
 
 	display0: display {
-		bits-per-pixel = <32>;
+		bits-per-pixel = <24>;
 		bus-width = <24>;
 		fbpix = "ABGR32";
 
