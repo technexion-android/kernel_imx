@@ -539,7 +539,7 @@
 		fbpix = "ABGR32";
 
 		display-timings {
-			native-mode = <&vga_timing0>;
+			native-mode = <&vga_timing1>;
 			vga_timing0: vga_timing0 {
 				clock-frequency = <74929000>;
 				hactive = <1024>;
@@ -555,6 +555,22 @@
 				de-active = <1>;
 				pixelclk-active = <0>;
 				interlaced =  <0>;
+			};
+			/* we have to boost this to something like 28.285MHz to get output close to this */
+			vga_timing1: vga_timing1 {
+				clock-frequency = <25175000>;
+				hactive = <640>;
+				vactive = <480>;
+				hfront-porch = <16>;
+				hback-porch = <48>;
+				hsync-len = <96>;
+				vback-porch = <33>;
+				vfront-porch = <10>;
+				vsync-len = <2>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				de-active = <1>;
+				pixelclk-active = <0>;
 			};
 		};
 	};
