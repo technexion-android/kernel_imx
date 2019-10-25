@@ -363,6 +363,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-aristainetos2_7.dtb \
 	imx6dl-colibri-eval-v3.dtb \
 	imx6dl-cubox-i.dtb \
+	imx6dl-edm1-fairy-qca.dtb \
 	imx6dl-dfi-fs700-m60.dtb \
 	imx6dl-gw51xx.dtb \
 	imx6dl-gw52xx.dtb \
@@ -440,6 +441,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-dfi-fs700-m60.dtb \
 	imx6q-dmo-edmqmx6.dtb \
 	imx6q-evi.dtb \
+	imx6q-edm1-fairy-qca.dtb \
 	imx6q-gk802.dtb \
 	imx6q-gw51xx.dtb \
 	imx6q-gw52xx.dtb \
@@ -493,6 +495,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-wandboard.dtb \
 	imx6q-wandboard-revb1.dtb \
 	imx6q-zii-rdu2.dtb \
+	imx6qp-edm1-fairy-qca.dtb \
 	imx6qp-nitrogen6_max.dtb \
 	imx6qp-nitrogen6_som2.dtb \
 	imx6qp-sabreauto.dtb \
