@@ -199,18 +199,14 @@
 			enable-active-high;
 			regulator-always-on;
 		};
+	};
 
-		bt_reg_on: btreg_on {
-			compatible = "regulator-fixed";
-			pinctrl-names = "default";
-			pinctrl-0 = <&pinctrl_bt_ctrl>;
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			regulator-name = "btreg_on";
-			gpio = <&gpio5 30 GPIO_ACTIVE_HIGH>;
-			enable-active-high;
-			regulator-always-on;
-		};
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
+		bt-power-gpios = <&gpio5 30 GPIO_ACTIVE_HIGH>; /* BT_REG_ON: BT enable */
+		status ="okay";
 	};
 
 	sound-spdif {
