@@ -632,6 +632,7 @@ dtb-$(CONFIG_SOC_IMX7D) += \
 	imx7d-nitrogen7.dtb \
 	imx7d-pico.dtb \
 	imx7d-pico-qca_pi.dtb \
+	imx7d-pico-qca_pi-voicehat.dtb \
 	imx7d-pico-qca_dwarf.dtb \
 	imx7d-pico-qca_hobbit.dtb \
 	imx7d-pico-qca_nymph.dtb \
