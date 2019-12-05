@@ -150,12 +150,11 @@
 	};
 
 	bt_rfkill {
-		compatible = "net,rfkill-gpio";
+		compatible = "fsl,mxc_bt_rfkill";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_bt_ctrl>;
-		name = "bt_rfkill";
-		type = "bluetooth";
-		shutdown-gpios = <&gpio4 17 GPIO_ACTIVE_HIGH>; /* BT_REG_ON: BT enable */
+		bt-power-gpios = <&gpio4 17 GPIO_ACTIVE_LOW>; /* BT_REG_ON: BT enable */
+		status ="okay";
 	};
 
 	regulators {
