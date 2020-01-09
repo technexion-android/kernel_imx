@@ -25,6 +25,18 @@
 #define EDM_EXT_GPIO_P264 gpio7 8
 #define EDM_EXT_LVDS_PWR  gpio5 31
 #define EDM_EXT_USB_HUB_RESET gpio7 12
+#define EDM_EXT_GPIO_EXP0 pca9555 0
+#define EDM_EXT_GPIO_EXP1 pca9555 1
+#define EDM_EXT_GPIO_EXP2 pca9555 2
+#define EDM_EXT_GPIO_EXP3 pca9555 3
+#define EDM_EXT_GPIO_EXP4 pca9555 4
+#define EDM_EXT_GPIO_EXP5 pca9555 5
+#define EDM_EXT_GPIO_EXP6 pca9555 6
+#define EDM_EXT_GPIO_EXP7 pca9555 7
+#define EDM_EXT_GPIO_EXP8 pca9555 8
+#define EDM_EXT_GPIO_EXP9 pca9555 9
+#define EDM_EXT_GPIO_EXP10 pca9555 10
+#define EDM_EXT_GPIO_EXP11 pca9555 11
 
 #define EDM_FAIRY_GPIO_DEFS()									\
 &gpio1 {											\
@@ -83,6 +95,35 @@
 		"", "", "", "", "", "", "", "GPIO_P260";					\
 												\
 	pinctrl-0 = <&pinctrl_ext_gpio_tc0700>;								\
+}
+
+#define EDM_TC1000_GPIO_DEFS()									\
+&gpio1 {											\
+	gpio-line-names =									\
+		"", "", "", "", "", "", "", "",							\
+		"", "", "", "", "", "", "", "",							\
+		"", "", "", "", "", "", "", "",							\
+		"GPIO_P262", "", "", "", "", "", "", "";					\
+												\
+};												\
+												\
+&gpio3 {											\
+	gpio-line-names =									\
+		"", "", "", "", "", "", "", "",							\
+		"", "", "", "", "", "", "", "",							\
+		"", "", "", "", "", "", "", "",							\
+		"", "", "GPIO_P259", "", "", "", "", "";				\
+												\
+};												\
+												\
+&gpio6 {											\
+	gpio-line-names =									\
+		"", "", "GPIO_P256", "GPIO_P261", "GPIO_P257", "GPIO_P255", "", "",			\
+		"", "", "", "", "", "", "", "",							\
+		"", "", "", "", "", "", "", "",							\
+		"", "", "", "", "", "", "", "GPIO_P260";					\
+												\
+	pinctrl-0 = <&pinctrl_ext_gpio_tc1000>;								\
 }
 
 /* SAI */
@@ -783,6 +824,15 @@
 		pinctrl_ext_gpio_tc0700: ext-gpio-grp-tc0700 {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03  0x4001b0b5 /* GPIO6_03 EDM pin 261 , TC0700's four GPIOs cannot be set together */
+			>;
+		};
+
+		pinctrl_ext_gpio_tc1000: ext-gpio-grp-tc1000 {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT19__GPIO6_IO05		0x4001b0b5	/* GPIO6_05 EDM pin 255 */
+				MX6QDL_PAD_CSI0_DAT16__GPIO6_IO02		0x4001b0b5	/* GPIO6_02 EDM pin 256 */
+				MX6QDL_PAD_CSI0_DAT18__GPIO6_IO04		0x4001b0b5	/* GPIO6_04 EDM pin 257 */
+				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03		0x4001b0b5	/* GPIO6_03 EDM pin 261 , TC0700's four GPIOs cannot be set together */
 			>;
 		};
 	};
