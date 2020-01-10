@@ -12,6 +12,25 @@
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/gpio/gpio.h>
 
+#define EDM_TEP1_GPIO_DEFS()	\
+&gpio2 {	\
+	gpio-line-names =	\
+		"", "", "", "", "GPIO_PORT1_IO3", "", "", "",	\
+		"", "", "", "", "", "", "", "",	\
+		"", "", "", "", "", "", "", "",	\
+		"", "", "", "", "", "", "", "";	\
+	pinctrl-0 = <&pinctrl_gpio2>;	\
+};	\
+	\
+&gpio5 {	\
+	gpio-line-names =	\
+		"", "", "GPIO_PORT1_IO2", "", "", "", "", "",	\
+		"", "", "", "", "GPIO_PORT1_IO4", "GPIO_PORT1_IO1", "", "",	\
+		"", "", "", "", "", "", "", "",	\
+		"", "", "", "", "", "", "", "";	\
+	pinctrl-0 = <&pinctrl_gpio5>;	\
+}
+
 / {
 	firmware {
 		android {
@@ -59,13 +78,13 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_backlight>;
 		pwms = <&pwm3 0 50000 0>;
-		brightness-levels = <0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
-				     17 18 19 20 21 22 23 24 25 26 27 28 29 30
-				     31 32 33 34 35 36 37 38 39 40 41 42 43 44
-				     45 46 47 48 49 50 51 52 53 54 55 56 57 58
-				     59 60 61 62 63 64 65 66 67 68 69 70 71 72
-				     73 74 75 76 77 78 79 80 81 82 83 84 85 86
-				     87 88 89 90 91 92 93 94 95 96 97 98 99 100>;
+		brightness-levels = 	<0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+								17 18 19 20 21 22 23 24 25 26 27 28 29 30
+								31 32 33 34 35 36 37 38 39 40 41 42 43 44
+								45 46 47 48 49 50 51 52 53 54 55 56 57 58
+								59 60 61 62 63 64 65 66 67 68 69 70 71 72
+								73 74 75 76 77 78 79 80 81 82 83 84 85 86
+								87 88 89 90 91 92 93 94 95 96 97 98 99 100>;
 		default-brightness-level = <51>;
 		status = "okay";
 	};
@@ -97,6 +116,8 @@
 			regulator-name = "usb_otg1_vbus";
 			regulator-min-microvolt = <5000000>;
 			regulator-max-microvolt = <5000000>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_usbotg1_pwr>;
 			gpio = <&gpio1 5 GPIO_ACTIVE_LOW>;
 			enable-active-low;
 		};
@@ -130,9 +151,35 @@
 			reg = <0>;
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_lcd_vdden>;
 			gpio = <&gpio3 4 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
 			regulator-boot-on;
+		};
+
+		reg_pcie_switch1: pcie_switch1 {
+			compatible = "regulator-fixed";
+			regulator-name = "PCIE_SWITCH1";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_pcie_switch1>;
+			gpio = <&gpio4 2 GPIO_ACTIVE_HIGH>;
+			enable-active-low;
+			regulator-always-on;
+		};
+
+		reg_pcie_switch2: pcie_switch2 {
+			compatible = "regulator-fixed";
+			regulator-name = "PCIE_SWITCH2";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_pcie_switch2>;
+			gpio = <&gpio4 3 GPIO_ACTIVE_HIGH>;
+			enable-active-low;
+			regulator-always-on;
 		};
 	};
 
@@ -144,55 +191,11 @@
 		};
 	};
 
-	gpio-edm {
-		compatible = "gpio-edm";
-		gpio_p98 {
-			label = "PCIE_SWITCH_1";
-			gpios = <&gpio4 2 0>;
-			dir   = "out";
-		};
-		gpio_p99 {
-			label = "PCIE_SWITCH_2";
-			gpios = <&gpio4 3 0>;
-			dir   = "out";
-		};
-		gpio_p256 {
-			label = "GPIO_PORT1_IO1";
-			gpios = <&gpio5 13 0>;
-			dir   = "out";
-		};
-		gpio_p257 {
-			label = "GPIO_PORT1_IO2";
-			gpios = <&gpio5 2 0>;
-			dir   = "out";
-		};
-		gpio_p258 {
-			label = "GPIO_PORT1_IO3";
-			gpios = <&gpio2 4 0>;
-			dir   = "out";
-		};
-		gpio_p259 {
-			label = "GPIO_PORT1_IO4";
-			gpios = <&gpio5 12 0>;
-			dir   = "out";
-		};
-		gpio_p263 {
-			label = "WIFI_DISABLE";
-			gpios = <&gpio6 22 1>;
-			dir   = "out";
-		};
-		gpio_p264 {
-			label = "M2_POWER";
-			gpios = <&gpio2 31 1>;
-			dir   = "out";
-		};
-	};
-
 	mxcfb1: fb@0 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "lcdif";
 		interface_pix_fmt = "RGB24";
-		default_bpp = <32>;
+		default_bpp = <24>;
 		int_clk = <0>;
 		late_init = <0>;
 		status = "okay";
@@ -209,9 +212,11 @@
 	};
 };
 
+EDM_TEP1_GPIO_DEFS();
+
 &iomuxc {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_gpio &pinctrl_lcd_vdden>;
+	pinctrl-0 = <&pinctrl_hog_1>;
 	tep1-imx7d {
 		pinctrl_ecspi1: ecspi1grp {
 			fsl,pins = <
@@ -287,9 +292,28 @@
 			>;
 		};
 
+		pinctrl_pcie_switch1: pcie_switch1_ctrlgrp {
+			fsl,pins = <
+				MX7D_PAD_UART2_RX_DATA__GPIO4_IO2	0x15
+			>;
+		};
+
+		pinctrl_pcie_switch2: pcie_switch2_ctrlgrp {
+			fsl,pins = <
+				MX7D_PAD_UART2_TX_DATA__GPIO4_IO3	0x15
+			>;
+		};
+
 		pinctrl_pcie: pcie_ctrlgrp {
 			fsl,pins = <
-				MX7D_PAD_SAI1_TX_DATA__GPIO6_IO15	0x15 /* pcie reset */
+				MX7D_PAD_EPDC_PWR_STAT__GPIO2_IO31	0x15	/* pcie POWER_ON_OFF */
+				MX7D_PAD_EPDC_PWR_COM__GPIO2_IO30	0x15	/* pcie M2_RST */
+				MX7D_PAD_SAI1_RX_DATA__GPIO6_IO12	0x15	/* pcie WAKE_WWAN */
+				MX7D_PAD_SAI1_TX_BCLK__GPIO6_IO13	0x15	/* pcie PEWAKE */
+				MX7D_PAD_SAI1_TX_SYNC__GPIO6_IO14	0x15	/* pcie CLKREQ */
+				MX7D_PAD_SAI1_TX_DATA__GPIO6_IO15	0x15	/* pcie PERST */
+				MX7D_PAD_SAI1_RX_BCLK__GPIO6_IO17	0x15	/* pcie GPS_DISABLE */
+				MX7D_PAD_SAI2_TX_DATA__GPIO6_IO22	0x15	/* pcie WAN_nDISABLE1 */
 			>;
 		};
 
@@ -492,17 +516,9 @@
 			>;
 		};
 
-		pinctrl_gpio: gpio_ctrlgrp {
+		pinctrl_hog_1: gpio_ctrlgrp {
 			fsl,pins = <
-				MX7D_PAD_SD2_CMD__GPIO5_IO13		0x15
-				MX7D_PAD_SD1_RESET_B__GPIO5_IO2		0x15
-				MX7D_PAD_EPDC_DATA04__GPIO2_IO4		0x15
-				MX7D_PAD_SD2_CLK__GPIO5_IO12		0x15
-				MX7D_PAD_SAI2_TX_DATA__GPIO6_IO22 	0x15
 				MX7D_PAD_I2C4_SDA__GPIO4_IO15		0x15	/* fec power */
-				MX7D_PAD_SAI2_RX_DATA__GPIO6_IO21	0x15	/* M2 power */
-				MX7D_PAD_UART2_RX_DATA__GPIO4_IO2	0x15
-				MX7D_PAD_UART2_TX_DATA__GPIO4_IO3	0x15
 			>;
 		};
 
@@ -521,6 +537,20 @@
 		pinctrl_ft5606_reset: ft5606-touch-reset {
 			fsl,pins = <
 				MX7D_PAD_EPDC_DATA10__GPIO2_IO10	0x59	/* touch rest */
+			>;
+		};
+
+		pinctrl_gpio2: gpio1grp {
+			fsl,pins = <
+				MX7D_PAD_EPDC_DATA04__GPIO2_IO4		0x15
+			>;
+		};
+
+		pinctrl_gpio5: gpio3grp {
+			fsl,pins = <
+				MX7D_PAD_SD2_CMD__GPIO5_IO13		0x15
+				MX7D_PAD_SD1_RESET_B__GPIO5_IO2		0x15
+				MX7D_PAD_SD2_CLK__GPIO5_IO12		0x15
 			>;
 		};
 	};
@@ -812,15 +842,9 @@
 
 &iomuxc_lpsr {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_hog_2 &pinctrl_enet_refclk &pinctrl_usbotg1_pwr>;
+	pinctrl-0 = <&pinctrl_hog_2>;
 
-	imx7d-edm1-miscpins {
-		pinctrl_enet_refclk: enet_refclk {
-			fsl,pins = <
-				MX7D_PAD_LPSR_GPIO1_IO01__ANATOP_24M_OUT	0x80000000
-			>;
-		};
-
+	tep1-imx7d-miscpins {
 		pinctrl_wdog: wdoggrp {
 			fsl,pins = <
 				MX7D_PAD_LPSR_GPIO1_IO00__WDOG1_WDOG_B	0x74
@@ -886,7 +910,11 @@
 &pcie {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie>;
-	reset-gpio = <&gpio6 15 GPIO_ACTIVE_LOW>;
+	power-on-gpio = <&gpio2 31 GPIO_ACTIVE_HIGH>;
+	disable-gpio = <&gpio6 22 GPIO_ACTIVE_HIGH>;
+	wake-gpio = <&gpio6 13 GPIO_ACTIVE_HIGH>;
+	clkreq-gpio = <&gpio6 14 GPIO_ACTIVE_HIGH>;
+	reset-gpio = <&gpio6 15 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };
 
