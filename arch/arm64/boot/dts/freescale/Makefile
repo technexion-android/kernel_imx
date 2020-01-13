@@ -156,7 +156,8 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += fsl-imx8mm-evk.dtb \
 				 imx8mm-pico-pi-ili9881c-voicehat.dtb \
 				 imx8mm-pico-pi-ili9881c.dtb \
 				 imx8mm-pico-pi-voicehat.dtb \
-				 imx8mm-pico-pi.dtb
+				 imx8mm-pico-pi.dtb \
+				 imx8mm-pico-pi-nfc.dtb
 
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)
