@@ -540,13 +540,13 @@ EDM_TEP1_GPIO_DEFS();
 			>;
 		};
 
-		pinctrl_gpio2: gpio1grp {
+		pinctrl_gpio2: gpio2grp {
 			fsl,pins = <
 				MX7D_PAD_EPDC_DATA04__GPIO2_IO4		0x15
 			>;
 		};
 
-		pinctrl_gpio5: gpio3grp {
+		pinctrl_gpio5: gpio5grp {
 			fsl,pins = <
 				MX7D_PAD_SD2_CMD__GPIO5_IO13		0x15
 				MX7D_PAD_SD1_RESET_B__GPIO5_IO2		0x15
