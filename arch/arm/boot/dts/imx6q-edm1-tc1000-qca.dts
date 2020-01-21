@@ -26,6 +26,10 @@
 &ldb {
 	lvds-channel@0 {
 		crtc = "ipu2-di0";
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		primary;
+		status = "okay";
 		display-timings {
 			native-mode = <&timing0>;
 			timing0: hj070na {
@@ -40,6 +44,14 @@
 				vsync-len = <10>;
 			};
 		};
+	};
+
+	lvds-channel@1 {
+		crtc = "ipu2-di1";
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		primary;
+		status = "disabled";
 	};
 };
 
