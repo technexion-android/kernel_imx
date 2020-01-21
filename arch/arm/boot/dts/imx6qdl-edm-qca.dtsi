@@ -82,7 +82,7 @@
 		"", "", "", "", "", "", "", "",							\
 		"", "", "", "", "", "", "", "GPIO_P260";					\
 												\
-	pinctrl-0 = <&pinctrl_ext_gpio_tc0700>;								\
+	pinctrl-0 = <&pinctrl_ext_gpio6_tc0700>;								\
 }
 
 #define EDM_TC1000_GPIO_DEFS()									\
@@ -111,7 +111,7 @@
 		"", "", "", "", "", "", "", "",							\
 		"", "", "", "", "", "", "", "GPIO_P260";					\
 												\
-	pinctrl-0 = <&pinctrl_ext_gpio_tc1000>;								\
+	pinctrl-0 = <&pinctrl_ext_gpio6_tc1000>;								\
 }
 
 /* SAI */
@@ -789,12 +789,6 @@
 			>;
 		};
 
-		pinctrl_gpio1: gpio1grp {
-			fsl,pins = <
-				MX6QDL_PAD_ENET_RX_ER__GPIO1_IO24		0x4001b0b5	/* GPIO1_24 EDM pin 262 */
-			>;
-		};
-
 		pinctrl_gpio3: gpio3grp {
 			fsl,pins = <
 				MX6QDL_PAD_EIM_D27__GPIO3_IO27			0x4001b0b5	/* GPIO3_27 EDM pin 258 */
@@ -809,13 +803,13 @@
 			>;
 		};
 
-		pinctrl_ext_gpio_tc0700: ext-gpio-grp-tc0700 {
+		pinctrl_ext_gpio6_tc0700: ext-gpio6-grp-tc0700 {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT17__GPIO6_IO03  0x4001b0b5 /* GPIO6_03 EDM pin 261 , TC0700's four GPIOs cannot be set together */
 			>;
 		};
 
-		pinctrl_ext_gpio_tc1000: ext-gpio-grp-tc1000 {
+		pinctrl_ext_gpio6_tc1000: ext-gpio6-grp-tc1000 {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT19__GPIO6_IO05		0x4001b0b5	/* GPIO6_05 EDM pin 255 */
 				MX6QDL_PAD_CSI0_DAT16__GPIO6_IO02		0x4001b0b5	/* GPIO6_02 EDM pin 256 */
