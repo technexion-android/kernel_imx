@@ -25,8 +25,7 @@
 
 &ldb {
 	lvds-channel@0 {
-		crtc = "ipu2-di0";
-
+		crtc = "ipu1-di0";
 		/delete-node/ display-timings;
 
 		display-timings {
@@ -46,7 +45,23 @@
 	};
 
 	lvds-channel@1 {
-		crtc = "ipu2-di1";
+		crtc = "ipu1-di1";
+		/delete-node/ display-timings;
+
+		display-timings {
+			native-mode = <&timing1>;
+			timing1: LVDS_SIN_1368x768 {
+				clock-frequency = <76000000>;
+				hactive = <1360>;
+				vactive = <768>;
+				hback-porch = <90>;
+				hfront-porch = <90>;
+				vback-porch = <17>;
+				vfront-porch = <17>;
+				hsync-len = <20>;
+				vsync-len = <4>;
+			};
+		};
 	};
 };
 
