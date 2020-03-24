@@ -313,7 +313,7 @@ static int pn54x_dev_open(struct inode *inode, struct file *filp)
 
 	// pr_info("%s : %d,%d\n", __func__, imajor(inode), iminor(inode));
 
-	pn544_enable(pn54x_dev, MODE_RUN);
+	// pn544_enable(pn54x_dev, MODE_RUN);
 
 	return 0;
 }
