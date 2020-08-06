@@ -267,6 +267,7 @@ struct pltfm_imx_data {
 	} multiblock_status;
 	u32 is_ddr;
 	struct pm_qos_request pm_qos_req;
+	bool cqhci_flag;
 };
 
 static const struct platform_device_id imx_esdhc_devtype[] = {
@@ -1285,7 +1286,7 @@ static void sdhci_esdhc_imx_hwinit(struct sdhci_host *host)
 		 * otherwise DCMD will always meet timeout waiting for
 		 * hardware interrupt issue.
 		 */
-		if (imx_data->socdata->flags & ESDHC_FLAG_CQHCI) {
+		if (!imx_data->cqhci_flag && imx_data->socdata->flags & ESDHC_FLAG_CQHCI) {
 			tmp = readl(host->ioaddr + ESDHC_VEND_SPEC2);
 			tmp |= ESDHC_VEND_SPEC2_EN_BUSY_IRQ;
 			writel(tmp, host->ioaddr + ESDHC_VEND_SPEC2);
@@ -1536,6 +1537,7 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
 	struct cqhci_host *cq_host;
 	int err;
 	struct pltfm_imx_data *imx_data;
+	struct device_node *np = NULL;
 	u32 status;
 	const struct device_node *np = pdev->dev.of_node;
 
@@ -1637,7 +1639,14 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
 					esdhc_hs400_enhanced_strobe;
 	}
 
-	if (imx_data->socdata->flags & ESDHC_FLAG_CQHCI) {
+	// 2020.08.4 Andy add this for eMMC CQE enable/disable mechanism.
+	np = pdev->dev.of_node;
+	if (of_property_read_bool(np, "cqhci-disabled"))
+		imx_data->cqhci_flag = true;
+	else
+		imx_data->cqhci_flag = false;
+
+	if (!imx_data->cqhci_flag && imx_data->socdata->flags & ESDHC_FLAG_CQHCI) {
 		host->mmc->caps2 |= MMC_CAP2_CQE | MMC_CAP2_CQE_DCMD;
 		cq_host = devm_kzalloc(&pdev->dev, sizeof(*cq_host), GFP_KERNEL);
 		if (!cq_host) {
