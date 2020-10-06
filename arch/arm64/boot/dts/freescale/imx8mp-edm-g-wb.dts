@@ -107,7 +107,6 @@
 			default-state = "on";
 		};
 	};
-
 };
 
 &gpio1 {
