@@ -260,6 +260,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk-pcie1-m2-gki.dtb imx8mq-evk-lcdif-adv7535-g
 
 dtb-$(CONFIG_ARCH_MXC) += imx8ulp-watch.dtb
 
+
+##
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb.dtb
+
 subdir-y += overlays
 
 # enable creation of __symbols__ node
