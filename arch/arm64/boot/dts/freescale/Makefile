@@ -226,3 +226,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-no-product.dtb imx8mp-evk-powersave.dtb imx
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk-no-product.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8qm-mek-ov5640-no-product.dtb imx8qm-mek-md.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek-ov5640-rpmsg-no-product.dtb
+
+subdir-y += overlays
+
+# enable creation of __symbols__ node
+DTC_FLAGS_imx8mp-edm-g-wb := -@
