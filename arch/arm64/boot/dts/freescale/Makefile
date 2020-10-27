@@ -184,3 +184,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek-car.dtb imx8qxp-mek-car2.dtb imx8qxp-mek-o
 			  imx8qxp-mek-ov5640-rpmsg-no-dynamic_partition.dtb imx8qxp-mek-ov5640-rpmsg-no-product-no-dynamic_partition.dtb
 dtb-$(CONFIG_ARCH_S32) += s32v234-evb.dtb \
 			  s32v234-sbc.dtb
+
+subdir-y += overlays
+
+# enable creation of __symbols__ node
+DTC_FLAGS_imx8mp-edm-g-wb := -@
