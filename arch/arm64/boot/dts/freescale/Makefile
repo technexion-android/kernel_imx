@@ -259,3 +259,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk-pcie1-m2-gki.dtb imx8mq-evk-lcdif-adv7535-g
                           imx8mq-evk-dcss-rm67199-gki.dtb  imx8mq-evk-dcss-rm67191-gki.dtb imx8mq-evk-dual-display-gki.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx8ulp-watch.dtb
+
+subdir-y += overlays
+
+# enable creation of __symbols__ node
+DTC_FLAGS_imx8mp-edm-g-wb := -@
