@@ -263,7 +263,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8ulp-watch.dtb
 
 
 ##
-dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb.dtb imx8mm-edm-g-wb-sn65dsi84-vl10112880.dtb
 
 subdir-y += overlays
 
