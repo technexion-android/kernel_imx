@@ -68,10 +68,11 @@ int qdf_get_hash(uint8_t *type,
     int ret = 0,i;
     struct {
         struct shash_desc shash;
-        char ctx[crypto_shash_descsize(tfm)];
+        char *ctx;
     } desc;
 
     desc.shash.tfm = tfm;
+    desc.ctx = kmalloc(sizeof(crypto_shash_descsize(tfm)), GFP_KERNEL);
     ret = crypto_shash_init(&desc.shash);
     if (ret)
         goto fail;
@@ -85,10 +86,12 @@ int qdf_get_hash(uint8_t *type,
         goto fail;
 
     crypto_free_shash(tfm);
+    kfree(desc.ctx);
     return 0;
 
 fail:
    crypto_free_shash(tfm);
+   kfree(desc.ctx);
    return ret;
 }
 
@@ -100,10 +103,11 @@ int qdf_get_hmac_hash(uint8_t *type, uint8_t *key,
     int ret,i;
     struct {
         struct shash_desc shash;
-        char ctx[crypto_shash_descsize(tfm)];
+        char *ctx;
     } desc;
 
     desc.shash.tfm = tfm;
+    desc.ctx = kmalloc(sizeof(crypto_shash_descsize(tfm)), GFP_KERNEL);
     ret = crypto_shash_setkey(desc.shash.tfm, key, keylen);
     if (ret)
         goto fail;
@@ -119,10 +123,12 @@ int qdf_get_hmac_hash(uint8_t *type, uint8_t *key,
     crypto_shash_final(&desc.shash, hash);
 
     crypto_free_shash(tfm);
+    kfree(desc.ctx);
     return 0;
 
 fail:
    crypto_free_shash(tfm);
+   kfree(desc.ctx);
    return ret;
 }
 
