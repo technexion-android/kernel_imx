@@ -141,6 +141,20 @@
 		enable-active-high;
 	};
 
+/* virtual key for android boot security */
+	gpio-keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_virtualkey_ctrl>;
+
+		goto {
+			label = "GOTO fake Button";
+			linux,code = <KEY_GOTO>;
+			gpios = <&gpio4 20 GPIO_ACTIVE_LOW>;
+			wakeup-source;
+		};
+	};
+
 	sound-hdmi {
 		compatible = "fsl,imx-audio-cdnhdmi";
 		model = "audio-hdmi";
@@ -1009,6 +1023,12 @@
 		fsl,pins = <
 			MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28	0x1c3 /* BRD_CONF_SCL, bitbang */
 			MX8MP_IOMUXC_SAI3_RXC__GPIO4_IO29	0x1c3 /* BRD_CONF_SDA, bitbang */
+		>;
+	};
+
+	pinctrl_virtualkey_ctrl: virtualkey_ctrlgrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SAI1_MCLK__GPIO4_IO20	0x41 /* SAI1_MCLK was not used*/
 		>;
 	};
 };
