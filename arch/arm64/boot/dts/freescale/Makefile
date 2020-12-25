@@ -233,6 +233,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek-ov5640-rpmsg-no-product.dtb
 subdir-y += overlays
 
 # enable creation of __symbols__ node
+DTC_FLAGS_imx8mm-edm-g-wb := -@
 DTC_FLAGS_imx8mp-edm-g-wb := -@
 DTC_FLAGS_imx8mq-edm-wizard := -@
 DTC_FLAGS_imx8mq-pico-pi := -@
