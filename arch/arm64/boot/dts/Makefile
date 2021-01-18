@@ -30,17 +30,3 @@ subdir-y += synaptics
 subdir-y += ti
 subdir-y += toshiba
 subdir-y += xilinx
-subdir-y += zte
-
-# enable creation of __symbols__ node
-DTC_FLAGS_imx8mm-edm-g-wb := -@
-DTC_FLAGS_imx8mn-edm-g-wb := -@
-DTC_FLAGS_imx8mp-edm-g-wb := -@
-DTC_FLAGS_imx8mm-edm-g-wizard := -@
-DTC_FLAGS_imx8mn-edm-g-wizard := -@
-DTC_FLAGS_imx8mp-edm-g-wizard := -@
-DTC_FLAGS_imx8mq-edm-wizard := -@
-DTC_FLAGS_imx8mm-pico-pi := -@
-DTC_FLAGS_imx8mq-pico-pi := -@
-DTC_FLAGS_imx8mm-pico-wizard := -@
-DTC_FLAGS_imx8mq-pico-wizard := -@
