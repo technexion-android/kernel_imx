@@ -2338,7 +2338,7 @@ static const struct panel_desc_dsi auo_g080uan01_imx8m = {
 };
 
 static const struct drm_display_mode auo_g101uan02_mode = {
-	.clock = 149900,
+	.clock = 75000,
 	.hdisplay = 1920,
 	.hsync_start = 1920 + 60,
 	.hsync_end = 1920 + 60 + 18,
