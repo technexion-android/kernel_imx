@@ -2338,7 +2338,7 @@ static const struct panel_desc_dsi auo_g080uan01_imx8m = {
 };
 
 static const struct drm_display_mode auo_g101uan02_mode = {
-	.clock = 75000,
+	.clock = 149900,
 	.hdisplay = 1920,
 	.hsync_start = 1920 + 60,
 	.hsync_end = 1920 + 60 + 18,
@@ -2361,8 +2361,8 @@ static const struct panel_desc_dsi auo_g101uan02 = {
 		},
 		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 	},
-	//.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
-	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
+	//.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
 	.format = MIPI_DSI_FMT_RGB888,
 	.lanes = 4,
 };
