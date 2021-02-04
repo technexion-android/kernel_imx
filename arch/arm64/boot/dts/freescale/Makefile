@@ -265,6 +265,14 @@ dtb-$(CONFIG_ARCH_MXC) += imx8ulp-watch.dtb
 ##
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb.dtb imx8mm-edm-g-wb-sn65dsi84-vl10112880.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-edm-wizard.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mq-edm-wizard.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-axon-pi.dtb imx8mm-axon-wizard.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-xore-wizard.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mn-edm-g-wb.dtb \
+			  imx8mn-edm-g-wb-rpmsg.dtb \
+			  imx8mn-edm-g-wb-sn65dsi84-vl15613676.dtb \
+			  imx8mn-edm-g-wb-sn65dsi84-vl215192108.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb.dtb imx8mm-edm-g-wb-sn65dsi84-vl10112880.dtb
 
 subdir-y += overlays
 
