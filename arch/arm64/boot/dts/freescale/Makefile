@@ -88,10 +88,6 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-nitrogen-r2.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mn-evk.dtb imx8mn-evk-rm67191.dtb imx8mn-evk-rpmsg.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-ab2.dtb imx8mm-ab2-m4.dtb imx8mm-ddr4-ab2.dtb imx8mm-ddr4-ab2-m4.dtb \
 			  imx8mm-ddr4-ab2-revb.dtb imx8mm-ddr4-ab2-m4-revb.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mm-pico-pi.dtb imx8mm-pico-pi-ili9881c.dtb imx8mm-pico-pi-voicehat.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mm-pico-wizard.dtb imx8mm-pico-wizard-ili9881c.dtb imx8mm-pico-wizard-g080uan01.dtb \
-			  imx8mm-pico-wizard-g101uan02.dtb imx8mm-pico-wizard-adv7535.dtb imx8mm-pico-wizard-sn65dsi84-m101nwwb.dtb \
-			  imx8mm-pico-wizard-sn65dsi84-g156xw01.dtb imx8mm-pico-wizard-sn65dsi84-g215hvn01.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx8mn-evk.dtb imx8mn-evk-rm67191.dtb imx8mn-evk-rpmsg.dtb imx8mn-evk-ak5558.dtb \
 			  imx8mn-evk-8mic-revE.dtb imx8mn-evk-8mic-swpdm.dtb imx8mn-ddr3l-evk.dtb \
@@ -106,11 +102,6 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mn-ddr4-evk.dtb imx8mn-ddr4-evk-ak5558.dtb imx8mn-
 dtb-$(CONFIG_ARCH_MXC) += imx8mn-evk-root.dtb imx8mn-evk-inmate.dtb imx8mn-evk-lk.dtb imx8mn-ddr4-evk-lk.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mn-ab2.dtb imx8mn-ddr4-ab2.dtb imx8mn-ddr3l-ab2.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mn-var-som-symphony.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mp-axon-wizard.dtb imx8mp-axon-wizard-g080uan01.dtb imx8mp-axon-wizard-g101uan02.dtb \
-			  imx8mp-axon-wizard-ili9881c.dtb imx8mp-axon-wizard-lvds-vl10112880.dtb imx8mp-axon-wizard-lvds-vl215192108.dtb \
-			  imx8mp-axon-wizard-voicehat.dtb imx8mp-axon-wizard-adv7533.dtb imx8mp-axon-wizard-ov5645tn.dtb \
-			  imx8mp-axon-wizard-sn65dsi84-vl10112880.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb imx8mp-edm-g-wb-lvds-vl10112880.dtb imx8mp-edm-g-wb-lvds-vl215192108.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb imx8mp-evk-rm67191.dtb imx8mp-evk-it6263-lvds-dual-channel.dtb \
 			  imx8mp-evk-pcie-ep.dtb  imx8mp-evk-rpmsg.dtb imx8mp-evk-ecspi-slave.dtb \
 			  imx8mp-evk-jdi-wuxga-lvds-panel.dtb imx8mp-evk-flexcan2.dtb \
@@ -143,7 +134,6 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mq-kontron-pitx-imx8m.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-mnt-reform2.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-nitrogen.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-phanbell.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mq-pico-pi.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-thor96.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk-dp.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-zii-ultra-rmb3.dtb
@@ -266,15 +256,27 @@ dtb-$(CONFIG_ARCH_MXC) += imx8ulp-watch.dtb
 
 
 ##
-dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb.dtb imx8mm-edm-g-wb-sn65dsi84-vl10112880.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mq-edm-wizard.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mq-edm-wizard.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mm-axon-pi.dtb imx8mm-axon-wizard.dtb imx8mm-axon-wizard-adv7535.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-xore-wizard.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-pico-pi.dtb imx8mm-pico-pi-ili9881c.dtb imx8mm-pico-pi-voicehat.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-pico-wizard.dtb imx8mm-pico-wizard-ili9881c.dtb imx8mm-pico-wizard-g080uan01.dtb \
+			  imx8mm-pico-wizard-g101uan02.dtb imx8mm-pico-wizard-adv7535.dtb imx8mm-pico-wizard-sn65dsi84-m101nwwb.dtb \
+			  imx8mm-pico-wizard-sn65dsi84-g156xw01.dtb imx8mm-pico-wizard-sn65dsi84-g215hvn01.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb.dtb imx8mm-edm-g-wb-sn65dsi84-vl10112880.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-axon-pi.dtb imx8mm-axon-pi-voicehat.dtb \
+						  imx8mm-axon-wizard.dtb imx8mm-axon-wizard-adv7535.dtb
+
 dtb-$(CONFIG_ARCH_MXC) += imx8mn-edm-g-wb.dtb \
 			  imx8mn-edm-g-wb-rpmsg.dtb \
 			  imx8mn-edm-g-wb-sn65dsi84-vl15613676.dtb \
 			  imx8mn-edm-g-wb-sn65dsi84-vl215192108.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb.dtb imx8mm-edm-g-wb-sn65dsi84-vl10112880.dtb
+
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb imx8mp-edm-g-wb-lvds-vl10112880.dtb imx8mp-edm-g-wb-lvds-vl215192108.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-axon-wizard.dtb imx8mp-axon-wizard-g080uan01.dtb imx8mp-axon-wizard-g101uan02.dtb \
+			  imx8mp-axon-wizard-ili9881c.dtb imx8mp-axon-wizard-lvds-vl10112880.dtb imx8mp-axon-wizard-lvds-vl215192108.dtb \
+			  imx8mp-axon-wizard-voicehat.dtb imx8mp-axon-wizard-adv7533.dtb imx8mp-axon-wizard-ov5645tn.dtb \
+			  imx8mp-axon-wizard-sn65dsi84-vl10112880.dtb
+
+dtb-$(CONFIG_ARCH_MXC) += imx8mq-edm-wizard.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mq-pico-pi.dtb
 
 subdir-y += overlays
