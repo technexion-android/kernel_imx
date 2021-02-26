@@ -980,15 +980,6 @@ static void xr_port_remove(struct usb_serial_port *port)
 	kfree(data);
 }
 
-static void xr_disconnect(struct usb_serial *serial)
-{
-	struct usb_driver *driver = serial->type->usb_driver;
-	struct usb_interface *control_interface;
-
-	control_interface = usb_ifnum_to_if(serial->dev, 0);
-	usb_driver_release_interface(driver, control_interface);
-}
-
 #define XR_DEVICE(vid, pid, type)					\
 	USB_DEVICE_INTERFACE_CLASS((vid), (pid), USB_CLASS_COMM),	\
 	.driver_info = (type)
@@ -1019,7 +1010,6 @@ static struct usb_serial_driver xr_device = {
 	.probe			= xr_probe,
 	.port_probe		= xr_port_probe,
 	.port_remove		= xr_port_remove,
-	.disconnect		= xr_disconnect,
 	.open			= xr_open,
 	.close			= xr_close,
 	.break_ctl		= xr_break_ctl,
