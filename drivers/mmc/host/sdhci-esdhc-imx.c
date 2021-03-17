@@ -1539,7 +1539,6 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
 	struct pltfm_imx_data *imx_data;
 	struct device_node *np = NULL;
 	u32 status;
-	const struct device_node *np = pdev->dev.of_node;
 
 	if (!of_property_read_bool(np, "imx8mp-disable-emmc-request-high"))
 		usdhc_imx8mm_data.flags |= ESDHC_FLAG_BUSFREQ;
