@@ -280,6 +280,6 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-axon-wizard.dtb imx8mp-axon-wizard-g080uan01.dt
 			  imx8mp-axon-wizard-sn65dsi84-vl10112880.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-edm-wizard.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mq-pico-pi.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mq-pico-pi.dtb imx8mq-pico-pi-dcss-ili9881c.dtb
 
 subdir-y += overlays
