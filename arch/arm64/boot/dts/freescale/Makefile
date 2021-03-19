@@ -259,8 +259,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8ulp-watch.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-xore-wizard.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-pico-pi.dtb imx8mm-pico-pi-ili9881c.dtb imx8mm-pico-pi-voicehat.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-pico-wizard.dtb imx8mm-pico-wizard-ili9881c.dtb imx8mm-pico-wizard-g080uan01.dtb \
-			  imx8mm-pico-wizard-g101uan02.dtb imx8mm-pico-wizard-adv7535.dtb imx8mm-pico-wizard-sn65dsi84-m101nwwb.dtb \
-			  imx8mm-pico-wizard-sn65dsi84-g156xw01.dtb imx8mm-pico-wizard-sn65dsi84-g215hvn01.dtb \
+			  imx8mm-pico-wizard-g101uan02.dtb imx8mm-pico-wizard-mipi2hdmi-adv7535.dtb imx8mm-pico-wizard-sn65dsi84-vl10112880.dtb \
+			  imx8mm-pico-wizard-sn65dsi84-vl15613676.dtb imx8mm-pico-wizard-sn65dsi84-vl215192108.dtb \
 			  imx8mm-pico-wizard-voicehat.dtb imx8mm-pico-wizard-nfc-clix1.dtb imx8mm-pico-wizard-nfc-clix2.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb.dtb imx8mm-edm-g-wb-sn65dsi84-vl10112880.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-axon-pi.dtb imx8mm-axon-pi-voicehat.dtb imx8mm-axon-loopbacktest.dtb \
