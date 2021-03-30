@@ -5776,7 +5776,6 @@ static int hdd_driver_command(hdd_adapter_t *pAdapter,
 
            status =
               sme_ChangeCountryCode(pHddCtx->hHal,
-                                    (void *)(tSmeChangeCountryCallback)
                                     wlan_hdd_change_country_code_callback,
                                     country_code, pAdapter,
                                     pHddCtx->pvosContext,
@@ -17176,7 +17175,6 @@ int hdd_wlan_startup(struct device *dev, v_VOID_t *hif_sc)
       hdd_checkandupdate_dfssetting(pAdapter, country_code);
 
       ret = sme_ChangeCountryCode(pHddCtx->hHal,
-            (void *)(tSmeChangeCountryCallback)
             wlan_hdd_change_country_code_callback,
             country_code, pAdapter, pHddCtx->pvosContext, eSIR_TRUE, eSIR_TRUE);
       if (eHAL_STATUS_SUCCESS == ret)
@@ -17536,7 +17534,7 @@ int hdd_wlan_startup(struct device *dev, v_VOID_t *hif_sc)
    vos_set_load_in_progress(VOS_MODULE_ID_VOSS, FALSE);
 
    if (pHddCtx->cfg_ini->fIsLogpEnabled) {
-       vos_wdthread_init_timer_work(vos_process_wd_timer);
+       vos_wdthread_init_timer_work();
        /* Initialize the timer to detect thread stuck issues */
        vos_thread_stuck_timer_init(
                &((VosContextType*)pVosContext)->vosWatchdog);
