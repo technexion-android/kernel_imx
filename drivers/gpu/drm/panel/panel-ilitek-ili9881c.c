@@ -67,6 +67,10 @@ struct ili9881c_instr {
 		},					\
 	}
 
+#ifdef CONFIG_ANDROID
+static int enable_cnt = 0;
+#endif
+
 static const struct ili9881c_instr ili9881c_init[] = {
 	ILI9881C_SWITCH_PAGE_INSTR(3),
 	ILI9881C_COMMAND_INSTR(0x01, 0x00),
@@ -328,6 +332,12 @@ static int ili9881c_enable(struct drm_panel *panel)
 	unsigned int i;
 	int ret;
 
+#ifdef CONFIG_ANDROID
+	if(enable_cnt < 1) {
+		enable_cnt += 1;
+		return 0;
+	}
+#endif
 	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
 
 	for (i = 0; i < ARRAY_SIZE(ili9881c_init); i++) {
@@ -364,6 +374,9 @@ static int ili9881c_enable(struct drm_panel *panel)
 
 static int ili9881c_disable(struct drm_panel *panel)
 {
+#ifdef CONFIG_ANDROID
+	return 0;
+#endif
 	struct ili9881c *ctx = panel_to_ili9881c(panel);
 
 	return mipi_dsi_dcs_set_display_off(ctx->dsi);
@@ -384,7 +397,11 @@ static int ili9881c_unprepare(struct drm_panel *panel)
 }
 
 static const struct drm_display_mode high_clk_mode = {
+#ifdef CONFIG_ANDROID
+	.clock		= 65000,
+#else
 	.clock		= 74250,
+#endif
 	.vrefresh	= 60,
 	.hdisplay	= 720,
 	.hsync_start	= 720 + 34,
