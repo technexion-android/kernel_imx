@@ -154,10 +154,6 @@ static unsigned int panel_simple_get_timings_modes(struct panel_simple *panel)
 		if (panel->desc->num_timings == 1)
 			mode->type |= DRM_MODE_TYPE_PREFERRED;
 
-		/* default refresh rate should be 60Hz */
-		mode->vrefresh = panel->desc->refresh_rate;
-		drm_mode_debug_printmodeline(mode);
-
 		drm_mode_probed_add(connector, mode);
 		num++;
 	}
