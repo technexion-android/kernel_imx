@@ -15,7 +15,7 @@
 #include "../imx8mq-pinfunc.h"
 
 / {
-	ragment@1 {
+	fragment@0 {
 		target = <&iomuxc>;
 		__overlay__ {
 			pinctrl-names = "default";
@@ -29,7 +29,7 @@
 		};
 	};
 
-	fragment@0 {
+	fragment@1 {
 		target = <&i2c3>;
 		__overlay__ {
 			status = "okay";
@@ -49,7 +49,7 @@
 		};
 	};
 
-	fragment@1 {
+	fragment@2 {
 		target = <&ecspi1>;
 		__overlay__ {
 			status = "disabled";
