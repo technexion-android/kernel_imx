@@ -10,13 +10,6 @@
 / {
 
 	fragment@0 {
-		target = <&csi2_bridge>;
-		__overlay__ {
-			status = "okay";
-		};
-	};
-
-	fragment@1 {
 		target = <&mipi_csi_2>;
 		__overlay__ {
 			status = "okay";
@@ -33,7 +26,7 @@
 		};
 	};
 
-	fragment@2 {
+	fragment@1 {
 		target = <&i2c3>;
 		__overlay__ {
 			#address-cells = <1>;
