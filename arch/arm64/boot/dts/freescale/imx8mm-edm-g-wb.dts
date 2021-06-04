@@ -109,6 +109,20 @@
 			clock-output-names = "wm8960-mclk";
 		};
 	};
+
+	/* virtual key for android boot security */
+	gpio-keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_virtualkey_ctrl>;
+
+		goto {
+			label = "GOTO fake Button";
+			linux,code = <KEY_GOTO>;
+			gpios = <&gpio2 20 GPIO_ACTIVE_LOW>;
+			wakeup-source;
+		};
+	};
 };
 
 &gpio1 {
@@ -220,6 +234,12 @@
 		fsl,pins = <
 			MX8MM_IOMUXC_GPIO1_IO05_GPIO1_IO5		0x19
 			MX8MM_IOMUXC_GPIO1_IO14_CCMSRCGPCMIX_CLKO1	0x59
+		>;
+	};
+
+	pinctrl_virtualkey_ctrl: virtualkey_ctrlgrp {
+		fsl,pins = <
+			MX8MM_IOMUXC_SD2_WP_GPIO2_IO20	0x41 /* SD2_IO20 was not used */
 		>;
 	};
 };
