@@ -33,8 +33,8 @@
 				compatible = "bananapi,lhr050h41", "ilitek,ili9881c";
 				reset-gpio = <&pca9555_23 2 GPIO_ACTIVE_LOW>;
 				reg = <0>;
-				timing-mode = <0>;
-				video-mode = <2>;	/* 0: burst mode
+				timing-mode = <1>;
+				video-mode = <3>;	/* 0: burst mode
 							 * 1: non-burst mode with sync event
 							 * 2: non-burst mode with sync pulse
 							 */
