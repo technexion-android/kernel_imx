@@ -241,7 +241,7 @@
 		fsl,pins = <
 			MX8MM_IOMUXC_SD2_WP_GPIO2_IO20	0x41 /* SD2_IO20 was not used */
 		>;
-	}
+	};
 
 	pinctrl_touch_irq: touch_irqgrp {
 		fsl,pins = <
