@@ -270,9 +270,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-axon-pi.dtb imx8mm-axon-pi-voicehat.dtb imx8mm-
 						  imx8mm-axon-wizard-voicehat.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx8mn-edm-g-wb.dtb \
-			  imx8mn-edm-g-wb-rpmsg.dtb \
-			  imx8mn-edm-g-wb-sn65dsi84-vl15613676.dtb \
-			  imx8mn-edm-g-wb-sn65dsi84-vl215192108.dtb
+			  imx8mn-edm-g-wb-rpmsg.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb imx8mp-edm-g-wb-lvds-vl10112880.dtb imx8mp-edm-g-wb-lvds-vl215192108.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-axon-wizard.dtb imx8mp-axon-wizard-g080uan01.dtb imx8mp-axon-wizard-g101uan02.dtb \
