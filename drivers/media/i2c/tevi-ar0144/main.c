@@ -28,7 +28,7 @@ struct resolution {
 	u16 height;
 };
 
-struct resolution res_list[] = {
+struct resolution res_list_ar0144[] = {
 	{.width = 1280, .height = 800},
 };
 
@@ -124,7 +124,7 @@ static int sensor_i2c_write_bust(struct i2c_client *client, u8 *buf, size_t len)
 	return 0;
 }
 
-static int ops_power(struct v4l2_subdev *sub_dev, int on)
+static int ops_power_ar0144(struct v4l2_subdev *sub_dev, int on)
 {
 	//struct sensor *instance = container_of(sub_dev, struct sensor, v4l2_subdev);
 
@@ -132,7 +132,7 @@ static int ops_power(struct v4l2_subdev *sub_dev, int on)
 	return 0;
 }
 
-static int ops_init(struct v4l2_subdev *sub_dev, u32 val)
+static int ops_init_ar0144(struct v4l2_subdev *sub_dev, u32 val)
 {
 	//struct sensor *instance = container_of(sub_dev, struct sensor, v4l2_subdev);
 
@@ -140,7 +140,7 @@ static int ops_init(struct v4l2_subdev *sub_dev, u32 val)
 	return 0;
 }
 
-static int ops_load_fw(struct v4l2_subdev *sub_dev)
+static int ops_load_fw_ar0144(struct v4l2_subdev *sub_dev)
 {
 	//struct sensor *instance = container_of(sub_dev, struct sensor, v4l2_subdev);
 
@@ -148,7 +148,7 @@ static int ops_load_fw(struct v4l2_subdev *sub_dev)
 	return 0;
 }
 
-static int ops_reset(struct v4l2_subdev *sub_dev, u32 val)
+static int ops_reset_ar0144(struct v4l2_subdev *sub_dev, u32 val)
 {
 	//struct sensor *instance = container_of(sub_dev, struct sensor, v4l2_subdev);
 
@@ -156,7 +156,7 @@ static int ops_reset(struct v4l2_subdev *sub_dev, u32 val)
 	return 0;
 }
 
-static int ops_get_frame_interval(struct v4l2_subdev *sub_dev,
+static int ops_get_frame_interval_ar0144(struct v4l2_subdev *sub_dev,
 				  struct v4l2_subdev_frame_interval *fi)
 {
 	dev_dbg(sub_dev->dev, "%s()\n", __func__);
@@ -170,7 +170,7 @@ static int ops_get_frame_interval(struct v4l2_subdev *sub_dev,
 	return 0;
 }
 
-static int ops_set_frame_interval(struct v4l2_subdev *sub_dev,
+static int ops_set_frame_interval_ar0144(struct v4l2_subdev *sub_dev,
 				  struct v4l2_subdev_frame_interval *fi)
 {
 	dev_dbg(sub_dev->dev, "%s()\n", __func__);
@@ -184,7 +184,7 @@ static int ops_set_frame_interval(struct v4l2_subdev *sub_dev,
 	return 0;
 }
 
-static int ops_set_stream(struct v4l2_subdev *sub_dev, int enable)
+static int ops_set_stream_ar0144(struct v4l2_subdev *sub_dev, int enable)
 {
 	struct sensor *instance = container_of(sub_dev, struct sensor, v4l2_subdev);
 
@@ -193,7 +193,7 @@ static int ops_set_stream(struct v4l2_subdev *sub_dev, int enable)
 	return sensor_standby(instance->i2c_client, !enable);
 }
 
-static int ops_enum_mbus_code(struct v4l2_subdev *sub_dev,
+static int ops_enum_mbus_code_ar0144(struct v4l2_subdev *sub_dev,
 			      struct v4l2_subdev_pad_config *cfg,
 			      struct v4l2_subdev_mbus_code_enum *code)
 {
@@ -207,7 +207,7 @@ static int ops_enum_mbus_code(struct v4l2_subdev *sub_dev,
 	return 0;
 }
 
-static int ops_get_fmt(struct v4l2_subdev *sub_dev,
+static int ops_get_fmt_ar0144(struct v4l2_subdev *sub_dev,
 		       struct v4l2_subdev_pad_config *cfg,
 		       struct v4l2_subdev_format *format)
 {
@@ -232,7 +232,7 @@ static int ops_get_fmt(struct v4l2_subdev *sub_dev,
 	return 0;
 }
 
-static int ops_set_fmt(struct v4l2_subdev *sub_dev,
+static int ops_set_fmt_ar0144(struct v4l2_subdev *sub_dev,
 		       struct v4l2_subdev_pad_config *cfg,
 		       struct v4l2_subdev_format *format)
 {
@@ -246,14 +246,14 @@ static int ops_set_fmt(struct v4l2_subdev *sub_dev,
 	if (format->pad != 0)
 		return -EINVAL;
 
-	for(i = 0 ; i < ARRAY_SIZE(res_list) ; i++)
+	for(i = 0 ; i < ARRAY_SIZE(res_list_ar0144) ; i++)
 	{
-		if (mbus_fmt->width == res_list[i].width &&
-				mbus_fmt->height == res_list[i].height)
+		if (mbus_fmt->width == res_list_ar0144[i].width &&
+				mbus_fmt->height == res_list_ar0144[i].height)
 			break;
 	}
 
-	if (i >= ARRAY_SIZE(res_list))
+	if (i >= ARRAY_SIZE(res_list_ar0144))
 	{
 		return -EINVAL;
 	}
@@ -261,8 +261,8 @@ static int ops_set_fmt(struct v4l2_subdev *sub_dev,
 	dev_dbg(sub_dev->dev, "%s() selected mode index [%d]\n", __func__,
 		instance->selected_mode);
 
-	mbus_fmt->width = res_list[i].width;
-	mbus_fmt->height = res_list[i].height;
+	mbus_fmt->width = res_list_ar0144[i].width;
+	mbus_fmt->height = res_list_ar0144[i].height;
 	mbus_fmt->code = MEDIA_BUS_FMT_YUYV8_1X16;
 	mbus_fmt->colorspace = V4L2_COLORSPACE_SRGB;
 	mbus_fmt->ycbcr_enc = V4L2_MAP_YCBCR_ENC_DEFAULT(mbus_fmt->colorspace);
@@ -280,7 +280,7 @@ static int ops_set_fmt(struct v4l2_subdev *sub_dev,
 	return 0;
 }
 
-static int ops_enum_frame_size(struct v4l2_subdev *sub_dev,
+static int ops_enum_frame_size_ar0144(struct v4l2_subdev *sub_dev,
 			       struct v4l2_subdev_pad_config *cfg,
 			       struct v4l2_subdev_frame_size_enum *fse)
 {
@@ -289,16 +289,16 @@ static int ops_enum_frame_size(struct v4l2_subdev *sub_dev,
 
 	if ((fse->pad != 0) ||
 	    (fse->code != MEDIA_BUS_FMT_YUYV8_1X16) ||
-	    (fse->index >= ARRAY_SIZE(res_list)))
+	    (fse->index >= ARRAY_SIZE(res_list_ar0144)))
 		return -EINVAL;
 
-	fse->min_width = fse->max_width = res_list[fse->index].width;
-	fse->min_height = fse->max_height = res_list[fse->index].height;
+	fse->min_width = fse->max_width = res_list_ar0144[fse->index].width;
+	fse->min_height = fse->max_height = res_list_ar0144[fse->index].height;
 
 	return 0;
 }
 
-static int ops_enum_frame_interval(struct v4l2_subdev *sub_dev,
+static int ops_enum_frame_interval_ar0144(struct v4l2_subdev *sub_dev,
 				   struct v4l2_subdev_pad_config *cfg,
 				   struct v4l2_subdev_frame_interval_enum *fie)
 {
@@ -315,7 +315,7 @@ static int ops_enum_frame_interval(struct v4l2_subdev *sub_dev,
 	return 0;
 }
 
-static int ops_media_link_setup(struct media_entity *entity,
+static int ops_media_link_setup_ar0144(struct media_entity *entity,
 				const struct media_pad *local,
 				const struct media_pad *remote, u32 flags)
 {
@@ -323,22 +323,22 @@ static int ops_media_link_setup(struct media_entity *entity,
 }
 
 static const struct v4l2_subdev_core_ops sensor_v4l2_subdev_core_ops = {
-	.s_power = ops_power,
-	.init = ops_init,
-	.load_fw = ops_load_fw,
-	.reset = ops_reset,
+	.s_power = ops_power_ar0144,
+	.init = ops_init_ar0144,
+	.load_fw = ops_load_fw_ar0144,
+	.reset = ops_reset_ar0144,
 };
 static const struct v4l2_subdev_video_ops sensor_v4l2_subdev_video_ops = {
-	.g_frame_interval = ops_get_frame_interval,
-	.s_frame_interval = ops_set_frame_interval,
-	.s_stream = ops_set_stream,
+	.g_frame_interval = ops_get_frame_interval_ar0144,
+	.s_frame_interval = ops_set_frame_interval_ar0144,
+	.s_stream = ops_set_stream_ar0144,
 };
 static const struct v4l2_subdev_pad_ops sensor_v4l2_subdev_pad_ops = {
-	.enum_mbus_code = ops_enum_mbus_code,
-	.get_fmt = ops_get_fmt,
-	.set_fmt = ops_set_fmt,
-	.enum_frame_size = ops_enum_frame_size,
-	.enum_frame_interval = ops_enum_frame_interval,
+	.enum_mbus_code = ops_enum_mbus_code_ar0144,
+	.get_fmt = ops_get_fmt_ar0144,
+	.set_fmt = ops_set_fmt_ar0144,
+	.enum_frame_size = ops_enum_frame_size_ar0144,
+	.enum_frame_interval = ops_enum_frame_interval_ar0144,
 };
 
 static const struct v4l2_subdev_ops sensor_subdev_ops = {
@@ -348,7 +348,7 @@ static const struct v4l2_subdev_ops sensor_subdev_ops = {
 };
 
 static const struct media_entity_operations sensor_media_entity_ops = {
-	.link_setup = ops_media_link_setup,
+	.link_setup = ops_media_link_setup_ar0144,
 };
 
 static int sensor_standby(struct i2c_client *client, int enable)
@@ -479,11 +479,11 @@ static int sensor_load_bootdata(struct sensor *instance)
 		return -EINVAL;
 	}
 
-	checksum = otp_flash_get_checksum(instance->otp_flash_instance);
+	checksum = otp_flash_get_checksum_ar0144(instance->otp_flash_instance);
 
 	//load pll
 	bootdata_temp_area[0] = cpu_to_be16(BOOT_DATA_START_REG);
-	pll_len = len = otp_flash_get_pll_section(instance->otp_flash_instance,
+	pll_len = len = otp_flash_get_pll_section_ar0144(instance->otp_flash_instance,
 						  (u8 *)(&bootdata_temp_area[1]));
 	dev_dbg(dev, "pll len [%zu]\n", len);
 	sensor_i2c_write_bust(instance->i2c_client, (u8 *)bootdata_temp_area,
@@ -493,7 +493,7 @@ static int sensor_load_bootdata(struct sensor *instance)
 
 	//load bootdata part1
 	bootdata_temp_area[0] = cpu_to_be16(BOOT_DATA_START_REG + pll_len);
-	len = otp_flash_read(instance->otp_flash_instance,
+	len = otp_flash_read_ar0144(instance->otp_flash_instance,
 			     (u8 *)(&bootdata_temp_area[1]),
 			     pll_len, BOOT_DATA_WRITE_LEN - pll_len);
 	dev_dbg(dev, "len [%zu]\n", len);
@@ -505,7 +505,7 @@ static int sensor_load_bootdata(struct sensor *instance)
 	index = len = BOOT_DATA_WRITE_LEN;
 	while(!(len < BOOT_DATA_WRITE_LEN)) {
 		bootdata_temp_area[0] = cpu_to_be16(BOOT_DATA_START_REG);
-		len = otp_flash_read(instance->otp_flash_instance,
+		len = otp_flash_read_ar0144(instance->otp_flash_instance,
 				     (u8 *)(&bootdata_temp_area[1]),
 				     index, BOOT_DATA_WRITE_LEN);
 		dev_dbg(dev, "len [%zu]\n", len);
@@ -537,7 +537,7 @@ static int sensor_load_bootdata(struct sensor *instance)
 	return 0;
 }
 
-static int sensor_probe(struct i2c_client *client, const struct i2c_device_id *id)
+static int sensor_probe_ar0144(struct i2c_client *client, const struct i2c_device_id *id)
 {
 	struct sensor *instance = NULL;
 	struct device *dev = &client->dev;
@@ -573,7 +573,7 @@ static int sensor_probe(struct i2c_client *client, const struct i2c_device_id *i
 		return -EINVAL;
 	}
 
-	instance->otp_flash_instance = otp_flash_init(dev);
+	instance->otp_flash_instance = otp_flash_init_ar0144(dev);
 	if(IS_ERR(instance->otp_flash_instance)) {
 		dev_err(dev, "otp flash init failed\n");
 		return -EINVAL;
@@ -636,7 +636,7 @@ static int sensor_probe(struct i2c_client *client, const struct i2c_device_id *i
 	return ret;
 }
 
-static int sensor_remove(struct i2c_client *client)
+static int sensor_remove_ar0144(struct i2c_client *client)
 {
 	return 0;
 }
@@ -658,8 +658,8 @@ static struct i2c_driver sensor_i2c_driver = {
 		.of_match_table = of_match_ptr(sensor_of),
 		.name  = "tevi-ar0144",
 	},
-	.probe = sensor_probe,
-	.remove = sensor_remove,
+	.probe = sensor_probe_ar0144,
+	.remove = sensor_remove_ar0144,
 	.id_table = sensor_id,
 };
 
