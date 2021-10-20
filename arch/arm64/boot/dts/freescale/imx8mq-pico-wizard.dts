@@ -423,7 +423,7 @@
 
 &csi1_bridge {
 	fsl,mipi-mode;
-	fsl,two-8bit-sensor-mode;
+	//fsl,two-8bit-sensor-mode;
 	status = "disabled";
 
 	port {
@@ -435,7 +435,7 @@
 
 &csi2_bridge {
 	fsl,mipi-mode;
-	fsl,two-8bit-sensor-mode;
+	//fsl,two-8bit-sensor-mode;
 	status = "disabled";
 
 	port {
