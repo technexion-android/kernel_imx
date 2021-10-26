@@ -274,6 +274,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mn-edm-g-wb.dtb \
 
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb imx8mp-edm-g-wb-lvds-vl10112880.dtb imx8mp-edm-g-wb-lvds-vl215192108.dtb \
 			  imx8mp-edm-g-wb-tevi-ar0521.dtb imx8mp-edm-g-wb-tevi-ar0144.dtb imx8mp-edm-g-wb-tevi-ar0234.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wizard.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-axon-wizard.dtb imx8mp-axon-wizard-g080uan01.dtb imx8mp-axon-wizard-g101uan02.dtb \
 			  imx8mp-axon-wizard-ili9881c.dtb imx8mp-axon-wizard-lvds-vl10112880.dtb imx8mp-axon-wizard-lvds-vl215192108.dtb \
 			  imx8mp-axon-wizard-voicehat.dtb imx8mp-axon-wizard-adv7533.dtb imx8mp-axon-wizard-ov5645tn.dtb \
