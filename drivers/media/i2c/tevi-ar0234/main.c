@@ -310,7 +310,6 @@ static int ops_enum_frame_size_ar0234(struct v4l2_subdev *sub_dev,
 		fse->pad, fse->code, fse->index);
 
 	if ((fse->pad != 0) ||
-	    (fse->code != MEDIA_BUS_FMT_YUYV8_1X16) ||
 	    (fse->index >= ARRAY_SIZE(res_list_ar0234)))
 		return -EINVAL;
 
@@ -327,7 +326,6 @@ static int ops_enum_frame_interval_ar0234(struct v4l2_subdev *sub_dev,
 	dev_dbg(sub_dev->dev, "%s()\n", __func__);
 
 	if ((fie->pad != 0) ||
-	    (fie->code != MEDIA_BUS_FMT_YUYV8_1X16) ||
 	    (fie->index != 0))
 		return -EINVAL;
 
