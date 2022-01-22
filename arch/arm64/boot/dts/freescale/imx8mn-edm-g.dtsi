@@ -20,15 +20,13 @@
 		stdout-path = &uart2;
 	};
 
-	bt_reg_on: btreg_on {
-		compatible = "gpio-reset";
-		pinctrl-names = "default";
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
 		pinctrl-0 = <&pinctrl_bt_ctrl>;
-		reset-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
-		reset-delay-us = <2000>;
-		reset-post-delay-ms = <40>;
-		#reset-cells = <0>;
+		bt-power-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
+		status ="okay";
 	};
+
 
 	regulators {
 		compatible = "simple-bus";
@@ -642,7 +640,6 @@
 	pinctrl-0 = <&pinctrl_uart3>;
 	assigned-clocks = <&clk IMX8MN_CLK_UART3>;
 	assigned-clock-parents = <&clk IMX8MN_SYS_PLL1_80M>;
-	resets = <&bt_reg_on>;
 	fsl,uart-has-rtscts;
 	status = "okay";
 };
