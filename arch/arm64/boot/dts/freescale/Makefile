@@ -757,3 +757,5 @@ imx95-19x19-verdin-os08a20-isp-adv7535-dtbs := imx95-19x19-verdin.dtb \
 					      imx95-19x19-evk-neoisp.dtbo \
 					      imx95-19x19-verdin-adv7535.dtbo
 dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-verdin-os08a20-isp-adv7535.dtb
+
+subdir-y += overlays
