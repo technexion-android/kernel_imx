@@ -72,6 +72,7 @@
 #include <linux/ieee80211.h>
 #include <crypto/hash.h>
 #include <crypto/aes.h>
+#include <crypto/internal/cipher.h>
 #include <wcnss_api.h>
 #ifdef CONFIG_CNSS
 #include <linux/qcomwlan_secif.h>
@@ -1094,3 +1095,4 @@ int vos_status_to_os_return(VOS_STATUS status)
 		return -EPERM;
 	}
 }
+MODULE_IMPORT_NS(CRYPTO_INTERNAL);
