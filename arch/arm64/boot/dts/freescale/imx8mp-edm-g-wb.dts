@@ -129,6 +129,24 @@
 		"", "", "", "", "", "", "", "";
 };
 
+&gpio2 {
+	pinctrl-0 = <&pinctrl_gpio2>;
+	gpio-line-names =	\
+		"", "", "", "", "", "", "", "",	\
+		"", "", "", "", "", "", "", "",	\
+		"", "", "", "", "GPIO2_IO20", "", "", "",	\
+		"", "", "", "", "", "", "", "";
+};
+
+&gpio3 {
+	pinctrl-0 = <&pinctrl_gpio3>;
+	gpio-line-names =	\
+		"", "GPIO3_IO01", "", "", "", "", "", "",	\
+		"", "", "", "", "", "", "", "",	\
+		"", "", "", "", "", "", "", "",	\
+		"", "", "", "", "", "", "", "";
+};
+
 &gpio4 {
 	pinctrl-0 = <&pinctrl_gpio4>;
 	gpio-line-names =	\
@@ -137,6 +155,16 @@
 		"DSI_BL_EN", "DSI_VDDEN", "", "", "", "", "", "",	\
 		"", "", "", "", "", "", "", "";
 };
+
+&gpio5 {
+	pinctrl-0 = <&pinctrl_gpio5>;
+	gpio-line-names =	\
+		"", "", "", "", "", "GPIO5_IO05", "", "",	\
+		"", "", "", "", "", "", "", "",	\
+		"", "", "", "", "", "", "", "",	\
+		"", "", "", "", "", "", "", "";
+};
+
 
 &snvs_pwrkey {
 	status = "disabled";
@@ -351,6 +379,18 @@
 		>;
 	};
 
+	pinctrl_gpio2: gpio2grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SD2_WP__GPIO2_IO20		0x16 /* GPIO2_IO20 */
+		>;
+	};
+
+	pinctrl_gpio3: gpio3grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_NAND_CE0_B__GPIO3_IO01		0x16 /* GPIO3_IO01 */
+		>;
+	};
+
 	pinctrl_gpio4: gpio4grp {
 		fsl,pins = <
 			MX8MP_IOMUXC_SAI1_RXD4__GPIO4_IO06		0x16 /* GPIO_P249 */
@@ -358,6 +398,12 @@
 			MX8MP_IOMUXC_SAI1_RXD7__GPIO4_IO09		0x16 /* GPIO_P255 */
 			MX8MP_IOMUXC_SAI1_TXD4__GPIO4_IO16		0x16 /* DSI_BL_EN */
 			MX8MP_IOMUXC_SAI1_TXD5__GPIO4_IO17		0x16 /* DSI_VDDEN */
+		>;
+	};
+
+	pinctrl_gpio5: gpio5grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SPDIF_EXT_CLK__GPIO5_IO05		0x16 /* GPIO5_IO05 */
 		>;
 	};
 
