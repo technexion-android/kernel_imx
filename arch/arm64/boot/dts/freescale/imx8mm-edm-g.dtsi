@@ -74,16 +74,6 @@
 		stdout-path = &uart2;
 	};
 
-	bt_reg_on: btreg_on {
-		compatible = "gpio-reset";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_bt_ctrl>;
-		reset-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
-		reset-delay-us = <2000>;
-		reset-post-delay-ms = <40>;
-		#reset-cells = <0>;
-	};
-
 	pcie0_refclk: pcie0-refclk {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -132,8 +122,14 @@
 			enable-active-high;
 		};
 	};
-};
 
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
+		bt-power-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
+		status ="okay";
+	};
+};
 
 &A53_0 {
 	cpu-supply = <&buck2_reg>;
@@ -236,7 +232,6 @@
 	assigned-clocks = <&clk IMX8MM_CLK_UART3>;
 	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
 	fsl,uart-has-rtscts;
-	resets = <&bt_reg_on>;
 	status = "okay";
 };
 
