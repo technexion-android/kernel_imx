@@ -148,6 +148,24 @@
 		"", "", "", "", "", "", "", "";
 };
 
+&gpio3 {
+	pinctrl-0 = <&pinctrl_gpio3>;
+	gpio-line-names =	\
+		"", "", "", "", "", "", "DUMMY_GPIO3_IO6", "",  \
+		"", "", "", "", "", "", "", "", \
+		"", "", "", "", "", "", "", "", \
+		"", "", "", "", "", "", "", "";
+};
+
+&gpio4 {
+	pinctrl-0 = <&pinctrl_gpio4>;
+	gpio-line-names =       \
+		"DUMMY_GPIO4_IO0", "", "", "", "", "", "", "",  \
+		"", "", "", "", "", "", "", "", \
+		"", "", "", "", "", "", "", "", \
+		"", "", "", "", "", "", "", "";
+};
+
 &gpio5 {
 	pinctrl-0 = <&pinctrl_gpio5>;
 	gpio-line-names =	\
@@ -169,6 +187,18 @@
 			MX8MM_IOMUXC_SD1_DATA6_GPIO2_IO8		0x16 /* GPIO_P249 */
 			MX8MM_IOMUXC_SD1_DATA7_GPIO2_IO9		0x16 /* GPIO_P251 */
 			MX8MM_IOMUXC_SD1_STROBE_GPIO2_IO11		0x16 /* GPIO_P255 */
+		>;
+	};
+
+	pinctrl_gpio3: gpio3grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_NAND_DATA00_GPIO3_IO6		0x16 /* dummy pin */
+		>;
+	};
+
+	pinctrl_gpio4: gpio4grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_SAI1_RXFS_GPIO4_IO0		0x16 /* dummy pin */
 		>;
 	};
 
