@@ -492,43 +492,17 @@
 				};
 			};
 
-			gpio1: gpio@30200000 {
+			gpio5: gpio@30240000 {
 				compatible = "fsl,imx8mm-gpio", "fsl,imx35-gpio";
-				reg = <0x30200000 0x10000>;
-				interrupts = <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
-					     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clk IMX8MM_CLK_GPIO1_ROOT>;
+				reg = <0x30240000 0x10000>;
+				interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
+					     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>;
+				clocks = <&clk IMX8MM_CLK_GPIO5_ROOT>;
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
 				#interrupt-cells = <2>;
-				gpio-ranges = <&iomuxc 0 10 30>;
-			};
-
-			gpio2: gpio@30210000 {
-				compatible = "fsl,imx8mm-gpio", "fsl,imx35-gpio";
-				reg = <0x30210000 0x10000>;
-				interrupts = <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
-					     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clk IMX8MM_CLK_GPIO2_ROOT>;
-				gpio-controller;
-				#gpio-cells = <2>;
-				interrupt-controller;
-				#interrupt-cells = <2>;
-				gpio-ranges = <&iomuxc 0 40 21>;
-			};
-
-			gpio3: gpio@30220000 {
-				compatible = "fsl,imx8mm-gpio", "fsl,imx35-gpio";
-				reg = <0x30220000 0x10000>;
-				interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
-					     <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clk IMX8MM_CLK_GPIO3_ROOT>;
-				gpio-controller;
-				#gpio-cells = <2>;
-				interrupt-controller;
-				#interrupt-cells = <2>;
-				gpio-ranges = <&iomuxc 0 61 26>;
+				gpio-ranges = <&iomuxc 0 119 30>;
 			};
 
 			gpio4: gpio@30230000 {
@@ -544,17 +518,43 @@
 				gpio-ranges = <&iomuxc 0 87 32>;
 			};
 
-			gpio5: gpio@30240000 {
+			gpio3: gpio@30220000 {
 				compatible = "fsl,imx8mm-gpio", "fsl,imx35-gpio";
-				reg = <0x30240000 0x10000>;
-				interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
-					     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clk IMX8MM_CLK_GPIO5_ROOT>;
+				reg = <0x30220000 0x10000>;
+				interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
+					     <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
+				clocks = <&clk IMX8MM_CLK_GPIO3_ROOT>;
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
 				#interrupt-cells = <2>;
-				gpio-ranges = <&iomuxc 0 119 30>;
+				gpio-ranges = <&iomuxc 0 61 26>;
+			};
+
+			gpio2: gpio@30210000 {
+				compatible = "fsl,imx8mm-gpio", "fsl,imx35-gpio";
+				reg = <0x30210000 0x10000>;
+				interrupts = <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
+					     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
+				clocks = <&clk IMX8MM_CLK_GPIO2_ROOT>;
+				gpio-controller;
+				#gpio-cells = <2>;
+				interrupt-controller;
+				#interrupt-cells = <2>;
+				gpio-ranges = <&iomuxc 0 40 21>;
+			};
+
+			gpio1: gpio@30200000 {
+				compatible = "fsl,imx8mm-gpio", "fsl,imx35-gpio";
+				reg = <0x30200000 0x10000>;
+				interrupts = <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
+					     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>;
+				clocks = <&clk IMX8MM_CLK_GPIO1_ROOT>;
+				gpio-controller;
+				#gpio-cells = <2>;
+				interrupt-controller;
+				#interrupt-cells = <2>;
+				gpio-ranges = <&iomuxc 0 10 30>;
 			};
 
 			tmu: tmu@30260000 {
