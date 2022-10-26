@@ -774,3 +774,16 @@ imx95-19x19-verdin-os08a20-isp-adv7535-dtbs := imx95-19x19-verdin.dtb \
 dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-verdin-os08a20-isp-adv7535.dtb
 
 subdir-y += overlays
+
+# enable creation of __symbols__ node
+DTC_FLAGS_imx8mm-edm-g-wb := -@
+DTC_FLAGS_imx8mn-edm-g-wb := -@
+DTC_FLAGS_imx8mp-edm-g-wb := -@
+DTC_FLAGS_imx8mm-edm-g-wizard := -@
+DTC_FLAGS_imx8mn-edm-g-wizard := -@
+DTC_FLAGS_imx8mp-edm-g-wizard := -@
+DTC_FLAGS_imx8mq-edm-wizard := -@
+DTC_FLAGS_imx8mm-pico-pi := -@
+DTC_FLAGS_imx8mq-pico-pi := -@
+DTC_FLAGS_imx8mm-pico-wizard := -@
+DTC_FLAGS_imx8mq-pico-wizard := -@
