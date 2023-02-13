@@ -777,6 +777,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-verdin-os08a20-isp-adv7535.dtb
 subdir-y += overlays
 
 # enable creation of __symbols__ node
+DTC_FLAGS_imx8mp-axon-wizard := -@
 DTC_FLAGS_imx8mm-edm-g-wb := -@
 DTC_FLAGS_imx8mn-edm-g-wb := -@
 DTC_FLAGS_imx8mp-edm-g-wb := -@
