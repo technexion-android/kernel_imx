@@ -1067,3 +1067,4 @@ DTC_FLAGS_imx8mm-pico-pi := -@
 DTC_FLAGS_imx8mq-pico-pi := -@
 DTC_FLAGS_imx8mm-pico-wizard := -@
 DTC_FLAGS_imx8mq-pico-wizard := -@
+DTC_FLAGS_imx8mp-hmi := -@
