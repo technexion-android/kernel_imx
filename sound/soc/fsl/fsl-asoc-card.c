@@ -44,7 +44,9 @@ enum fsl_asoc_card_type {
 	CARD_SGTL5000,
 	CARD_AC97,
 	CARD_CS427X,
+	CARD_TLV320AIC31XX,
 	CARD_TLV320AIC32X4,
+	CARD_TLV320AIC3X,
 	CARD_MQS,
 	CARD_WM8524,
 	CARD_SI476X,
@@ -105,6 +107,7 @@ struct fsl_asoc_card_priv {
 	struct snd_soc_dai_link dai_link[3];
 	struct asoc_simple_jack hp_jack;
 	struct asoc_simple_jack mic_jack;
+	struct asoc_simple_jack headset_jack;
 	struct platform_device *pdev;
 	struct codec_priv codec_priv;
 	struct cpu_priv cpu_priv;
@@ -675,6 +678,32 @@ static struct notifier_block mic_jack_nb = {
 	.notifier_call = mic_jack_event,
 };
 
+static int headset_jack_event(struct notifier_block *nb, unsigned long event,
+			 void *data)
+{
+	struct snd_soc_jack *jack = (struct snd_soc_jack *)data;
+	struct snd_soc_dapm_context *dapm = &jack->card->dapm;
+
+	if (event & SND_JACK_HEADPHONE)
+		/* Disable speaker if headphone is plugged in */
+		snd_soc_dapm_disable_pin(dapm, "Ext Spk");
+	else
+		snd_soc_dapm_enable_pin(dapm, "Ext Spk");
+
+	if (event & SND_JACK_MICROPHONE)
+		/* Disable dmic if microphone is plugged in */
+		snd_soc_dapm_disable_pin(dapm, "DMIC");
+	else
+		snd_soc_dapm_enable_pin(dapm, "DMIC");
+
+	return 0;
+}
+
+static struct notifier_block headset_jack_nb = {
+	.notifier_call = headset_jack_event,
+};
+
+
 static int fsl_asoc_card_late_probe(struct snd_soc_card *card)
 {
 	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(card);
@@ -816,10 +845,18 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
 		priv->codec_priv.mclk_id = SGTL5000_SYSCLK;
 		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
 		priv->card_type = CARD_SGTL5000;
+	} else if (of_device_is_compatible(np, "fsl,imx-audio-tlv320aic31xx")) {
+		codec_dai_name = "tlv320aic31xx-hifi";
+		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
+		priv->card_type = CARD_TLV320AIC31XX;
 	} else if (of_device_is_compatible(np, "fsl,imx-audio-tlv320aic32x4")) {
 		codec_dai_name = "tlv320aic32x4-hifi";
 		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
 		priv->card_type = CARD_TLV320AIC32X4;
+	} else if (of_device_is_compatible(np, "fsl,imx-audio-tlv320aic3x")) {
+		codec_dai_name = "tlv320aic3x-hifi";
+		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
+		priv->card_type = CARD_TLV320AIC3X;
 	} else if (of_device_is_compatible(np, "fsl,imx-audio-wm8962")) {
 		codec_dai_name = "wm8962";
 		priv->codec_priv.mclk_id = WM8962_SYSCLK_MCLK;
@@ -1169,6 +1206,30 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
 		snd_soc_jack_notifier_register(&priv->mic_jack.jack, &mic_jack_nb);
 	}
 
+	if (of_property_read_bool(np, "headset-det")) {
+		struct snd_soc_pcm_runtime *rtd = list_first_entry(
+				&priv->card.rtd_list, struct snd_soc_pcm_runtime, list);
+		struct snd_soc_component *component = asoc_rtd_to_codec(rtd, 0)->component;
+
+		priv->headset_jack.pin.pin = "Headphone Jack";
+		priv->headset_jack.pin.mask = SND_JACK_HEADSET;
+		ret = snd_soc_card_jack_new(&priv->card, priv->headset_jack.pin.pin,
+					priv->headset_jack.pin.mask,
+					&priv->headset_jack.jack, &priv->headset_jack.pin, 1);
+		if (ret) {
+			dev_err(priv->card.dev, "HEADSET jack creation failed %d\n", ret);
+			goto asrc_fail;
+		}
+
+		ret = snd_soc_component_set_jack(component, &priv->headset_jack.jack, NULL);
+		if (ret) {
+			dev_err(&pdev->dev, "Headset Jack call-back failed: %d\n", ret);
+			goto asrc_fail;
+		}
+
+		snd_soc_jack_notifier_register(&priv->headset_jack.jack, &headset_jack_nb);
+	}
+
 #ifdef CONFIG_EXTCON
 	if (of_device_is_compatible(np, "fsl,imx-audio-wm8960")) {
 		fsl_asoc_card_edev = devm_extcon_dev_allocate(&pdev->dev,
@@ -1198,7 +1259,9 @@ static const struct of_device_id fsl_asoc_card_dt_ids[] = {
 	{ .compatible = "fsl,imx-audio-ac97", },
 	{ .compatible = "fsl,imx-audio-cs42888", },
 	{ .compatible = "fsl,imx-audio-cs427x", },
+	{ .compatible = "fsl,imx-audio-tlv320aic31xx", },
 	{ .compatible = "fsl,imx-audio-tlv320aic32x4", },
+	{ .compatible = "fsl,imx-audio-tlv320aic3x", },
 	{ .compatible = "fsl,imx-audio-sgtl5000", },
 	{ .compatible = "fsl,imx-audio-wm8962", },
 	{ .compatible = "fsl,imx-audio-wm8960", },
