@@ -3,7 +3,6 @@
  * Copyright (C) 2011-2013 Freescale Semiconductor, Inc. All Rights Reserved.
  * Copyright (C) 2014-2017 Mentor Graphics Inc.
  */
-
 #include <linux/clk.h>
 #include <linux/clk-provider.h>
 #include <linux/clkdev.h>
@@ -597,17 +596,17 @@ ov5640_mode_data[OV5640_NUM_MODES] = {
 	 160, 1896, 120, 984,
 	 ov5640_setting_QQVGA_160_120,
 	 ARRAY_SIZE(ov5640_setting_QQVGA_160_120),
-	 OV5640_30_FPS},
+	 OV5640_60_FPS},
 	{OV5640_MODE_QCIF_176_144, SUBSAMPLING,
 	 176, 1896, 144, 984,
 	 ov5640_setting_QCIF_176_144,
 	 ARRAY_SIZE(ov5640_setting_QCIF_176_144),
-	 OV5640_30_FPS},
+	 OV5640_60_FPS},
 	{OV5640_MODE_QVGA_320_240, SUBSAMPLING,
 	 320, 1896, 240, 984,
 	 ov5640_setting_QVGA_320_240,
 	 ARRAY_SIZE(ov5640_setting_QVGA_320_240),
-	 OV5640_30_FPS},
+	 OV5640_60_FPS},
 	{OV5640_MODE_VGA_640_480, SUBSAMPLING,
 	 640, 1896, 480, 1080,
 	 ov5640_setting_VGA_640_480,
@@ -617,22 +616,22 @@ ov5640_mode_data[OV5640_NUM_MODES] = {
 	 720, 1896, 480, 984,
 	 ov5640_setting_NTSC_720_480,
 	 ARRAY_SIZE(ov5640_setting_NTSC_720_480),
-	OV5640_30_FPS},
+	OV5640_60_FPS},
 	{OV5640_MODE_PAL_720_576, SUBSAMPLING,
 	 720, 1896, 576, 984,
 	 ov5640_setting_PAL_720_576,
 	 ARRAY_SIZE(ov5640_setting_PAL_720_576),
-	 OV5640_30_FPS},
+	 OV5640_60_FPS},
 	{OV5640_MODE_XGA_1024_768, SUBSAMPLING,
 	 1024, 1896, 768, 1080,
 	 ov5640_setting_XGA_1024_768,
 	 ARRAY_SIZE(ov5640_setting_XGA_1024_768),
-	 OV5640_30_FPS},
+	 OV5640_60_FPS},
 	{OV5640_MODE_720P_1280_720, SUBSAMPLING,
 	 1280, 1892, 720, 740,
 	 ov5640_setting_720P_1280_720,
 	 ARRAY_SIZE(ov5640_setting_720P_1280_720),
-	 OV5640_30_FPS},
+	 OV5640_60_FPS},
 	{OV5640_MODE_1080P_1920_1080, SCALING,
 	 1920, 2500, 1080, 1120,
 	 ov5640_setting_1080P_1920_1080,
@@ -977,27 +976,19 @@ static int ov5640_check_valid_mode(struct ov5640_dev *sensor,
 	case OV5640_MODE_PAL_720_576 :
 	case OV5640_MODE_XGA_1024_768:
 	case OV5640_MODE_720P_1280_720:
-		if ((rate != OV5640_15_FPS) &&
-		    (rate != OV5640_30_FPS))
-			ret = -EINVAL;
-		break;
 	case OV5640_MODE_VGA_640_480:
 		if ((rate != OV5640_15_FPS) &&
-		    (rate != OV5640_30_FPS))
+		    (rate != OV5640_30_FPS) &&
+		    (rate != OV5640_60_FPS))
 			ret = -EINVAL;
 		break;
 	case OV5640_MODE_1080P_1920_1080:
-		if (sensor->ep.bus_type == V4L2_MBUS_CSI2_DPHY) {
-			if ((rate != OV5640_15_FPS) &&
-			    (rate != OV5640_30_FPS))
-				ret = -EINVAL;
-		 } else {
-			if ((rate != OV5640_15_FPS))
-				ret = -EINVAL;
-		 }
+		if ((rate != OV5640_15_FPS) &&
+		    (rate != OV5640_30_FPS))
+			ret = -EINVAL;
 		break;
 	case OV5640_MODE_QSXGA_2592_1944:
-		if (rate != OV5640_08_FPS)
+		if (rate != OV5640_15_FPS)
 			ret = -EINVAL;
 		break;
 	default:
@@ -1317,7 +1308,17 @@ static int ov5640_set_stream_dvp(struct ov5640_dev *sensor, bool on)
 
 static int ov5640_set_stream_mipi(struct ov5640_dev *sensor, bool on)
 {
+	const struct ov5640_mode_info *mode;
+	u8 line_sync;
 	int ret;
+
+	mode = sensor->current_mode;
+	line_sync = (mode->id == OV5640_MODE_XGA_1024_768 ||
+		     mode->id == OV5640_MODE_QSXGA_2592_1944) ? 0 : 1;
+	ret = ov5640_write_reg(sensor, OV5640_REG_MIPI_CTRL00,
+			       0x24 | (line_sync << 4));
+	if (ret)
+		return ret;
 
 	/*
 	 * Enable/disable the MIPI interface
@@ -1836,6 +1837,7 @@ static int ov5640_set_mode(struct ov5640_dev *sensor)
 	bool auto_gain = sensor->ctrls.auto_gain->val == 1;
 	bool auto_exp =  sensor->ctrls.auto_exp->val == V4L2_EXPOSURE_AUTO;
 	unsigned long rate;
+	int data_lane;
 	int ret;
 
 	dn_mode = mode->dn_mode;
@@ -1860,7 +1862,15 @@ static int ov5640_set_mode(struct ov5640_dev *sensor)
 	 */
 	rate = ov5640_calc_pixel_rate(sensor) * 16;
 	if (sensor->ep.bus_type == V4L2_MBUS_CSI2_DPHY) {
-		rate = rate / sensor->ep.bus.mipi_csi2.num_data_lanes;
+		if(sensor->ep.bus.mipi_csi2.num_data_lanes == 1)
+			rate = rate / sensor->ep.bus.mipi_csi2.num_data_lanes;
+		else {
+			if(rate > 982886400)
+				data_lane = sensor->ep.bus.mipi_csi2.data_lanes[1];
+			else
+				data_lane = sensor->ep.bus.mipi_csi2.data_lanes[0];
+			rate = rate / data_lane;
+		}
 		ret = ov5640_set_mipi_pclk(sensor, rate);
 	} else {
 		rate = rate / sensor->ep.bus.parallel.bus_width;
@@ -2129,9 +2139,10 @@ static int ov5640_set_power_mipi(struct ov5640_dev *sensor, bool on)
 	 *
 	 * 0x4800 = 0x24
 	 * [5] = 1	: Gate clock when 'no packets'
+	 * [4] = 1	: Line sync enable
 	 * [2] = 1	: MIPI bus in LP11 when 'no packets'
 	 */
-	ret = ov5640_write_reg(sensor, OV5640_REG_MIPI_CTRL00, 0x24);
+	ret = ov5640_write_reg(sensor, OV5640_REG_MIPI_CTRL00, 0x34);
 	if (ret)
 		return ret;
 
@@ -2343,11 +2354,11 @@ static int ov5640_try_frame_interval(struct ov5640_dev *sensor,
 				     u32 width, u32 height)
 {
 	const struct ov5640_mode_info *mode;
-	enum ov5640_frame_rate rate = OV5640_08_FPS;
+	enum ov5640_frame_rate rate = OV5640_15_FPS;
 	int minfps, maxfps, best_fps, fps;
 	int i;
 
-	minfps = ov5640_framerates[OV5640_08_FPS];
+	minfps = ov5640_framerates[OV5640_15_FPS];
 	maxfps = ov5640_framerates[OV5640_30_FPS];
 
 	if (fi->numerator == 0) {
@@ -2468,6 +2479,7 @@ static int ov5640_set_fmt(struct v4l2_subdev *sd,
 
 	if (new_mode != sensor->current_mode) {
 		sensor->current_mode = new_mode;
+		sensor->current_fr = new_mode->max_fps;
 		sensor->pending_mode_change = true;
 	}
 	if (mbus_fmt->code != sensor->fmt.code)
