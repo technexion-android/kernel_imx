@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2020 Technexion Ltd.
+ *
+ * Author: Richard Hu <richard.hu@technexion.com>
+ *
+ */
+
+/dts-v1/;
+
+#include "imx8mm-edm-g-wb-rpmsg.dts"
+#include "imx8mm-android.dtsi"
+#include "tn_imx-android.dtsi"
+
+/ {
+	model = "[ANDROID] TechNexion EDM-G-IMX8MM with WB baseboard & RPMSG";
+};
+
+&lcdif {
+	/delete-property/ trusty;
+};
+
+&vpu_v4l2 {
+	status = "okay";
+};
+
+//#include "imx8mm-edm-g-wizard-tevi-ov5640.dtsi"
+//#include "imx8mm-edm-g-wizard-tevi-ap1302.dtsi"
+
+//include "imx8mm-edm-g-wizard-sn65dsi84-vl10112880.dtsi"

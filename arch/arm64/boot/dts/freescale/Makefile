@@ -779,7 +779,15 @@ imx95-19x19-verdin-os08a20-isp-adv7535-dtbs := imx95-19x19-verdin.dtb \
 					      imx95-19x19-verdin-adv7535.dtbo
 dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-verdin-os08a20-isp-adv7535.dtb
 
+# For Android
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb_android.dtb imx8mp-edm-g-wb-rpmsg_android.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wizard_android.dtb imx8mp-edm-g-wizard-rpmsg_android.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb_android.dtb imx8mm-edm-g-wizard_android.dtb
+
 subdir-y += overlays
+
+# needed for dtb overlay
+DTC_FLAGS += -@
 
 # enable creation of __symbols__ node
 DTC_FLAGS_imx8mp-axon-wizard := -@
