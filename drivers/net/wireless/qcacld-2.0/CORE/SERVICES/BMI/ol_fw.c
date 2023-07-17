@@ -1084,7 +1084,7 @@ int ol_copy_ramdump(struct ol_softc *scn)
 		goto out;
 	}
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 7, 0))
+#if ((defined(WLAN_OPEN_SOURCE) && !defined(CONFIG_CNSS)) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 7, 0)))
 	vos_request_pm_qos_type(
 #else
 	vos_request_pm_qos_type(PM_QOS_CPU_DMA_LATENCY,

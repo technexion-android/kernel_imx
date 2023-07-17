@@ -1550,7 +1550,12 @@ VOS_STATUS hdd_chan_change_notify(hdd_adapter_t *hostapd_adapter,
 	    (phy_mode == eCSR_DOT11_MODE_11ac_ONLY))
 		hdd_update_chandef(hostapd_adapter, &chandef, cb_mode);
 
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+	cfg80211_ch_switch_notify(dev, &chandef, 0);
+#else
 	cfg80211_ch_switch_notify(dev, &chandef);
+#endif
 
 	return VOS_STATUS_SUCCESS;
 }

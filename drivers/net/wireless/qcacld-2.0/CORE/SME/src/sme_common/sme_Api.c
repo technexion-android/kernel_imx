@@ -2943,7 +2943,7 @@ eHalStatus sme_ProcessMsg(tHalHandle hHal, vos_msg_t* pMsg)
           case eWNI_SME_CHANGE_COUNTRY_CODE:
               if(pMsg->bodyptr)
                 {
-                   status = sme_HandleChangeCountryCode((void *)pMac, pMsg->bodyptr);
+                   status = sme_HandleChangeCountryCode(pMac, pMsg->bodyptr);
                    vos_mem_free(pMsg->bodyptr);
                 }
                 else
@@ -2955,7 +2955,7 @@ eHalStatus sme_ProcessMsg(tHalHandle hHal, vos_msg_t* pMsg)
           case eWNI_SME_GENERIC_CHANGE_COUNTRY_CODE:
               if (pMsg->bodyptr)
                 {
-                    status = sme_HandleGenericChangeCountryCode((void *)pMac, pMsg->bodyptr);
+                    status = sme_HandleGenericChangeCountryCode(pMac, pMsg->bodyptr);
                     vos_mem_free(pMsg->bodyptr);
                 }
                 else

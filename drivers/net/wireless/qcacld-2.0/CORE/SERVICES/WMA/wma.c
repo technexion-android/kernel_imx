@@ -5273,7 +5273,7 @@ static int wma_unified_radio_tx_power_level_stats_event_handler(void *handle,
 	wmi_tx_power_level_stats_evt_fixed_param *fixed_param;
 	uint8_t *tx_power_level_values;
 	tSirLLStatsResults *link_stats_results;
-	tSirWifiRadioStat *rs_results;
+	tSirWifiRadioStat *rs_results = NULL;
 
 	tpAniSirGlobal pMac = (tpAniSirGlobal )vos_get_context(VOS_MODULE_ID_PE,
 				wma_handle->vos_context);
@@ -5380,7 +5380,7 @@ static int wma_unified_link_radio_stats_event_handler(void *handle,
 	wmi_radio_link_stats *radio_stats;
 	wmi_channel_stats *channel_stats;
 	tSirLLStatsResults *link_stats_results;
-	tSirWifiRadioStat *rs_results;
+	tSirWifiRadioStat *rs_results = NULL;
 	tSirWifiChannelStats *chn_results;
 	uint8_t *results, *t_radio_stats, *t_channel_stats;
 	uint32_t next_chan_offset, count;

@@ -2074,7 +2074,18 @@ static void hdd_send_roamed_ind(struct net_device *dev,
 {
 	struct cfg80211_roam_info info = {0};
 
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+	{
+		int i = 0;
+
+		for(i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; ++i) {
+			info.links[i].bss = bss;
+		}
+	}
+#else
 	info.bss = bss;
+#endif
 	info.req_ie = req_ie;
 	info.req_ie_len = req_ie_len;
 	info.resp_ie = resp_ie;
@@ -2348,6 +2359,37 @@ static eHalStatus hdd_AssociationCompletionHandler( hdd_adapter_t *pAdapter, tCs
     uint8_t default_sap_channel = 6;
     tSirResultCodes timeout_reason = 0;
     struct wireless_dev *wdev = dev->ieee80211_ptr;
+    u8 ssid_len = 0;
+
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+	switch(wdev->iftype) {
+		case NL80211_IFTYPE_ADHOC:
+		case NL80211_IFTYPE_P2P_CLIENT:
+		case NL80211_IFTYPE_P2P_GO:
+		case NL80211_IFTYPE_P2P_DEVICE:
+			ssid_len = wdev->u.ibss.ssid_len;
+			break;
+		case NL80211_IFTYPE_AP:
+		case NL80211_IFTYPE_AP_VLAN:
+			ssid_len = wdev->u.ap.ssid_len;
+			break;
+		case NL80211_IFTYPE_WDS:
+		case NL80211_IFTYPE_STATION:
+		case NL80211_IFTYPE_MONITOR:
+			ssid_len = wdev->u.client.ssid_len;
+			break;
+		case NL80211_IFTYPE_MESH_POINT:
+			ssid_len = wdev->u.mesh.id_len;
+			break;
+		case NL80211_IFTYPE_OCB:
+		default:
+			break;
+	}
+#else
+    ssid_len = wdev->ssid_len;
+#endif
+
 #ifdef WLAN_FEATURE_ROAM_OFFLOAD
     if (pRoamInfo && pRoamInfo->roamSynchInProgress) {
        /* change logging before release */
@@ -2659,8 +2701,7 @@ static eHalStatus hdd_AssociationCompletionHandler( hdd_adapter_t *pAdapter, tCs
                 {
                     hddLog(LOG1, "%s ft_carrier_on is %d, sending connect "
                                  "indication", __FUNCTION__, ft_carrier_on);
-
-                    if(wdev->ssid_len != 0)
+                    if(ssid_len != 0)
 			    hdd_connect_result(dev, pRoamInfo->bssid, pRoamInfo,
 					       pFTAssocReq, assocReqlen,
 					       pFTAssocRsp, assocRsplen,
@@ -2697,7 +2738,7 @@ static eHalStatus hdd_AssociationCompletionHandler( hdd_adapter_t *pAdapter, tCs
                                roamResult, roamStatus);
 
                         /* inform connect result to nl80211 */
-                        if(wdev->ssid_len != 0)
+                    if(ssid_len != 0)
 				hdd_connect_result(dev, pRoamInfo->bssid, pRoamInfo,
 					reqRsnIe, reqRsnLength,
 					rspRsnIe, rspRsnLength,

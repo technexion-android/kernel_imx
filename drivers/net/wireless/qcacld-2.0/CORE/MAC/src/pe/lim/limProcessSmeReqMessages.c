@@ -1343,7 +1343,7 @@ static eHalStatus limSendHalStartScanOffloadReq(tpAniSirGlobal pMac,
                            pScanOffloadReq->sessionId);
 
     pScanOffloadReq->channelList.numChannels =
-        pScanReq->channelList.numChannels;
+    	SIR_MIN(pScanReq->channelList.numChannels, SIR_ESE_MAX_MEAS_IE_REQS);
     p = &(pScanOffloadReq->channelList.channelNumber[0]);
     for (i = 0; i < pScanOffloadReq->channelList.numChannels; i++)
         p[i] = pScanReq->channelList.channelNumber[i];

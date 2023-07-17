@@ -5917,6 +5917,10 @@ eHalStatus csrSendMBScanReq( tpAniSirGlobal pMac, tANI_U16 sessionId,
 
         for(i = 0; i < pMsg->channelList.numChannels; i++)
         {
+        	if(i >= SIR_ESE_MAX_MEAS_IE_REQS) {
+                smsLog(pMac, LOGE, FL("channelNumber %d meets limit %d, abort."), i, SIR_ESE_MAX_MEAS_IE_REQS);
+        		break;
+        	}
             smsLog(pMac, LOG2, FL("channelNumber[%d]= %d"), i, pMsg->channelList.channelNumber[i]);
         }
 

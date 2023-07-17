@@ -1007,7 +1007,9 @@ void wlan_hdd_restart_sap(hdd_adapter_t *ap_adapter)
 
     pHddApCtx = WLAN_HDD_GET_AP_CTX_PTR(ap_adapter);
     pConfig = &pHddApCtx->sapConfig;
+#ifdef WLAN_FEATURE_MBSSID
     p_sap_ctx = pHddApCtx->sapContext;
+#endif
 
     mutex_lock(&pHddCtx->sap_lock);
     if (test_bit(SOFTAP_BSS_STARTED, &ap_adapter->event_flags)) {
@@ -8641,6 +8643,11 @@ static int hdd_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
 	return ret;
 }
 
+#if (LINUX_VERSION_CODE > KERNEL_VERSION(5,15,0))
+static int hdd_ioctl_priv(struct net_device *dev, struct ifreq *ifr, void __user *data, int cmd) {
+	return(hdd_ioctl(dev, ifr, cmd));
+}
+#endif
 
 /*
  * Mac address for multiple virtual interface is found as following
@@ -10331,9 +10338,9 @@ void hdd_full_pwr_cbk(void *callbackContext, eHalStatus status)
    hdd_context_t *pHddCtx = (hdd_context_t*)callbackContext;
 
    hddLog(VOS_TRACE_LEVEL_INFO_HIGH,"HDD full Power callback status = %d", status);
-   if(&pHddCtx->full_pwr_comp_var)
+   if(&(pHddCtx->full_pwr_comp_var) != NULL)
    {
-      complete(&pHddCtx->full_pwr_comp_var);
+      complete(&(pHddCtx->full_pwr_comp_var));
    }
 }
 
@@ -10844,7 +10851,11 @@ static struct net_device_ops wlan_drv_ops = {
       .ndo_start_xmit = hdd_hard_start_xmit,
       .ndo_tx_timeout = hdd_tx_timeout,
       .ndo_get_stats = hdd_stats,
-      .ndo_do_ioctl = hdd_ioctl,
+#if (LINUX_VERSION_CODE > KERNEL_VERSION(5,15,0))
+	  .ndo_siocdevprivate = hdd_ioctl_priv,
+#else
+	  .ndo_do_ioctl = hdd_ioctl,
+#endif
       .ndo_set_mac_address = hdd_set_mac_address,
       .ndo_select_queue    = hdd_select_queue,
 #ifdef WLAN_FEATURE_PACKET_FILTERING

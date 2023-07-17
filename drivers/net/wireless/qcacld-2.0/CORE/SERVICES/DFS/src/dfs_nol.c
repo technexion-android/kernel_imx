@@ -76,8 +76,8 @@ static
 OS_TIMER_FUNC(dfs_remove_from_nol)
 {
     struct dfs_nolelem *elem = from_timer(elem, t, nol_timer);
-    struct dfs_nol_timer_arg *nol_arg = elem->dfs_timer_arg;;
-    struct ath_dfs *dfs;
+    struct dfs_nol_timer_arg *nol_arg = elem->dfs_timer_arg;
+    struct ath_dfs *dfs = NULL;
     struct ieee80211com *ic;
     u_int16_t delfreq;
     u_int16_t delchwidth;

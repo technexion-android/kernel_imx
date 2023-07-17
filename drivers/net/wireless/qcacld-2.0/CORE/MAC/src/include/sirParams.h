@@ -53,7 +53,7 @@
 #define SIR_MAX_PACKET_SIZE     512
 #define SIR_MAX_NUM_CHANNELS    64
 #define SIR_MAX_NUM_STA_IN_IBSS 16
-#define SIR_ESE_MAX_MEAS_IE_REQS   8
+#define SIR_ESE_MAX_MEAS_IE_REQS   32
 
 typedef enum
 {

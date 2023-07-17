@@ -5184,7 +5184,11 @@ static int hdd_extscan_passpoint_fill_network_list(
 			hddLog(LOGE, FL("attr realm failed"));
 			return -EINVAL;
 		}
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0))
+		len = nla_strscpy(req_msg->networks[index].realm,
+#else
 		len = nla_strlcpy(req_msg->networks[index].realm,
+#endif
 				  network[PARAM_REALM],
 				  SIR_PASSPOINT_REALM_LEN);
 		/* Don't send partial realm to firmware */
@@ -10052,9 +10056,13 @@ static int __wlan_hdd_cfg80211_do_acs(struct wiphy *wiphy,
 
 	if (test_bit(SOFTAP_BSS_STARTED, &adapter->event_flags)) {
 		uint32_t sap_sub20_channelwidth;
+#ifdef WLAN_FEATURE_MBSSID
 		WLANSAP_get_sub20_channelwidth(WLAN_HDD_GET_SAP_CTX_PTR(
 						adapter),
 					       &sap_sub20_channelwidth);
+#else
+		sap_sub20_channelwidth = SUB20_MODE_NONE;
+#endif
 		if (sap_sub20_channelwidth == SUB20_MODE_NONE) {
 			hddLog(LOGE, FL("Bss started, relaunch ACS"));
 			status = wlan_hdd_cfg80211_relaunch_acs(adapter);
@@ -10622,7 +10630,9 @@ hdd_get_sub20_channelwidth(hdd_adapter_t *adapter, uint32_t *sub20_channelwidth)
 {
 	tHalHandle hal_ptr = WLAN_HDD_GET_HAL_CTX(adapter);
 	tpAniSirGlobal mac_ptr = PMAC_STRUCT(hal_ptr);
+#ifdef WLAN_FEATURE_MBSSID
 	v_CONTEXT_t vos_ctx_ptr = WLAN_HDD_GET_SAP_CTX_PTR(adapter);
+#endif
 	uint32_t sap_sub20_channelwidth;
 
 	if (WLAN_HDD_ADAPTER_MAGIC != adapter->magic) {
@@ -10635,8 +10645,12 @@ hdd_get_sub20_channelwidth(hdd_adapter_t *adapter, uint32_t *sub20_channelwidth)
 			mac_ptr->sta_sub20_current_channelwidth :
 			mac_ptr->sub20_channelwidth;
 	} else if (WLAN_HDD_SOFTAP == adapter->device_mode) {
+#ifdef WLAN_FEATURE_MBSSID
 		WLANSAP_get_sub20_channelwidth(vos_ctx_ptr,
 					       &sap_sub20_channelwidth);
+#else
+		sap_sub20_channelwidth = SUB20_MODE_NONE;
+#endif
 		*sub20_channelwidth = sap_sub20_channelwidth;
 	} else {
 		hddLog(LOGE, FL("error dev mode!"));
@@ -17366,7 +17380,11 @@ int wlan_hdd_cfg80211_update_apies(hdd_adapter_t* pHostapdAdapter)
                           WLAN_EID_INTERWORKING);
 
     wlan_hdd_add_extra_ie(pHostapdAdapter, genie, &total_ielen,
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0))
                           WLAN_EID_VHT_TX_POWER_ENVELOPE);
+#else
+                          WLAN_EID_TX_POWER_ENVELOPE);
+#endif
 
     if(test_bit(SOFTAP_BSS_STARTED, &pHostapdAdapter->event_flags))
         wlan_hdd_add_extra_ie(pHostapdAdapter, genie, &total_ielen,
@@ -19291,8 +19309,14 @@ static int wlan_hdd_cfg80211_del_beacon(struct wiphy *wiphy,
  *
  * Return: zero for success non-zero for failure
  */
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+static int wlan_hdd_cfg80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+					unsigned int link_id)
+#else
 static int wlan_hdd_cfg80211_stop_ap(struct wiphy *wiphy,
 					struct net_device *dev)
+#endif
 {
 	int ret;
 
@@ -19881,11 +19905,10 @@ static int wlan_hdd_cfg80211_change_bss (struct wiphy *wiphy,
 /* FUNCTION: wlan_hdd_change_country_code_cd
 *  to wait for country code completion
 */
-void* wlan_hdd_change_country_code_cb(void *pAdapter)
+void wlan_hdd_change_country_code_cb(void *pAdapter)
 {
     hdd_adapter_t *call_back_pAdapter = pAdapter;
     complete(&call_back_pAdapter->change_country_code);
-    return NULL;
 }
 
 /*
@@ -20048,7 +20071,6 @@ static int __wlan_hdd_cfg80211_change_iface(struct wiphy *wiphy,
                 hddLog(LOG1, FL("Setting country code from INI"));
                 init_completion(&pAdapter->change_country_code);
                 hstatus = sme_ChangeCountryCode(pHddCtx->hHal,
-                                     (void *)(tSmeChangeCountryCallback)
                                       wlan_hdd_change_country_code_cb,
                                       pConfig->apCntryCode, pAdapter,
                                       pHddCtx->pvosContext,
@@ -20526,8 +20548,10 @@ static int __wlan_hdd_change_station(struct wiphy *wiphy,
 
             if (hdd_hostapd_sub20_channelwidth_can_switch(pAdapter,
                                                           &sub20_chanwidth)) {
+#ifdef WLAN_FEATURE_MBSSID
                     WLANSAP_set_sub20_channelwidth_with_csa(
                         WLAN_HDD_GET_SAP_CTX_PTR(pAdapter), sub20_chanwidth);
+#endif
             }
         }
     } else if ((pAdapter->device_mode == WLAN_HDD_INFRA_STATION) ||
@@ -21112,12 +21136,21 @@ static int __wlan_hdd_cfg80211_add_key( struct wiphy *wiphy,
     return 0;
 }
 
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+static int wlan_hdd_cfg80211_add_key( struct wiphy *wiphy, struct net_device *ndev,
+                                      int link_id, u8 key_index, bool pairwise,
+                                      const u8 *mac_addr,
+                                      struct key_params *params
+                                      )
+#else
 static int wlan_hdd_cfg80211_add_key( struct wiphy *wiphy,
                                       struct net_device *ndev,
                                       u8 key_index, bool pairwise,
                                       const u8 *mac_addr,
                                       struct key_params *params
                                       )
+#endif
 {
     int ret;
     vos_ssr_protect(__func__);
@@ -21205,6 +21238,14 @@ static int __wlan_hdd_cfg80211_get_key(
     return 0;
 }
 
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+static int wlan_hdd_cfg80211_get_key(struct wiphy *wiphy, struct net_device *ndev,
+                        int link_id, u8 key_index, bool pairwise,
+                        const u8 *mac_addr, void *cookie,
+                        void (*callback)(void *cookie, struct key_params*)
+                        )
+#else
 static int wlan_hdd_cfg80211_get_key(
                         struct wiphy *wiphy,
                         struct net_device *ndev,
@@ -21212,6 +21253,7 @@ static int wlan_hdd_cfg80211_get_key(
                         const u8 *mac_addr, void *cookie,
                         void (*callback)(void *cookie, struct key_params*)
                         )
+#endif
 {
     int ret;
 
@@ -21350,10 +21392,17 @@ static int __wlan_hdd_cfg80211_del_key(struct wiphy *wiphy,
  *
  * Return: 0 for success, error number on failure.
  */
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+static int wlan_hdd_cfg80211_del_key(struct wiphy *wiphy, struct net_device *dev,
+					int link_id, u8 key_index, bool pairwise,
+					const u8 *mac_addr)
+#else
 static int wlan_hdd_cfg80211_del_key(struct wiphy *wiphy,
 					struct net_device *dev,
 					u8 key_index,
 					bool pairwise, const u8 *mac_addr)
+#endif
 {
 	int ret;
 
@@ -21485,10 +21534,17 @@ static int __wlan_hdd_cfg80211_set_default_key( struct wiphy *wiphy,
     return status;
 }
 
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+static int wlan_hdd_cfg80211_set_default_key( struct wiphy *wiphy,
+                                              struct net_device *ndev, int link_id,
+                                              u8 key_index, bool unicast, bool multicast)
+#else
 static int wlan_hdd_cfg80211_set_default_key( struct wiphy *wiphy,
                                               struct net_device *ndev,
                                               u8 key_index,
                                               bool unicast, bool multicast)
+#endif
 {
     int ret;
     vos_ssr_protect(__func__);
@@ -24899,7 +24955,10 @@ static int __wlan_hdd_cfg80211_connect( struct wiphy *wiphy,
                             req->bssid, req->ssid,
                             req->ssid_len);
                 if (bss) {
+#if(!((LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)) || \
+	 (defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 74)))))
                     cfg80211_assoc_timeout(ndev, bss);
+#endif
                     return -ETIMEDOUT;
                 }
             }
@@ -27759,9 +27818,16 @@ static int __wlan_hdd_set_default_mgmt_key(struct wiphy *wiphy,
  *
  * Return: 0 on success, error number on failure
  */
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+static int wlan_hdd_set_default_mgmt_key(struct wiphy *wiphy,
+					   struct net_device *netdev, int link_id,
+					   u8 key_index)
+#else
 static int wlan_hdd_set_default_mgmt_key(struct wiphy *wiphy,
 					   struct net_device *netdev,
 					   u8 key_index)
+#endif
 {
 	int ret;
 
@@ -31524,10 +31590,18 @@ __wlan_hdd_cfg80211_set_ap_channel_width(struct wiphy *wiphy,
  *
  * Return: 0 for success, non-zero for failure
  */
+#if((LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 1)) || \
+	(defined(CONFIG_ANDROID) && (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 71))))
+static int
+wlan_hdd_cfg80211_set_ap_channel_width(struct wiphy *wiphy, struct net_device *dev,
+				       unsigned int link_id,
+				       struct cfg80211_chan_def *chandef)
+#else
 static int
 wlan_hdd_cfg80211_set_ap_channel_width(struct wiphy *wiphy,
 				       struct net_device *dev,
 				       struct cfg80211_chan_def *chandef)
+#endif
 {
 	int ret;
 
