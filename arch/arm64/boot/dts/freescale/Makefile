@@ -135,7 +135,6 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mq-mnt-reform2.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-nitrogen.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-phanbell.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-thor96.dtb
-dtb-$(CONFIG_ARCH_MXC) += imx8mq-pico-wizard.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk-dp.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-zii-ultra-rmb3.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-zii-ultra-zest.dtb
@@ -283,5 +282,15 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-sc.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-edm-wizard.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-pico-pi.dtb imx8mq-pico-pi-dcss-ili9881c.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mq-pico-wizard.dtb
+
+# For Android
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb_android.dtb imx8mp-edm-g-wb-rpmsg_android.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wizard_android.dtb imx8mp-edm-g-wizard-rpmsg_android.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb_android.dtb imx8mm-edm-g-wizard_android.dtb
+
 
 subdir-y += overlays
+
+# needed for dtb overlay
+DTC_FLAGS += -@
