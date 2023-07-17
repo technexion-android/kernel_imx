@@ -1062,7 +1062,15 @@ imx8mp-evk-revb4-powersave-non-rpmsg-dtbs := imx8mp-evk-powersave-non-rpmsg.dtb 
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-revb4-powersave-non-rpmsg.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-revb4-powersave.dtb
 
+# For Android
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb_android.dtb imx8mp-edm-g-wb-rpmsg_android.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wizard_android.dtb imx8mp-edm-g-wizard-rpmsg_android.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb_android.dtb imx8mm-edm-g-wizard_android.dtb
+
 subdir-y += overlays
+
+# needed for dtb overlay
+DTC_FLAGS += -@
 
 # enable creation of __symbols__ node
 DTC_FLAGS_imx8mp-axon-wizard := -@
