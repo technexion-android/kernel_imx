@@ -309,6 +309,8 @@ static int ili9881c_prepare(struct drm_panel *panel)
 	/* Power the panel */
 	if (!IS_ERR(ctx->power)) {
 		ret = regulator_enable(ctx->power);
+		if (ret)
+			return ret;
 		msleep(5);
 	}
 	/* And reset it */
