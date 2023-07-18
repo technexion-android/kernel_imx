@@ -658,6 +658,7 @@ static void panel_simple_parse_panel_timing_node(struct device *dev,
 		    !PANEL_SIMPLE_BOUNDS_CHECK(ot, dt, vsync_len)) {
 			dev_warn(dev, "BOUNDS CHECK failed\n");
 			continue;
+		}
 
 		if (ot->flags != dt->flags) {
 			dev_warn(dev, "FLAGS CHECK failed. ot: 0x%x dt:0x%x\n", ot->flags, dt->flags);
