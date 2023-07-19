@@ -19,9 +19,3 @@
 &vpu_v4l2 {
 	status = "okay";
 };
-
-
-//#include "imx8mp-edm-g-wb-rpmsg-tevi-ov5640.dtsi"
-//#include "imx8mp-edm-g-wb-rpmsg-tevi-ap1302.dtsi"
-
-//#include "imx8mp-edm-g-wb-rpmsg-lvds-vl10112880.dtsi"
