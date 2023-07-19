@@ -10,12 +10,7 @@
 
 #include "imx8mp-edm-g-wb.dts"
 #include "imx8mp-android.dtsi"
-#include "tn_imx-android.dtsi"
 
 / {
 	model = "[ANDROID] TechNexion EDM-G-IMX8MP with WB baseboard";
-};
-
-&vpu_v4l2 {
-	status = "okay";
 };
