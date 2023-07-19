@@ -23,8 +23,3 @@
 &vpu_v4l2 {
 	status = "okay";
 };
-
-//#include "imx8mm-edm-g-wizard-tevi-ov5640.dtsi"
-//#include "imx8mm-edm-g-wizard-tevi-ap1302.dtsi"
-
-//include "imx8mm-edm-g-wizard-sn65dsi84-vl10112880.dtsi"
