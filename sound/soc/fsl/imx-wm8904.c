@@ -170,7 +170,7 @@ static int imx_hifi_startup(struct snd_pcm_substream *substream)
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 	struct snd_soc_card *card = rtd->card;
 	struct imx_wm8904_data *data = snd_soc_card_get_drvdata(card);
-	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
+	//bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
 	int ret = 0;
 
 	if (!data->is_codec_master) {
