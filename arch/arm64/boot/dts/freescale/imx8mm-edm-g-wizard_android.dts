@@ -10,7 +10,6 @@
 
 #include "imx8mm-edm-g-wizard.dts"
 #include "imx8mm-android.dtsi"
-#include "tn_imx-android.dtsi"
 
 / {
 	model = "[ANDROID] TechNexion EDM-G-IMX8MM with Wizard baseboard";
@@ -18,8 +17,4 @@
 
 &lcdif {
 	/delete-property/ trusty;
-};
-
-&vpu_v4l2 {
-	status = "okay";
 };
