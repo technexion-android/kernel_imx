@@ -215,18 +215,18 @@ static int ops_set_stream(struct v4l2_subdev *sub_dev, int enable)
 		ret = sensor_standby(instance->i2c_client, 0);
 		if (ret == 0) {
 			int fps = ap1302_sensor_table[instance->selected_sensor].res_list[instance->selected_mode].framerates;
-			dev_dbg(sub_dev->dev, "%s() width=%d, height=%d, mode=%d\n", __func__, 
-				ap1302_sensor_table[instance->selected_sensor].res_list[instance->selected_mode].width, 
+			dev_dbg(sub_dev->dev, "%s() width=%d, height=%d, mode=%d\n", __func__,
+				ap1302_sensor_table[instance->selected_sensor].res_list[instance->selected_mode].width,
 				ap1302_sensor_table[instance->selected_sensor].res_list[instance->selected_mode].height,
 				ap1302_sensor_table[instance->selected_sensor].res_list[instance->selected_mode].mode);
 			sensor_i2c_write_16b(instance->i2c_client, 0x1184, 1); //ATOMIC
 			//PREVIEW_SENSOR_MODE
-			sensor_i2c_write_16b(instance->i2c_client, 0x2014, 
-						ap1302_sensor_table[instance->selected_sensor].res_list[instance->selected_mode].mode); 
+			sensor_i2c_write_16b(instance->i2c_client, 0x2014,
+						ap1302_sensor_table[instance->selected_sensor].res_list[instance->selected_mode].mode);
 			//PREVIEW_WIDTH
 			sensor_i2c_write_16b(instance->i2c_client, 0x2000,
 					     ap1302_sensor_table[instance->selected_sensor].res_list[instance->selected_mode].width);
-			//PREVIEW_HEIGHT 
+			//PREVIEW_HEIGHT
 			sensor_i2c_write_16b(instance->i2c_client, 0x2002,
 					     ap1302_sensor_table[instance->selected_sensor].res_list[instance->selected_mode].height);
 			//PREVIEW_MAX_FPS
@@ -239,7 +239,7 @@ static int ops_set_stream(struct v4l2_subdev *sub_dev, int enable)
 }
 
 static int ops_enum_mbus_code(struct v4l2_subdev *sub_dev,
-			      struct v4l2_subdev_pad_config *cfg,
+			      struct v4l2_subdev_state *sd_state,
 			      struct v4l2_subdev_mbus_code_enum *code)
 {
 	dev_dbg(sub_dev->dev, "%s()\n", __func__);
@@ -253,7 +253,7 @@ static int ops_enum_mbus_code(struct v4l2_subdev *sub_dev,
 }
 
 static int ops_get_fmt(struct v4l2_subdev *sub_dev,
-		       struct v4l2_subdev_pad_config *cfg,
+		       struct v4l2_subdev_state *sd_state,
 		       struct v4l2_subdev_format *format)
 {
 	struct v4l2_mbus_framefmt *fmt;
@@ -267,7 +267,7 @@ static int ops_get_fmt(struct v4l2_subdev *sub_dev,
 
 	if (format->which == V4L2_SUBDEV_FORMAT_TRY)
 		fmt = v4l2_subdev_get_try_format(sub_dev,
-						 cfg,
+						 sd_state,
 						 format->pad);
 	else
 		fmt = &instance->fmt;
@@ -278,7 +278,7 @@ static int ops_get_fmt(struct v4l2_subdev *sub_dev,
 }
 
 static int ops_set_fmt(struct v4l2_subdev *sub_dev,
-		       struct v4l2_subdev_pad_config *cfg,
+		       struct v4l2_subdev_state *sd_state,
 		       struct v4l2_subdev_format *format)
 {
 	struct v4l2_mbus_framefmt *fmt;
@@ -316,7 +316,7 @@ static int ops_set_fmt(struct v4l2_subdev *sub_dev,
 	memset(mbus_fmt->reserved, 0, sizeof(mbus_fmt->reserved));
 
 	if (format->which == V4L2_SUBDEV_FORMAT_TRY)
-		fmt = v4l2_subdev_get_try_format(sub_dev, cfg, 0);
+		fmt = v4l2_subdev_get_try_format(sub_dev, sd_state, 0);
 	else
 		fmt = &instance->fmt;
 
@@ -326,7 +326,7 @@ static int ops_set_fmt(struct v4l2_subdev *sub_dev,
 }
 
 static int ops_enum_frame_size(struct v4l2_subdev *sub_dev,
-			       struct v4l2_subdev_pad_config *cfg,
+			       struct v4l2_subdev_state *sd_state,
 			       struct v4l2_subdev_frame_size_enum *fse)
 {
 	struct sensor *instance = container_of(sub_dev, struct sensor, v4l2_subdev);
@@ -348,7 +348,7 @@ static int ops_enum_frame_size(struct v4l2_subdev *sub_dev,
 }
 
 static int ops_enum_frame_interval(struct v4l2_subdev *sub_dev,
-				   struct v4l2_subdev_pad_config *cfg,
+				   struct v4l2_subdev_state *sd_state,
 				   struct v4l2_subdev_frame_interval_enum *fie)
 {
 	struct sensor *instance = container_of(sub_dev, struct sensor, v4l2_subdev);
