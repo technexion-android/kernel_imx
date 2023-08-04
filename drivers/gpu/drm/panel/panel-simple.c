@@ -173,13 +173,9 @@ struct panel_desc {
 	int connector_type;
 
 	/* additional device tree settings for this panel */
-	/** @refresh_rate: Refresh rate, e.g. 60MHz */
 	u32 refresh_rate;
-	/** @rotate: Rotation, e.g. 0, 90, 180, 270 degrees */
 	u32 rotate;
-	/** @hflip: Horizontal flip, e.g. flip horizontally */
 	bool hflip;
-	/** @vflip: Vertical flip, e.g. flip vertically */
 	bool vflip;
 };
 
@@ -238,6 +234,8 @@ static unsigned int panel_simple_get_timings_modes(struct panel_simple *panel,
 
 		if (panel->desc->num_timings == 1)
 			mode->type |= DRM_MODE_TYPE_PREFERRED;
+
+		drm_mode_debug_printmodeline(mode);
 
 		drm_mode_probed_add(connector, mode);
 		num++;
@@ -377,10 +375,15 @@ static int panel_simple_unprepare(struct drm_panel *panel)
 	if (!p->prepared)
 		return 0;
 
-	pm_runtime_mark_last_busy(panel->dev);
-	ret = pm_runtime_put_autosuspend(panel->dev);
-	if (ret < 0)
-		return ret;
+	if ((!panel->dev->power.is_suspended) &&
+			(panel->dev->power.runtime_status == RPM_SUSPENDED)) {
+		pm_runtime_mark_last_busy(panel->dev);
+		ret = pm_runtime_put_autosuspend(panel->dev);
+		if (ret < 0)
+			return ret;
+	} else if (panel->dev->power.runtime_status == RPM_ACTIVE)
+		panel_simple_suspend(panel->dev);
+
 	p->prepared = false;
 
 	return 0;
@@ -412,6 +415,10 @@ static int panel_simple_prepare_once(struct panel_simple *p)
 	unsigned long hpd_wait_us;
 
 	panel_simple_wait(p->unprepared_time, p->desc->delay.unprepare);
+
+	/* Preparing when already prepared is a no-op */
+	if (p->prepared)
+		return 0;
 
 	err = regulator_enable(p->supply);
 	if (err < 0) {
@@ -494,11 +501,15 @@ static int panel_simple_prepare(struct drm_panel *panel)
 	if (p->prepared)
 		return 0;
 
-	ret = pm_runtime_get_sync(panel->dev);
-	if (ret < 0) {
-		pm_runtime_put_autosuspend(panel->dev);
-		return ret;
-	}
+	if ((!panel->dev->power.is_suspended) &&
+			(panel->dev->power.runtime_status == RPM_SUSPENDED)) {
+		ret = pm_runtime_get_sync(panel->dev);
+		if (ret < 0) {
+			pm_runtime_put_autosuspend(panel->dev);
+			return ret;
+		}
+	} else
+		panel_simple_prepare_once(p);
 
 	p->prepared = true;
 
@@ -656,7 +667,7 @@ static void panel_simple_parse_panel_timing_node(struct device *dev,
 		    !PANEL_SIMPLE_BOUNDS_CHECK(ot, dt, vfront_porch) ||
 		    !PANEL_SIMPLE_BOUNDS_CHECK(ot, dt, vback_porch) ||
 		    !PANEL_SIMPLE_BOUNDS_CHECK(ot, dt, vsync_len)) {
-			dev_warn(dev, "BOUNDS CHECK failed\n");
+		        dev_warn(dev, "BOUNDS CHECK failed\n");
 			continue;
 		}
 
@@ -5215,6 +5226,93 @@ static const struct panel_desc_dsi boe_tv080wum_nl0 = {
 	.lanes = 4,
 };
 
+/* VXT VL101-12880YL-C01_spec.pdf */
+static const struct drm_display_mode vizionpanel_10112880_mode = {
+	.clock = 68900,
+	.hdisplay = 1280,
+	.hsync_start = 1280 + 40,
+	.hsync_end = 1280 + 40 + 80,
+	.htotal = 1280 + 40 + 80 + 40,
+	.vdisplay = 800,
+	.vsync_start = 800 + 3,
+	.vsync_end = 800 + 3 + 10,
+	.vtotal = 800 + 3 + 10 + 10,
+};
+
+static const struct panel_desc_dsi vizionpanel_10112880 = {
+	.desc = {
+		.modes = &vizionpanel_10112880_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 161,
+			.height = 243,
+		},
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
+/* VXT VL150-10276YL-C04_spec.pdf */
+static const struct drm_display_mode vizionpanel_15010276_mode = {
+        .clock = 65000,
+        .hdisplay = 1024,
+        .hsync_start = 1024 + 100,
+        .hsync_end = 1024 + 100 + 100,
+        .htotal = 1024 + 100 + 100 + 120,
+        .vdisplay = 769,
+        .vsync_start = 768 + 10,
+        .vsync_end = 768 + 10 + 10,
+        .vtotal = 768 + 10 + 10 + 18,
+};
+
+static const struct panel_desc_dsi vizionpanel_15010276 = {
+        .desc = {
+                .modes = &vizionpanel_15010276_mode,
+                .num_modes = 1,
+                .bpc = 8,
+                .size = {
+                        .width = 344,
+                        .height = 193,
+                },
+                .connector_type = DRM_MODE_CONNECTOR_DSI,
+        },
+        .flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
+        .format = MIPI_DSI_FMT_RGB888,
+        .lanes = 4,
+};
+
+/* VXT VL215-192108YL-C05_spec.pdf */
+static const struct drm_display_mode vizionpanel_215192108_mode = {
+	.clock = 71200,
+	.hdisplay = 1920,
+	.hsync_start = 1920 + 45,
+	.hsync_end = 1920 + 45 + 10,
+	.htotal = 1920 + 45 + 10 + 45,
+	.vdisplay = 1080,
+	.vsync_start = 1080 + 18,
+	.vsync_end = 1080 + 18 + 4,
+	.vtotal = 1080 + 18 + 4 + 18,
+};
+
+static const struct panel_desc_dsi vizionpanel_215192108 = {
+	.desc = {
+		.modes = &vizionpanel_215192108_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 344,
+			.height = 193,
+		},
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
 static const struct display_timing dsi2lvds_panel_timing = {
 	.pixelclock = { 60400000, 71100000, 74700000 },
 	.hactive = { 1280, 1280, 1280 },
@@ -5459,6 +5557,15 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "boe,tv080wum-nl0",
 		.data = &boe_tv080wum_nl0
+	}, {
+		.compatible = "tn,vizionpanel_10112880",
+		.data = &vizionpanel_10112880
+	}, {
+		.compatible = "tn,vizionpanel_15010276",
+		.data = &vizionpanel_15010276
+	}, {
+		.compatible = "tn,vizionpanel_215192108",
+		.data = &vizionpanel_215192108
 	}, {
 		.compatible = "tn,dsi2lvds-panel",
 		.data = &dsi2lvds_panel
