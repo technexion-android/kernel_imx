@@ -680,7 +680,7 @@ static int ili9881c_send_cmd_data(struct ili9881c *ctx, u8 cmd, u8 data)
 static int ili9881c_prepare(struct drm_panel *panel)
 {
 	struct ili9881c *ctx = panel_to_ili9881c(panel);
-	int ret;
+	int ret = 0;
 
 	/* Power the panel */
 	if (!IS_ERR(ctx->power)) {
