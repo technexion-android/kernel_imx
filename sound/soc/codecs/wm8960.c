@@ -1370,7 +1370,9 @@ static int wm8960_set_dai_sysclk(struct snd_soc_dai *dai, int clk_id,
 		}
 
 		wm8960->freq_in = freq_in;
+#if(!defined(CONFIG_ANDROID))
 		dev_info(component->dev, "Using codec PLL. MCLK rate %d Hz\n", wm8960->freq_in);
+#endif
 	}
 
 	switch (clk_id) {
