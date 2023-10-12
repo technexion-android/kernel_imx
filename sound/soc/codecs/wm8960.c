@@ -519,7 +519,7 @@ static int wm8960_add_widgets(struct snd_soc_component *component)
 		if (strcmp(w->name, "OUT3 VMID") == 0)
 			wm8960->out3 = w;
 	}
-	
+
 	return 0;
 }
 
@@ -1344,7 +1344,9 @@ static int wm8960_set_dai_sysclk(struct snd_soc_dai *dai, int clk_id,
 		}
 
 		wm8960->freq_in = freq_in;
+#if(!defined(CONFIG_ANDROID))
 		dev_info(component->dev, "Using codec PLL. MCLK rate %d Hz\n", wm8960->freq_in);
+#endif
 	}
 
 	switch (clk_id) {
