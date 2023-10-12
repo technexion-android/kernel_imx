@@ -11,7 +11,9 @@ struct sensor_params {
 static struct sensor_params ar0144_res_list[] = {
 	{.width = 640, .height = 480, .framerates = 60, .mode = 0},
 	{.width = 1280, .height = 720, .framerates = 60, .mode = 0},
+#if(!defined(CONFIG_ANDROID))
 	{.width = 1280, .height = 800, .framerates = 60, .mode = 0},
+#endif
 };
 
 static struct sensor_params ar0234_res_list[] = {
