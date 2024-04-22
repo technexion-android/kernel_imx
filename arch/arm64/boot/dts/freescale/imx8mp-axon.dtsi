@@ -68,14 +68,11 @@
 		enable-active-low;
 	};
 
-	bt_reg_on: btreg_on {
-		compatible = "gpio-reset";
-		pinctrl-names = "default";
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
 		pinctrl-0 = <&pinctrl_bt_ctrl>;
-		reset-gpios = <&gpio1 5 GPIO_ACTIVE_LOW>;
-		reset-delay-us = <2000>;
-		reset-post-delay-ms = <200>;
-		#reset-cells = <0>;
+		bt-power-gpios = <&gpio1 5 GPIO_ACTIVE_LOW>;
+		status ="okay";
 	};
 
 	sound-hdmi {
@@ -443,7 +440,7 @@
 	assigned-clocks = <&clk IMX8MP_CLK_UART1>;
 	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
 	fsl,uart-has-rtscts;
-	resets = <&bt_reg_on>;
+	//resets = <&bt_reg_on>;
 	status = "okay";
 };
 
@@ -954,6 +951,10 @@
 };
 
 &vpu_vc8000e {
+	status = "okay";
+};
+
+&vpu_v4l2 {
 	status = "okay";
 };
 
