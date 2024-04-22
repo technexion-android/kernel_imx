@@ -783,6 +783,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-verdin-os08a20-isp-adv7535.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb_android.dtb imx8mp-edm-g-wb-rpmsg_android.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wizard_android.dtb imx8mp-edm-g-wizard-rpmsg_android.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb_android.dtb imx8mm-edm-g-wizard_android.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-axon-wizard_android.dtb
 
 subdir-y += overlays
 
