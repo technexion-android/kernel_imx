@@ -13,4 +13,13 @@
 
 / {
 	model = "[ANDROID] TechNexion TEK-IMX8MP board";
+
+	wdt: watchdog{
+	compatible = "linux,wdt-gpio";
+	gpios = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+	hw_algo = "toggle";
+	hw_margin_ms = <200>;
+	always-running;
+	};
+
 };
