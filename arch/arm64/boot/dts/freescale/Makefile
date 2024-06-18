@@ -784,6 +784,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb_android.dtb imx8mp-edm-g-wb-rpmsg_andr
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wizard_android.dtb imx8mp-edm-g-wizard-rpmsg_android.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-edm-g-wb_android.dtb imx8mm-edm-g-wizard_android.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-axon-wizard_android.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-tek_android.dtb imx8mp-tek-rpmsg_android.dtb
 
 subdir-y += overlays
 
