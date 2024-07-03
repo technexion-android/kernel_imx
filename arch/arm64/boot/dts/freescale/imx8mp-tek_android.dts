@@ -22,4 +22,11 @@
 	always-running;
 	};
 
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		//pinctrl-0 = <&pinctrl_bt_ctrl>;
+		//bt-power-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
+		status ="okay";
+	};
+
 };
