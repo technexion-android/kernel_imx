@@ -74,6 +74,7 @@ struct exc3000_data {
 	struct i2c_client *client;
 	const struct eeti_dev_info *info;
 	struct input_dev *input;
+	char phys[32];
 	struct touchscreen_properties prop;
 	struct gpio_desc *reset;
 	struct timer_list timer;
@@ -385,7 +386,11 @@ static int exc3000_probe(struct i2c_client *client)
 	data->input = input;
 	input_set_drvdata(input, data);
 
+	snprintf(data->phys, sizeof(data->phys),
+		 "%s/input0", dev_name(&client->dev));
+
 	input->name = data->info->name;
+	input->phys = data->phys;
 	input->id.bustype = BUS_I2C;
 
 	max_xy = data->info->max_xy;
