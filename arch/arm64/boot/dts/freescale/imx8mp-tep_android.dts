@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2024 Technexion Ltd.
+ *
+ * Author: Tifa Chen <tifa.chen@technexion.com>
+ *
+ */
+
+/dts-v1/;
+
+#include "imx8mp-tep.dts"
+#include "imx8mp-android.dtsi"
+
+/ {
+	model = "[ANDROID] TechNexion TEP-IMX8MP board";
+
+	bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		//pinctrl-0 = <&pinctrl_bt_ctrl>;
+		//bt-power-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
+		status ="okay";
+	};
+
+};
+
+&lvds_backlight {
+	brightness-levels = <0 255>;
+	num-interpolated-steps = <100>;
+	default-brightness-level = <41>;
+};
+
+&vpu_v4l2 {
+	status = "okay";
+};
