@@ -1,0 +1,32 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2024 Technexion Ltd.
+ *
+ * Author: Tifa Chen <tifa.chen@technexion.com>
+ *
+ */
+
+ /dts-v1/;
+
+#include "imx8mq-pico-wizard.dts"
+#include "imx8mq-android.dtsi"
+
+/ {
+	model = "[ANDROID] TechNexion PICO-IMX8MQ with WIZARD baseboard";
+
+    /delete-node/ bt_reg_on;
+    bt_rfkill {
+		compatible = "fsl,mxc_bt_rfkill";
+		pinctrl-0 = <&pinctrl_bt_ctrl>;
+		bt-power-gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
+		status ="okay";
+	};
+};
+
+&uart1 {
+	/delete-property/ resets;
+};
+
+&vpu_v4l2 {
+	status = "okay";
+};
