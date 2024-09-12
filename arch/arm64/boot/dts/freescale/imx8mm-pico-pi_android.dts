@@ -36,3 +36,7 @@
 &vpu_v4l2 {
 	status = "okay";
 };
+
+&lcdif {
+	/delete-property/ trusty;
+};
