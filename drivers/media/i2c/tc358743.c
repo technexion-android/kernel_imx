@@ -1683,6 +1683,7 @@ static int tc358743_enum_frame_interval(struct v4l2_subdev *sd,
 	return 0;
 }
 
+#ifndef CONFIG_ANDROID
 static int tc358743_get_mbus_config(struct v4l2_subdev *sd,
 				    unsigned int pad,
 				    struct v4l2_mbus_config *cfg)
@@ -1697,6 +1698,7 @@ static int tc358743_get_mbus_config(struct v4l2_subdev *sd,
 
 	return 0;
 }
+#endif
 
 static int tc358743_g_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *a)
 {
