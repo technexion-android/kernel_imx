@@ -6,6 +6,8 @@
 #include <linux/regmap.h>
 #include <linux/i2c-atr.h>
 
+#include <linux/gpio/consumer.h>
+
 #define DS90UB941_I2C_ADDR 0x0c
 #define DS90UB948_I2C_ADDR 0x2c
 
@@ -263,7 +265,7 @@ static void check_and_enable_dsi_workfn(struct work_struct *work)
 {
 	struct ds90ub94x *ds90ub941 = container_of(work, struct ds90ub94x, check_and_enable_dsi.work);
 	unsigned int reg_val;
-	int ret;
+	int ret = 0;
 
 	dev_info(ds90ub941->dev, "check_and_enable_dsi_workfn start!!\n");
 	/* Enable DSI, check if the signal is stable.
