@@ -30,3 +30,7 @@
 &snvs_pwrkey {
 	linux,keycode = <KEY_POWER>;
 };
+
+&vpumix_blk_ctl {
+	/delete-property/ trusty;
+};

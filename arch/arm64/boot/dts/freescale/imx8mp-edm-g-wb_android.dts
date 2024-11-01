@@ -20,3 +20,7 @@
 	num-interpolated-steps = <100>;
 	default-brightness-level = <41>;
 };
+
+&vpumix_blk_ctl {
+	/delete-property/ trusty;
+};
