@@ -13,6 +13,12 @@
 
 / {
 	model = "[ANDROID] TechNexion EDM-G-IMX8MP with Wizard baseboard";
+
+	backlight_mipi {
+		brightness-levels = <0 255>;
+		num-interpolated-steps = <100>;
+		default-brightness-level = <41>;
+	};
 };
 
 &lvds_backlight {
