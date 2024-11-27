@@ -26,3 +26,7 @@
 	num-interpolated-steps = <100>;
 	default-brightness-level = <41>;
 };
+
+&snvs_pwrkey {
+	linux,keycode = <KEY_POWER>;
+};
