@@ -19,7 +19,9 @@ static struct resolution ar0144_res_list[] = {
 static struct resolution ar0145_res_list[] = {
 	{ .width = 640, .height = 480, .framerates = 115, .mode = 0 },
 	{ .width = 1280, .height = 720, .framerates = 115, .mode = 0 },
+#if(!defined(CONFIG_ANDROID))
 	{ .width = 1280, .height = 800, .framerates = 115, .mode = 0 },
+#endif
 };
 
 /* AR0234 default setting for 4 data lanes and data frequency 800 MHz */
@@ -27,7 +29,9 @@ static struct resolution ar0234_res_list[] = {
 	{ .width = 640, .height = 480, .framerates = 120, .mode = 1 },
 	{ .width = 1280, .height = 720, .framerates = 120, .mode = 0 },
 	{ .width = 1920, .height = 1080, .framerates = 60, .mode = 0 },
+#if(!defined(CONFIG_ANDROID))
 	{ .width = 1920, .height = 1200, .framerates = 60, .mode = 0 },
+#endif
 };
 
 /* AR0521 default setting for 4 data lanes and data frequency 800 MHz */
