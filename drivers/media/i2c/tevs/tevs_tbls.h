@@ -24,7 +24,9 @@ struct resolution {
 static struct resolution ar0144_res_list[] = {
 	{ .width = 640, .height = 480, .framerates = 60, .mode = 0 },
 	{ .width = 1280, .height = 720, .framerates = 60, .mode = 0 },
+#if(!defined(CONFIG_ANDROID))
 	{ .width = 1280, .height = 800, .framerates = 60, .mode = 0 },
+#endif
 };
 
 static u32 ar0144_code_list[] = {
@@ -36,7 +38,9 @@ static u32 ar0144_code_list[] = {
 static struct resolution ar0145_res_list[] = {
 	{ .width = 640, .height = 480, .framerates = 115, .mode = 0 },
 	{ .width = 1280, .height = 720, .framerates = 115, .mode = 0 },
+#if(!defined(CONFIG_ANDROID))
 	{ .width = 1280, .height = 800, .framerates = 115, .mode = 0 },
+#endif
 };
 
 static u32 ar0145_code_list[] = {
@@ -49,7 +53,9 @@ static struct resolution ar0234_res_list[] = {
 	{ .width = 640, .height = 480, .framerates = 120, .mode = 1 },
 	{ .width = 1280, .height = 720, .framerates = 120, .mode = 0 },
 	{ .width = 1920, .height = 1080, .framerates = 60, .mode = 0 },
+#if(!defined(CONFIG_ANDROID))
 	{ .width = 1920, .height = 1200, .framerates = 60, .mode = 0 },
+#endif
 };
 
 static u32 ar0234_code_list[] = {
