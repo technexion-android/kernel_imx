@@ -32,6 +32,10 @@
 static DEFINE_MUTEX(panel_lock);
 static LIST_HEAD(panel_list);
 
+#ifdef CONFIG_DRM_8MM_WA
+static int enable_cnt = 0;
+#endif
+
 /**
  * DOC: drm panel
  *
@@ -110,6 +114,10 @@ int drm_panel_prepare(struct drm_panel *panel)
 	struct drm_panel_follower *follower;
 	int ret;
 
+#if CONFIG_DRM_8MM_WA
+	if (enable_cnt < 1)
+		return 0;
+#endif
 	if (!panel)
 		return -EINVAL;
 
@@ -204,6 +212,12 @@ int drm_panel_enable(struct drm_panel *panel)
 {
 	int ret;
 
+#ifdef CONFIG_DRM_8MM_WA
+	if(enable_cnt < 1) {
+		enable_cnt += 1;
+		return 0;
+	}
+#endif
 	if (!panel)
 		return -EINVAL;
 
@@ -242,6 +256,11 @@ int drm_panel_disable(struct drm_panel *panel)
 {
 	int ret;
 
+#ifdef CONFIG_DRM_8MM_WA
+	if(enable_cnt == 1) {
+		return 0;
+	}
+#endif
 	if (!panel)
 		return -EINVAL;
 

@@ -436,3 +436,7 @@ config DRM_LIB_RANDOM
 config DRM_PRIVACY_SCREEN
 	bool
 	default n
+
+config DRM_8MM_WA
+	bool "Enable DRM Workaround on imx8mm"
+	default n
