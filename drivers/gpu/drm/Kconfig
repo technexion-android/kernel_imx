@@ -539,3 +539,7 @@ endif
 # Separate option because drm_panel_orientation_quirks.c is shared with fbdev
 config DRM_PANEL_ORIENTATION_QUIRKS
 	tristate
+
+config DRM_8MM_WA
+	bool "Enable DRM Workaround on imx8mm"
+	default n
