@@ -31,6 +31,6 @@
 	linux,keycode = <KEY_POWER>;
 };
 
-&vpumix_blk_ctl {
+&vpumix_blk_ctrl {
 	/delete-property/ trusty;
 };

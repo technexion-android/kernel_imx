@@ -21,6 +21,6 @@
 	default-brightness-level = <41>;
 };
 
-&vpumix_blk_ctl {
+&vpumix_blk_ctrl {
 	/delete-property/ trusty;
 };
