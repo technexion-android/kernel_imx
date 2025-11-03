@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2024 Technexion Ltd.
+ *
+ * Author: Tifa Chen <tifa.chen@technexion.com>
+ *
+ */
+
+/dts-v1/;
+
+#include "imx95-edm-evm.dts"
+
+/ {
+	model = "[ANDROID] TechNexion EDM-IMX95 and EVM baseboard";
+};
+
+#include "imx95-android.dtsi"
