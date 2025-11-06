@@ -14,4 +14,8 @@
 	model = "[ANDROID] TechNexion EDM-IMX95 and EVM baseboard";
 };
 
+&lpuart6 {
+    /delete-node/ bluetooth;
+};
+
 #include "imx95-android.dtsi"
