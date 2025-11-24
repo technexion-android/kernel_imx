@@ -2261,6 +2261,11 @@ static int tevs_probe(struct i2c_client *client)
 	fmt = &tevs->fmt;
 	fmt->width = tevs_sensor_table[tevs->selected_sensor].res_list[0].width;
 	fmt->height = tevs_sensor_table[tevs->selected_sensor].res_list[0].height;
+#if(defined(CONFIG_ANDROID))
+	u32 res_list_size = tevs_sensor_table[tevs->selected_sensor].res_list_size;
+	fmt->width = tevs_sensor_table[tevs->selected_sensor].res_list[res_list_size-1].width;
+	fmt->height = tevs_sensor_table[tevs->selected_sensor].res_list[res_list_size-1].height;
+#endif
 	fmt->field = V4L2_FIELD_NONE;
 	fmt->code = tevs_sensor_table[tevs->selected_sensor].code_list[0];
 	fmt->colorspace = V4L2_COLORSPACE_SRGB;
