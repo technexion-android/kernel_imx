@@ -90,6 +90,17 @@ struct max_des_link_hw {
 	struct max_des_pipe *pipe;
 };
 
+static const struct v4l2_mbus_framefmt default_fmt = {
+	.width = 1920,
+	.height = 1080,
+	.code = MEDIA_BUS_FMT_UYVY8_1X16,
+	.field = V4L2_FIELD_NONE,
+	.colorspace = V4L2_COLORSPACE_SRGB,
+	.xfer_func = V4L2_MAP_XFER_FUNC_DEFAULT(V4L2_COLORSPACE_SRGB),
+	.ycbcr_enc = V4L2_MAP_YCBCR_ENC_DEFAULT(V4L2_COLORSPACE_SRGB),
+	.quantization = V4L2_QUANTIZATION_FULL_RANGE,
+};
+
 static inline struct max_des_priv *sd_to_priv(struct v4l2_subdev *sd)
 {
 	return container_of(sd, struct max_des_priv, sd);
@@ -2282,6 +2293,34 @@ static int max_des_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
 	return 0;
 }
 
+static int max_des_init_state(struct v4l2_subdev *sd,
+			      struct v4l2_subdev_state *state)
+{
+	struct max_des_priv *priv = container_of(sd, struct max_des_priv, sd);
+	struct max_des *des = priv->des;
+	struct v4l2_subdev_krouting routing = {};
+	struct v4l2_subdev_route *routes;
+	int i;
+
+	routes = kcalloc(des->ops->num_links, sizeof(*routes), GFP_KERNEL);
+	if (!routes)
+		return -ENOMEM;
+
+	for (i = 0; i < des->ops->num_links; i++) {
+		struct v4l2_subdev_route *route = &routes[i];
+
+		route->source_pad = des->ops->num_links;
+		route->source_stream = i;
+		route->sink_pad = i;
+		route->sink_stream = 0;
+		route->flags = V4L2_SUBDEV_ROUTE_FL_ACTIVE;
+	}
+	routing.num_routes = des->ops->num_links;
+	routing.routes = routes;
+
+	return v4l2_subdev_set_routing_with_fmt(sd, state, &routing, &default_fmt);
+}
+
 static int max_des_set_tpg_routing(struct v4l2_subdev *sd,
 				   struct v4l2_subdev_state *state,
 				   struct v4l2_subdev_krouting *routing)
@@ -2726,6 +2765,10 @@ static void max_des_notify_unbind(struct v4l2_async_notifier *nf,
 	source->sd = NULL;
 }
 
+static const struct v4l2_subdev_internal_ops max_des_internal_ops = {
+	.init_state = max_des_init_state,
+};
+
 static const struct v4l2_async_notifier_operations max_des_notify_ops = {
 	.bound = max_des_notify_bound,
 	.unbind = max_des_notify_unbind,
@@ -2813,6 +2856,7 @@ static int max_des_v4l2_register(struct max_des_priv *priv)
 	i2c_set_clientdata(priv->client, data);
 	sd->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
 	sd->entity.ops = &max_des_media_ops;
+	sd->internal_ops = &max_des_internal_ops;
 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_STREAMS;
 
 	for (i = 0; i < num_pads; i++) {

@@ -45,6 +45,17 @@ struct max_ser_route_hw {
 	bool is_tpg;
 };
 
+static const struct v4l2_mbus_framefmt default_fmt = {
+	.width = 1920,
+	.height = 1080,
+	.code = MEDIA_BUS_FMT_UYVY8_1X16,
+	.field = V4L2_FIELD_NONE,
+	.colorspace = V4L2_COLORSPACE_SRGB,
+	.xfer_func = V4L2_MAP_XFER_FUNC_DEFAULT(V4L2_COLORSPACE_SRGB),
+	.ycbcr_enc = V4L2_MAP_YCBCR_ENC_DEFAULT(V4L2_COLORSPACE_SRGB),
+	.quantization = V4L2_QUANTIZATION_FULL_RANGE,
+};
+
 static inline struct max_ser_priv *sd_to_priv(struct v4l2_subdev *sd)
 {
 	return container_of(sd, struct max_ser_priv, sd);
@@ -531,6 +542,37 @@ static int max_ser_set_fmt(struct v4l2_subdev *sd,
 	return 0;
 }
 
+static int max_ser_init_state(struct v4l2_subdev *sd,
+			      struct v4l2_subdev_state *state)
+{
+	struct max_ser_priv *priv = container_of(sd, struct max_ser_priv, sd);
+	//struct max_ser *ser = priv->ser;
+	struct v4l2_subdev_route routes[MAX_SER_NUM_LINKS]; /* 假設只有一個 Link */
+	struct v4l2_subdev_krouting routing;
+	int ret;
+
+	dev_dbg(priv->dev, "%s()\n", __func__);
+
+	routing.routes = routes;
+	routing.num_routes = 0;
+	routing.len_routes = 1;
+
+	/* route：Pad 0/Stream 0 -> Pad 1/Stream 0 */
+	routes[0].sink_pad = 0;
+	routes[0].sink_stream = 0;
+	routes[0].source_pad = 1;
+	routes[0].source_stream = 0;
+	routes[0].flags = V4L2_SUBDEV_ROUTE_FL_ACTIVE;
+	routing.num_routes++;
+
+
+	ret = v4l2_subdev_set_routing_with_fmt(sd, state, &routing, &default_fmt);
+	
+	if (ret)
+		dev_err(priv->dev, "Failed to set default routing: %d\n", ret);
+
+	return ret;
+}
 static int max_ser_log_status(struct v4l2_subdev *sd)
 {
 	struct max_ser_priv *priv = sd_to_priv(sd);
@@ -1404,6 +1446,10 @@ static const struct v4l2_subdev_pad_ops max_ser_pad_ops = {
 	.set_frame_interval = max_ser_set_frame_interval,
 };
 
+static const struct v4l2_subdev_internal_ops max_ser_internal_ops = {
+	.init_state = max_ser_init_state,
+};
+
 static const struct v4l2_subdev_ops max_ser_subdev_ops = {
 	.core = &max_ser_core_ops,
 	.pad = &max_ser_pad_ops,
@@ -1608,6 +1654,7 @@ static int max_ser_v4l2_register(struct max_ser_priv *priv)
 	i2c_set_clientdata(priv->client, data);
 	sd->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
 	sd->entity.ops = &max_ser_media_ops;
+	sd->internal_ops = &max_ser_internal_ops;
 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_STREAMS;
 
 	priv->pads = devm_kcalloc(priv->dev, num_pads, sizeof(*priv->pads), GFP_KERNEL);
