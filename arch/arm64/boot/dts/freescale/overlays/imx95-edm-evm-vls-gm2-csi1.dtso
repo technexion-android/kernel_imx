@@ -173,7 +173,7 @@
 					status = "okay";
 				};
 
-				cam_4: tevs@48 {
+				cam_4: tevs1@48 {
 					compatible = "tn,tevs";
 					reg = <0x48>;
 					status = "okay";
@@ -266,7 +266,7 @@
 					status = "okay";
 				};
 
-				cam_5: tevs@48 {
+				cam_5: tevs1@48 {
 					compatible = "tn,tevs";
 					reg = <0x48>;
 					status = "okay";
@@ -357,7 +357,7 @@
 					status = "okay";
 				};
 
-				cam_6: tevs@48 {
+				cam_6: tevs1@48 {
 					compatible = "tn,tevs";
 					reg = <0x48>;
 					status = "okay";
@@ -448,7 +448,7 @@
 					status = "okay";
 				};
 
-				cam_7: tevs@48 {
+				cam_7: tevs1@48 {
 					compatible = "tn,tevs";
 					reg = <0x48>;
 					status = "okay";

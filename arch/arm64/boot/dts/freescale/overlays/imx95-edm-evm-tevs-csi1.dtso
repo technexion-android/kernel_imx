@@ -21,7 +21,7 @@
 	#size-cells = <0>;
 	status = "okay";
 
-	tevs_1: tevs@48 {
+	tevs_1: tevs1@48 {
 		compatible = "tn,tevs";
 		reg = <0x48>;
 		status = "okay";
