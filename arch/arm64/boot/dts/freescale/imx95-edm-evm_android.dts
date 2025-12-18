@@ -18,4 +18,12 @@
     /delete-node/ bluetooth;
 };
 
+&lvds0_backlight {
+	brightness-levels = <0 255>;
+	num-interpolated-steps = <100>;
+	default-brightness-level = <41>;
+	//	brightness-levels = <0 36 72 108 144 180 216 255>;
+	//	default-brightness-level = <6>;
+};
+
 #include "imx95-android.dtsi"
